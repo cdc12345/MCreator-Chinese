@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.ui.validation.component.VComboBox;
 
 import javax.swing.*;
@@ -88,7 +89,7 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 		int size = model.getSize();
 		for (int i = 0; i < size; i++) {
 			T element = model.getElementAt(i);
-			if (element.toString().toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH))) {
+			if (element.toString().contains(searchTerm.toLowerCase(Locale.ENGLISH))) {
 				entriesFiltered.add(element);
 			}
 		}

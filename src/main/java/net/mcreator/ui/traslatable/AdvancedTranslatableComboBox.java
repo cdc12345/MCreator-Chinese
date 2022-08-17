@@ -19,6 +19,9 @@
 
 package net.mcreator.ui.traslatable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -33,13 +36,20 @@ import java.util.function.Function;
  * @date 2022/8/16 16:42
  */
 public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
+	private static final Logger LOG = LoggerFactory.getLogger("AdvancedTranslatableComboBox");
+
 	Map<T,String> diction;
 	Map<String,String> strDiction;
 	Function<T,String> matchString;
-	private boolean displayEnglish;
+	private boolean displayEnglish = true;
+	private String nameSpace;
 
 	public AdvancedTranslatableComboBox(T[] origin){
+		this(origin,"");
+	}
+	public AdvancedTranslatableComboBox(T[] origin,String nameSpace){
 		this(origin, (Function<T, String>) null);
+		this.nameSpace = nameSpace;
 	}
 	public AdvancedTranslatableComboBox(T[] origin,Function<T,String> stringFunction){
 		super(origin);
@@ -96,14 +106,22 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 			if (matchString != null) {
 				String origin = matchString.apply(value);
 				if (strDiction == null)
-					setText(pool.getValue(origin)+((displayEnglish)?"(" + origin+")":""));
-				else
-					setText(pool.getValue(strDiction.get(origin)) + ((displayEnglish)?"(" + origin+")":""));
+					setText(pool.getValue(nameSpace,origin)+((displayEnglish)?"(" + origin+")":""));
+				else {
+					String nameSpace = "zh";
+					setText(pool.getValue(nameSpace, strDiction.get(origin)) + ((displayEnglish) ?
+							"(" + origin + ")" :
+							""));
+				}
 			} else {
 				if (diction == null)
-					setText(pool.getValue(value.toString())+((displayEnglish)?"("+value+")":""));
-				else
-					setText(pool.getValue(diction.get(value))+((displayEnglish)?"("+value.toString()+")":""));
+					setText(pool.getValue(nameSpace,value.toString())+((displayEnglish)?"("+value+")":""));
+				else {
+					String nameSpace = "zh";
+					setText(pool.getValue(nameSpace, diction.get(value)) + ((displayEnglish) ?
+							"(" + value.toString() + ")" :
+							""));
+				}
 			}
 
 			setHorizontalTextPosition(SwingConstants.RIGHT);

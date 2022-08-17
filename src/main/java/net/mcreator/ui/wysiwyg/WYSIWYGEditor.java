@@ -100,7 +100,6 @@ public class WYSIWYGEditor extends JPanel {
 
 	public WYSIWYGEditor(final MCreator mcreator, boolean isNotOverlayType) {
 		super(new BorderLayout(5, 0));
-		lol.setDisplayEnglish(true);
 
 		setOpaque(false);
 

@@ -219,7 +219,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
 	private final AdvancedTranslatableComboBox<String> particleSpawningShape = new AdvancedTranslatableComboBox<>(
-			new String[] { "Spread", "Top", "Tube", "Plane" },new String[]{"扩散","顶部","管","平面"});
+			new String[] { "Spread", "Top", "Tube", "Plane" });
 	private final JSpinner particleSpawningRadious = new JSpinner(new SpinnerNumberModel(0.5, 0, 2, 0.1f));
 	private final JSpinner particleAmount = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
 

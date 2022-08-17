@@ -54,12 +54,10 @@ public class NewVariableDialog {
 
 		AdvancedTranslatableComboBox<VariableType> type = new AdvancedTranslatableComboBox<>(Map.of("blockstate","方块状态","direction","方向","itemstack"
 				,"物品组","logic","逻辑","number","数字","string","文本串"), Objects::toString);
-		type.setDisplayEnglish(true);
 		supportedTypes.forEach(type::addItem);
 
 		AdvancedTranslatableComboBox<VariableType.Scope> scope = new AdvancedTranslatableComboBox<>(Map.of("GLOBAL_MAP","全地图","GLOBAL_WORLD","全世界","GLOBAL_SESSION","全局"
 				,"PLAYER_LIFETIME","玩家一条命","PLAYER_PERSISTENT","玩家一直有","LOCAL","本地"),Object::toString);
-		scope.setDisplayEnglish(true);
 		inp.add("North", L10N.label("dialog.variables.enter_name_select_type"));
 
 		JPanel data = new JPanel(new GridLayout(showScope ? 3 : 2, 2, 5, 5));

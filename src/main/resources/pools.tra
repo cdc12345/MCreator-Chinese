@@ -1,6 +1,5 @@
 {
-    "请全部用小写,idea的快捷键是ctrl+shift+u":"null",
-    "air":"空气",
+    "请全部用小写,idea的快捷键是ctrl+shift+u,如果前面没有命名空间则为默认的命名空间":"null",
     "farmer":"农夫",
     "fletcher":"制箭师",
     "cleric":"牧羊人",
@@ -89,5 +88,24 @@
     "mossy cobblestone stairs":"苔石楼梯",
     "mossy cobblestone slab":"苔石台阶",
     "moss block":"苔藓块",
-    "moss carpet":"苔藓地毯"
+    "moss carpet":"苔藓地毯",
+    "blocks.blockBase:default basic block": "基础方块",
+    "blocks.blockBase:stairs": "楼梯",
+    "blocks.blockBase:leaves": "树叶",
+    "blocks.blockBase:button": "按钮",
+    "not specified": "没有指定",
+    "pickaxe": "镐子",
+    "axe": "斧头",
+    "shovel": "铲子",
+    "hoe": "锄头",
+    "blocks.transparencyType:solid": "固体",
+    "spread": "扩散",
+    "top": "顶部",
+    "tube": "管状",
+    "plane": "平面",
+    "blocks.reactionToPushing:normal": "一般反应",
+    "blocks.reactionToPushing:destroy": "摧毁",
+    "blocks.reactionToPushing:block": "阻塞,无法推动",
+    "blocks.reactionToPushing:push_only": "只能拉动",
+    "blocks.reactionToPushing:ignore": "忽略"
 }

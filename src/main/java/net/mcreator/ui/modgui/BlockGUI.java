@@ -181,7 +181,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
 
 	private final AdvancedTranslatableComboBox<String> reactionToPushing = new AdvancedTranslatableComboBox<>(
-			new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" },new String[]{""});
+			new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" },"blocks.reactionToPushing");
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "NONE", "XZ", "XYZ" });
 	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
@@ -224,7 +224,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			new Model[] { normal, singleTexture, cross, crop, grassBlock });
 
 	private final AdvancedTranslatableComboBox<String> transparencyType = new AdvancedTranslatableComboBox<>(
-			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
+			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" },"blocks.transparencyType");
 
 
 	private final JCheckBox hasInventory = L10N.checkbox("elementgui.block.has_inventory");
@@ -247,7 +247,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final AdvancedTranslatableComboBox<String> blockBase = new AdvancedTranslatableComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
-					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
+					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" },"blocks.blockBase");
 
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));

@@ -47,7 +47,6 @@ public class ShapeTool extends AbstractModificationTool {
 		setLayerPanel(layerPanel);
 
 		AdvancedTranslatableComboBox<Shape> shapeBox = new AdvancedTranslatableComboBox<>(Shape.values(), Map.of(Shape.SQUARE,"正方形",Shape.FRAME,"框选",Shape.CIRCLE,"圆形",Shape.RING,"环形"));
-		shapeBox.setDisplayEnglish(true);
 		shapeBox.setSelectedIndex(0);
 		JTitledComponentWrapper titledShape = new JTitledComponentWrapper(
 				L10N.t("dialog.image_maker.tools.types.shape"), shapeBox);

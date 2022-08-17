@@ -50,16 +50,19 @@ public class TranslatablePool {
 	}
 
 	public String getValue(String key){
-		key = key.toLowerCase(Locale.ENGLISH);
-		JsonElement element = json.get(key);
+		return getValue("",key);
+	}
+
+	public String getValue(String nameSpace,final String key){
+		String lowerKey = key.toLowerCase(Locale.ENGLISH);
+		if (!"".equals(nameSpace)){
+			lowerKey = nameSpace+":"+lowerKey;
+		}
+		JsonElement element = json.get(lowerKey);
 		if (element == null)
 			return key;
 		else
 			return element.getAsString();
-	}
-
-	public JsonObject getPoolSource(){
-		return json;
 	}
 
 }
