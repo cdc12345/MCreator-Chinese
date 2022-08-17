@@ -19,6 +19,7 @@
 package net.mcreator.workspace.settings;
 
 import com.google.common.base.CaseFormat;
+import net.mcreator.gradle.GradleUtils;
 import net.mcreator.minecraft.api.ModAPIImplementation;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
@@ -91,7 +92,7 @@ import java.util.stream.Stream;
 		this.credits = other.credits;
 		this.modElementsPackage = other.modElementsPackage;
 		this.lockBaseModFiles = other.lockBaseModFiles;
-		this.javaHome = other.javaHome;
+		this.javaHome = (other.javaHome == null)? new File(GradleUtils.getJavaHome()) :other.javaHome;
 
 		this.workspace = other.workspace;
 	}
