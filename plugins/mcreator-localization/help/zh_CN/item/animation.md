@@ -1,1 +1,1 @@
-Animation is the animation used when the player does an action with the item.
+动画，当物品被使用时会进行的物品动画。
