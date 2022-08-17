@@ -226,6 +226,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final AdvancedTranslatableComboBox<String> transparencyType = new AdvancedTranslatableComboBox<>(
 			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
 
+
 	private final JCheckBox hasInventory = L10N.checkbox("elementgui.block.has_inventory");
 
 	private final JCheckBox openGUIOnRightClick = L10N.checkbox("elementgui.common.enable");
