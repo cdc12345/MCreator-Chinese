@@ -190,7 +190,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
 
-	private final JComboBox<String> particleSpawningShape = new JComboBox<>(
+	private final AdvancedTranslatableComboBox<String> particleSpawningShape = new AdvancedTranslatableComboBox<>(
 			new String[] { "Spread", "Top", "Tube", "Plane" });
 
 	private final JSpinner particleSpawningRadious = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
@@ -208,7 +208,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					"<html>Log rotation (X/Y/Z)<br><small>Imitates vanilla log rotation" });
 	private final JCheckBox enablePitch = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> destroyTool = new JComboBox<>(
+	private final AdvancedTranslatableComboBox<String> destroyTool = new AdvancedTranslatableComboBox<>(
 			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 	private final JSpinner breakHarvestLevel = new JSpinner(new SpinnerNumberModel(1, -1, 100, 1));
 	private final JCheckBox requiresCorrectTool = L10N.checkbox("elementgui.common.enable");
@@ -223,7 +223,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(
 			new Model[] { normal, singleTexture, cross, crop, grassBlock });
 
-	private final JComboBox<String> transparencyType = new JComboBox<>(
+	private final AdvancedTranslatableComboBox<String> transparencyType = new AdvancedTranslatableComboBox<>(
 			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
 
 	private final JCheckBox hasInventory = L10N.checkbox("elementgui.block.has_inventory");
@@ -244,7 +244,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page3group = new ValidationGroup();
 
-	private final JComboBox<String> blockBase = new JComboBox<>(
+	private final AdvancedTranslatableComboBox<String> blockBase = new AdvancedTranslatableComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
 					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
 
