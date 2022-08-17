@@ -92,7 +92,7 @@ import java.util.stream.Stream;
 		this.credits = other.credits;
 		this.modElementsPackage = other.modElementsPackage;
 		this.lockBaseModFiles = other.lockBaseModFiles;
-		this.javaHome = (other.javaHome == null)? new File(GradleUtils.getJavaHome()) :other.javaHome;
+		this.javaHome = other.javaHome;
 
 		this.workspace = other.workspace;
 	}
@@ -170,7 +170,7 @@ import java.util.stream.Stream;
 	}
 
 	public File getJavaHome(){
-		return Objects.requireNonNullElse(javaHome,PreferencesManager.PREFERENCES.gradle.java_home);
+		return Objects.requireNonNullElse(javaHome,new File(GradleUtils.getJavaHome()));
 	}
 
 	public String getLicense() {
