@@ -37,6 +37,10 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 	Map<String,String> strDiction;
 	Function<T,String> matchString;
 	private boolean displayEnglish;
+	public AdvancedTranslatableComboBox(T[] origin){
+		super(origin);
+	}
+
 	public AdvancedTranslatableComboBox(Map<String,String> diction, Function<T,String> stringMatcher){
 		super();
 		strDiction = diction;
