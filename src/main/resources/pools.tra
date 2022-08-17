@@ -92,6 +92,8 @@
     "mossy cobblestone slab":"苔石台阶",
     "moss block":"苔藓块",
     "moss carpet":"苔藓地毯",
+    "end crystal": "末地水晶",
+    "lava bucket": "岩浆桶",
     "blocks.blockBase:default basic block": "基础方块",
     "blocks.blockBase:stairs": "楼梯",
     "blocks.blockBase:leaves": "树叶",

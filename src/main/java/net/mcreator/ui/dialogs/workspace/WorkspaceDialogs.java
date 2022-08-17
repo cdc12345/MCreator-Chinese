@@ -499,7 +499,7 @@ public class WorkspaceDialogs {
 			_advancedSettings.add(forgeVersionCheckPan);
 			_advancedSettings.add(new JEmptyBox(5, 15));
 
-			JPanel advancedSettings = new JPanel(new GridLayout(3, 2, 5, 2));
+			JPanel advancedSettings = new JPanel(new GridLayout(4, 2, 5, 4));
 			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 					L10N.t("dialog.workspace_settings.section.advanced")));
 			_advancedSettings.add(advancedSettings);
@@ -535,11 +535,13 @@ public class WorkspaceDialogs {
 							"请检查是否为java_home,如果是则请检查是否为jdk");
 				}
 			});
-			advancedSettings.add(new JLabel("JAVA_HOME"));
 			JPanel setJava = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			setJava.add(javaHome);
 			setJava.add(selectJavaHome);
+			advancedSettings.add(L10N.label("preferences.gradle.java_home"));
 			advancedSettings.add(setJava);
+
+			validationGroup.addValidationElement(javaHome);
 
 			JPanel dependencySettings = new JPanel(new GridLayout(3, 2, 5, 2));
 			dependencySettings.add(L10N.label("dialog.workspace_settings.required_mods"));
