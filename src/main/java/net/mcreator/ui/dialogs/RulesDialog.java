@@ -38,47 +38,6 @@ public class RulesDialog {
 		new RulesDialog(null);
 	}
 
-	private final String text = """
-			<html>
-			<body><div align="center"><h1 id='mcreator模组开发须知'>MCreator模组开发须知</h1></div>
-			<h4 id='在你要开始学习使用mcreator制作模组前请仔细阅读以下内容'>在你要开始学习使用MCreator制作模组前，请仔细阅读以下内容：</h4>
-			<p>&nbsp;</p>
-			<p>1 MCreator制作的模组最好不用于任何形式（除玩家自愿资助，但不得逼迫或诱导玩家）的盈利。</p>
-			<p>2 MCreator制作的模组请标注（包括但不限于模组信息Author，发布时的声明等），且不允许将它伪造成自己编写的模组或拒绝承认其是由MCreator制作的。</p>
-			<p>3 MCreator不得用于制作包括以下任何之一类型的模组：无意义秒杀，外挂，恶意或无意义玩梗，仅添加少量物品/方块/工具装备/低质量维度，材质过差，过度依赖自动生成模板材质的模组。</p>
-			<p>4严禁未经允许重制其他人的模组，严禁抄袭模组，严禁直接复制材质和代码。</p>
-			<p>5严禁出现刷热度，刷好评等违规情况。</p>
-			<p>6严禁将本模组某些事态扩散（如评论区骂战，作者个人问题等）。</p>
-			<p>7不应在完成度极低/质量极差/违反规定的情况下发布模组至平台（如mcmod，mcbbs，curseforge等）。</p>
-			<p>8 MCreator有局限性，切勿抱过大的希望。</p>
-			<p>9严禁发表对MCreator带有强烈主观的侮辱性/攻击性言论，如“mcr垃圾”，但可以客观评价其对模组圈造成的影响及对其制作模组的评价。</p>
-			<p>10对于违反以上规范的模组，可能会出现以下情况：</p>
-			<p>①谴责和批评。</p>
-			<p>②强制标注是由MCreator制作，或有谴责和批评。</p>
-			<p>③或联系发布平台下架，作为反面教材。</p>
-			<p>④强制下架或要求下一版本更改。</p>
-			<p>⑤一经发现下架，谴责和批评，作为反面教材。</p>
-			<p>⑥下架或者关闭评论，作为反面教材，永久踢出MCreator讨论群。</p>
-			<p>⑦无处理，但不提倡。</p>
-			<p>⑨永久踢出MCreator讨论群。</p>
-			<p>&nbsp;</p>
-			<h3 id='请确保你已经认真阅读并同意否则所造成的一切后果由个人承担mcreator及其讨论群和任何其他用户不承担责任ps内容非mcreator官方提供由社区编辑'>请确保你已经认真阅读并同意，否则所造成的一切后果由个人承担，MCreator及其讨论群和任何其他用户不承担责任。PS：内容非MCreator官方提供，由社区编辑。</h3>
-			<p> </p>
-			<p><em>Q：构建失败怎么办？（创建工作区弹窗失败）</em></p>
-			<p><em>A：点左一按钮RE-RUN。或者下载一群群文件已构建版本。</em></p>
-			<p><em>Q：兼容什么版本？</em></p>
-			<p><em>A：JavaForge1.16.5+版本。</em></p>
-			<p><em>Q：已构建文件如何解压？</em></p>
-			<p><em>A：属于分卷压缩，解压part1自动解压所有。解压至C:\\Users\\你的用户名 下。</em></p>
-			<p><em>Q：如何建模？</em></p>
-			<p><em>A：使用blockbench。具体教程自行百度。导入json后需要在此界面选择材质才能应用。</em></p>
-			<p><em>Q：模组怎么设置作者，版本，官网，描述，名称，modid（模组注册名）等？</em></p>
-			<p><em>A：右上角的蓝色长方形，带一个小齿轮。点开即可。</em></p>
-			<p><em>Q:这个什么时候可以按同意?</em></p>
-			<p><em>A:等待30秒,这次同意后这条消息就不会出现了,请保持耐心</em></p>
-			</body>
-			</html>
-			""";
 	JDialog jd ;
 	JPanel content;
 	public RulesDialog(Frame parent) {
@@ -89,6 +48,50 @@ public class RulesDialog {
 
 		//文本内容
 		JScrollPane scroll = new JScrollPane();
+		String text = """
+				<html>
+				<body><h1 id='div-aligncentermcreator模组开发须知div'><div align="center">MCreator模组开发须知</div></h1>
+				<h4 id='在你要开始学习使用mcreator制作模组前请仔细阅读以下内容'>在你要开始学习使用MCreator制作模组前，请仔细阅读以下内容：</h4>
+				<p>&nbsp;</p>
+				<p>*1 MCr制作的模组一般不得用于盈利。（除玩家自愿）</p>
+				<p><em>2 MCr制作的模组需标注MCr为开发工具，且不允许将它伪造成自己编写的模组且拒绝承认其是由MCreator制作的。</em></p>
+				<p><em>3 MCr不得用于制作以下任何类型的模组：</em></p>
+				<p><em>-无意义秒杀，外挂</em></p>
+				<p>*-恶意或无意义玩梗，纯meme</p>
+				<p><em>-仅添加少量物品/方块/工具装备/低质量维度</em></p>
+				<p><em>-材质过度差劲，拉低MCr模组评价</em></p>
+				<p><em>4 不应在未经原作者允许的情况下重制其他人的模组。</em></p>
+				<p><em>5 可以参照其他模组的功能以提高自身MCr使用水平，</em></p>
+				<p>6 不应出现在各大社区刷热度，刷好评等违规情况。</p>
+				<p>7 不应在完成度极低/质量极差/违反规定的情况下发布模组至平台（如MC百科，mcbbs，CurseForge等）。</p>
+				<p><em>8 MCreator有一定的功能局限性，切勿抱过大的希望。</em></p>
+				<p><em>9 严禁发表对MCreator带有强烈主观的侮辱性/攻击性言论，如“MCr垃圾”，但可以客观评价其对模组圈造成的影响。</em></p>
+				<p><em>对于违反以上规范的模组，可能会出现以下情况：</em></p>
+				<p><em>-强烈的谴责和批评。</em></p>
+				<p><em>-强制标注是由MCreator制作。</em></p>
+				<p><em>-联系发布平台下架，作为反面教材。</em></p>
+				<p><em>-要求下一版本更改。</em></p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<h3 id='请确保你已经认真阅读并同意所造成的一切后果由个人承担mcreator及其任何其他用户不承担责任'><strong>请确保你已经认真阅读并同意，所造成的一切后果由个人承担，MCreator及其任何其他用户不承担责任。</strong></h3>
+				<h4 id='注该协议非mcreator官方提供由社区编辑发表于mcreator-chinese'><strong>注：该协议非MCreator官方提供，由社区编辑，发表于MCreator-Chinese。</strong></h4>
+				<p>&nbsp;</p>
+				<p><em>Q：新建不了工作区，怎么办？</em></p>
+				<p><em>A：需要先设置jdk目录，在&quot;首选项/Gradle与运行&quot;可设置。</em></p>
+				<p><em>Q：能够制作什么版本的模组？</em></p>
+				<p><em>A：Forge1.16.5+，MCr一般随Forge的Latest版本更新。</em></p>
+				<p><em>Q：如何在模组中添加物品模型或者实体模型？</em></p>
+				<p>A：使用Blockbench。物品模型导入后需要在该元素选择材质才能应用。*</p>
+				<p><em>Q：模组怎么设置作者，模组版本，网站，描述，名称，modid等？</em></p>
+				<p><em>A：右上角的蓝色长方形，带一个小齿轮。点开即可。</em></p>
+				<p><em>Q：能否为其他模组制作附属？</em></p>
+				<p><em>A：很艰难，你需要学会阅读json，制作数据包，还需要很好的理解能力。现在也没很详细的教程，需要你自行探索。</em></p>
+				<p><em>Q: 什么时候可以点同意</em></p>
+				<p><em>A: 30秒后,同意之后便不会再次出现</em></p>
+				<p>&nbsp;</p>
+				</body>
+				</html>
+				""";
 		JLabel con = new JLabel(text);
 		scroll.setViewportView(con);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
