@@ -18,6 +18,7 @@
 
 package net.mcreator.preferences;
 
+import net.mcreator.gradle.GradleUtils;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.ui.laf.MCreatorTheme;
@@ -116,7 +117,7 @@ public class PreferencesData {
 
 	public static class GradleSettings {
 
-		@PreferencesEntry public File java_home = null;
+		@PreferencesEntry public File java_home = new File(GradleUtils.getDefaultJavaHome());
 		@PreferencesEntry public File gradleHome = UserFolderManager.getFileFromUserFolder("/gradle/");
 		@PreferencesEntry public boolean compileOnSave = true;
 		@PreferencesEntry public boolean passLangToMinecraft = true;

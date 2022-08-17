@@ -78,6 +78,10 @@ public class GradleUtils {
 		if (PreferencesManager.PREFERENCES.gradle.java_home != null) {
 			return PreferencesManager.PREFERENCES.gradle.java_home.getPath();
 		}
+		return getDefaultJavaHome();
+	}
+
+	public static String getDefaultJavaHome(){
 		// if we have bundled JDK, we set JAVA_HOME to bundled JDK
 		if (new File("./jdk/bin/javac.exe").isFile() || new File("./jdk/bin/javac").isFile()) {
 			PreferencesManager.PREFERENCES.gradle.java_home = new File("./jdk/");
@@ -89,7 +93,7 @@ public class GradleUtils {
 		if (current_java_home != null && current_java_home.contains("jdk")){
 			PreferencesManager.PREFERENCES.gradle.java_home = new File(current_java_home);
 			return current_java_home;
-	}
+		}
 
 		LOG.error("系统找不到任何可用JDK，如果系统环境存在JAVA_HOME，则使用系统默认值");
 
