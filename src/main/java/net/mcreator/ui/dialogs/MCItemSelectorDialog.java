@@ -23,6 +23,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.TagsNameValidator;
@@ -219,11 +220,18 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 	}
 
 	@Override Predicate<MCItem> getFilter(String term) {
-		String lowercaseTerm = term.toLowerCase(Locale.ENGLISH);
-		return item -> item.getName().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getReadableName()
-				.toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getDescription()
-				.toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getType().toLowerCase(Locale.ENGLISH)
-				.contains(lowercaseTerm);
+		if (term.matches("[a-zA-Z_:]+")) {
+			String lowercaseTerm = term.toLowerCase(Locale.ENGLISH);
+			return item -> item.getName().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getReadableName().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getDescription()
+					.toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getType().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm);
+		} else {
+			//中文匹配模式
+			TranslatablePool pool = TranslatablePool.getPool();
+			return item-> pool.getValue(item.getName().toLowerCase(Locale.ENGLISH)).contains(term) || pool.getValue(item.getReadableName().toLowerCase(Locale.ENGLISH)).contains(
+					term)
+					|| pool.getValue(item.getDescription().toLowerCase(Locale.ENGLISH)).contains(term) ||pool.getValue(item.getType().toLowerCase(Locale.ENGLISH)).contains(
+					term);
+		}
 	}
 
 	public MCItem getSelectedMCItem() {

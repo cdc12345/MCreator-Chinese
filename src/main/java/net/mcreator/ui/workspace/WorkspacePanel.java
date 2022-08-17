@@ -260,6 +260,14 @@ import java.util.stream.Collectors;
 				renameFolder.setEnabled(selected instanceof FolderElement);
 			}
 		});
+		list.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				super.keyPressed(e);
+				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+					deleteCurrentlySelectedModElement();
+				}
+			}
+		});
 
 		JScrollPane sp = new JScrollPane(list);
 		sp.setOpaque(false);

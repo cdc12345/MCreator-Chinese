@@ -84,9 +84,15 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 			}
 			if (matchString != null) {
 				String origin = matchString.apply(value);
-				setText(strDiction.get(origin) + ((displayEnglish)?"(" + origin+")":""));
+				if (strDiction == null)
+					setText(TranslatablePool.getPool().getValue(origin)+((displayEnglish)?"(" + origin+")":""));
+				else
+					setText(strDiction.get(origin) + ((displayEnglish)?"(" + origin+")":""));
 			} else {
-				setText(diction.get(value)+((displayEnglish)?"("+value.toString()+")":""));
+				if (diction == null)
+					setText(TranslatablePool.getPool().getValue(value.toString())+((displayEnglish)?"("+value+")":""));
+				else
+					setText(diction.get(value)+((displayEnglish)?"("+value.toString()+")":""));
 			}
 
 			setHorizontalTextPosition(SwingConstants.RIGHT);
