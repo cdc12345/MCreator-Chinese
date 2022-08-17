@@ -536,6 +536,10 @@ public class WorkspaceDialogs {
 				}
 			});
 			JPanel setJava = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			if (workspace != null)
+				javaHome.setText(workspace.getWorkspaceSettings().getJavaHome().getPath());
+			else
+				javaHome.setText("");
 			setJava.add(javaHome);
 			setJava.add(selectJavaHome);
 			advancedSettings.add(L10N.label("preferences.gradle.java_home"));
