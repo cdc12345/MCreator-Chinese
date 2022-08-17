@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs.preferences;
 
+import net.mcreator.gradle.GradleUtils;
 import net.mcreator.preferences.PreferencesData;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
@@ -335,8 +336,7 @@ public class PreferencesDialog extends MCreatorDialog {
 				path.setValidator(new Validator() {
 
 					@Override public ValidationResult validateIfEnabled(IValidable validable) {
-						if (new File(path.getText(), "bin/java.exe").exists() && new File(path.getText(),
-								"bin/javac.exe").exists()) {
+						if (GradleUtils.isJDK(path.getText())) {
 							return new ValidationResult(ValidationResultType.PASSED, "检查通过");
 						} else {
 							return new ValidationResult(ValidationResultType.ERROR, "请检查是否为java_home,如果是则请检查是否为jdk");

@@ -22,6 +22,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.api.ModAPIImplementation;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -89,7 +90,7 @@ public class GradleUtils {
 		// otherwise, we try to set JAVA_HOME to the same Java as MCreator is launched with
 		String current_java_home = System.getProperty("java.home");
 		// only set it if it is jdk, not jre
-		if (current_java_home != null && current_java_home.contains("jdk")){
+		if (current_java_home != null && isJDK(current_java_home)){
 			PreferencesManager.PREFERENCES.gradle.java_home = new File(current_java_home);
 			return current_java_home;
 		}
@@ -99,6 +100,11 @@ public class GradleUtils {
 		// if we can not get a better match, use system default JAVA_HOME variable
 		// THIS ONE CAN BE null!!!, so handle this with care where used
 		return System.getenv("JAVA_HOME");
+	}
+
+	public static boolean isJDK(String path){
+		return new File(path).exists()&&new File(path, "bin/java.exe").exists() && new File(path,
+				"bin/javac.exe").exists();
 	}
 
 	public static void updateMCreatorBuildFile(Workspace workspace) {

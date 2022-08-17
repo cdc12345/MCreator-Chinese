@@ -220,7 +220,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 	}
 
 	@Override Predicate<MCItem> getFilter(String term) {
-		if (term.matches("[a-zA-Z_:]+")) {
+		if (term.matches("[a-zA-Z_:\s]+")) {
 			String lowercaseTerm = term.toLowerCase(Locale.ENGLISH);
 			return item -> item.getName().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getReadableName().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getDescription()
 					.toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getType().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm);

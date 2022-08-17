@@ -24,6 +24,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.gradle.GradleUtils;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.net.analytics.Analytics;
 import net.mcreator.io.net.analytics.DeviceInfo;
@@ -283,11 +284,10 @@ public final class MCreatorApplication {
 				JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
 						L10N.t("dialog.workspace.open_failed_title"), JOptionPane.ERROR_MESSAGE);
 			} else {
-				if (!PreferencesManager.PREFERENCES.hidden.openWorkspaces.contains(workspaceFile.getName())){
+				if (!GradleUtils.isJDK(workspace.getWorkspaceSettings().getJavaModName())){
 					workspace.getWorkspaceSettings().setJavaHome(PreferencesManager.PREFERENCES.gradle.java_home);
 				}
 				MCreator mcreator = new MCreator(this, workspace);
-				PreferencesManager.PREFERENCES.hidden.openWorkspaces.add(workspaceFile.getName());
 				this.workspaceSelector.setVisible(false);
 				if (!this.openMCreators.contains(mcreator)) {
 					this.openMCreators.add(mcreator);
