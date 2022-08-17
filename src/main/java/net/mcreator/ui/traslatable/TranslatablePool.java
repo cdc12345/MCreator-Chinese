@@ -22,8 +22,9 @@ package net.mcreator.ui.traslatable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.mcreator.io.UserFolderManager;
 
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -40,13 +41,20 @@ public class TranslatablePool {
 	private static JsonObject json;
 	private static TranslatablePool instance;
 	public static TranslatablePool getPool(){
-		if (instance == null) instance = new TranslatablePool();
+		if (instance == null) {
+				instance = new TranslatablePool();
+		}
 		return instance;
 	}
 
-	private TranslatablePool(){
+	private TranslatablePool() {
+		InputStream defaultPoolInput = null;
+		try {
+			defaultPoolInput = new FileInputStream(UserFolderManager.getFileFromUserFolder("/pools.tra"));
+		} catch (FileNotFoundException ignore) {}
 		json = new Gson().fromJson(new InputStreamReader(
-				Objects.requireNonNull(this.getClass().getResourceAsStream("/pools.tra"))),JsonObject.class);
+				Objects.requireNonNullElse(defaultPoolInput,this.getClass().getResourceAsStream("/pools.tra"))),
+				JsonObject.class);
 	}
 
 	public String getValue(String key){
@@ -55,7 +63,7 @@ public class TranslatablePool {
 
 	public String getValue(String nameSpace,final String key){
 		String lowerKey = key.toLowerCase(Locale.ENGLISH);
-		if (!"".equals(nameSpace)){
+		if (nameSpace != null&&!"".equals(nameSpace)){
 			lowerKey = nameSpace+":"+lowerKey;
 		}
 		JsonElement element = json.get(lowerKey);

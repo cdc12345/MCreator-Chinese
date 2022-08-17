@@ -20,6 +20,7 @@ package net.mcreator.ui.laf.renderer;
 
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -44,8 +45,8 @@ public class ItemTexturesComboBoxRenderer extends JLabel implements ListCellRend
 			setBackground(list.getBackground());
 			setForeground(list.getForeground());
 		}
-
-		setText(value);
+		TranslatablePool pool = TranslatablePool.getPool();
+		setText(pool.getValue(value)+"("+value+")");
 
 		if (value.equals("Special") || value.equals("MultiTool")) {
 			setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("mod").getImage(), 30)));

@@ -33,10 +33,12 @@ public class VComboBox<T> extends JComboBox<T> implements IValidable {
 	private Validator validator = null;
 
 	public VComboBox() {
+		setRenderer(new TranslatableRender<>());
 	}
 
 	public VComboBox(T[] items) {
 		super(items);
+		setRenderer(new TranslatableRender<>());
 	}
 
 	public void enableRealtimeValidation() {

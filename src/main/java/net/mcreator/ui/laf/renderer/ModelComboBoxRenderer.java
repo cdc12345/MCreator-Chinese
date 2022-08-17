@@ -19,6 +19,7 @@
 package net.mcreator.ui.laf.renderer;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.resources.Model;
 
@@ -44,7 +45,8 @@ public class ModelComboBoxRenderer extends JLabel implements ListCellRenderer<Mo
 		if (value == null) // sometimes value can be null
 			return this;
 
-		setText(value.toString());
+		TranslatablePool pool = TranslatablePool.getPool();
+		setText(pool.getValue("model",value.toString())+"("+value+")");
 
 		if (value.getType() == Model.Type.JSON)
 			setIcon(UIRES.get("model.small_json"));

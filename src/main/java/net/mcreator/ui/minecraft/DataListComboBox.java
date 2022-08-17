@@ -31,23 +31,28 @@ import net.mcreator.util.image.ImageUtils;
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DataListComboBox extends JComboBox<DataListEntry> {
 
+	private String nameSpace = "";
+	public DataListComboBox(MCreator mcreator, List<DataListEntry> list,String nameSpace) {
+		this(mcreator,list);
+		this.nameSpace = nameSpace;
+		init(mcreator,nameSpace);
+	}
+
 	public DataListComboBox(MCreator mcreator, List<DataListEntry> list) {
 		super(list.toArray(new DataListEntry[0]));
-		init(mcreator);
+		init(mcreator,nameSpace);
 	}
 
 	public DataListComboBox(MCreator mcreator) {
-		init(mcreator);
+		init(mcreator,nameSpace);
 	}
 
-	private void init(MCreator mcreator) {
-		setRenderer(new CustomRenderer(mcreator));
+	private void init(MCreator mcreator,String nameSpace) {
+		setRenderer(new CustomRenderer(mcreator,nameSpace));
 	}
 
 	public void setSelectedItem(String string) {
@@ -76,12 +81,14 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 	public static class CustomRenderer extends JLabel implements ListCellRenderer<DataListEntry> {
 
 		private final MCreator mcreator;
+		private final String nameSpace;
 
-		public CustomRenderer(MCreator mcreator) {
+		public CustomRenderer(MCreator mcreator,String nameSpace) {
 			setOpaque(true);
 			setHorizontalAlignment(CENTER);
 			setVerticalAlignment(CENTER);
 
+			this.nameSpace = nameSpace;
 			this.mcreator = mcreator;
 		}
 
@@ -98,7 +105,7 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 			}
 
 			TranslatablePool pool = TranslatablePool.getPool();
-			setText(pool.getValue(value.getReadableName()));
+			setText(pool.getValue(nameSpace,value.getReadableName())+"("+value.getReadableName()+")");
 
 			if (value instanceof DataListEntry.Custom) {
 				setIcon(MCItem.getBlockIconBasedOnName(((DataListEntry.Custom) value).getModElement().getWorkspace(),
