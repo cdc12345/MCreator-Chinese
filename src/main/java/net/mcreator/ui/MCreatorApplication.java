@@ -283,7 +283,11 @@ public final class MCreatorApplication {
 				JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
 						L10N.t("dialog.workspace.open_failed_title"), JOptionPane.ERROR_MESSAGE);
 			} else {
+				if (!PreferencesManager.PREFERENCES.hidden.openWorkspaces.contains(workspaceFile.getName())){
+					workspace.getWorkspaceSettings().setJavaHome(PreferencesManager.PREFERENCES.gradle.java_home);
+				}
 				MCreator mcreator = new MCreator(this, workspace);
+				PreferencesManager.PREFERENCES.hidden.openWorkspaces.add(workspaceFile.getName());
 				this.workspaceSelector.setVisible(false);
 				if (!this.openMCreators.contains(mcreator)) {
 					this.openMCreators.add(mcreator);

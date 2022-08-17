@@ -84,7 +84,6 @@ public class GradleUtils {
 	public static String getDefaultJavaHome(){
 		// if we have bundled JDK, we set JAVA_HOME to bundled JDK
 		if (new File("./jdk/bin/javac.exe").isFile() || new File("./jdk/bin/javac").isFile()) {
-			PreferencesManager.PREFERENCES.gradle.java_home = new File("./jdk/");
 			return FilenameUtils.normalize(new File("./jdk/").getAbsolutePath());
 		}
 		// otherwise, we try to set JAVA_HOME to the same Java as MCreator is launched with

@@ -25,6 +25,7 @@ import net.mcreator.ui.laf.MCreatorTheme;
 
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class PreferencesData {
@@ -146,6 +147,7 @@ public class PreferencesData {
 		public String uiTheme = "default_dark";
 		public boolean enableJavaPlugins = false;
 		public boolean acceptRules = false;
+		public ArrayList<String> openWorkspaces = new ArrayList<>();
 	}
 
 	public enum WorkspaceSortType {
