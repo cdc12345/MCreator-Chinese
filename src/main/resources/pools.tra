@@ -14,8 +14,6 @@
     "shepherd":"牧羊人",
     "leatherworker":"皮匠",
     "fisherman":"渔夫",
-    "water": "流水",
-    "lava":"岩浆",
     "misc":"杂项",
     "building_blocks":"建筑方块",
     "decorations":"装饰性方块",
@@ -133,7 +131,7 @@
     "model:single texture": "单一材质模型",
     "model:cross model": "交叉植物模型",
     "model:crop model": "井型作物模型",
-    "model:grass block": "顶面着色模型"
+    "model:grass block": "顶面着色模型",
     "any stone":"任意石头",
     "any planks":"任意木板",
     "oak planks":"橡木木板",
@@ -199,5 +197,5 @@
     "deepslate copper ore":"深层铜矿石",
     "nether quartz ore":"下界石英矿石",
     "nether gold ore":"下界金矿石",
-    "gilded blackstone":"镶金黑石",
+    "gilded blackstone":"镶金黑石"
 }
