@@ -133,7 +133,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox isNotColidable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canRedstoneConnect = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> tintType = new JComboBox<>(
+	private final AdvancedTranslatableComboBox<String> tintType = new AdvancedTranslatableComboBox<>(
 			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
@@ -168,7 +168,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-	private final JComboBox<String> generationShape = new JComboBox<>(new String[] { "UNIFORM", "TRIANGLE" });
+	private final AdvancedTranslatableComboBox<String> generationShape = new AdvancedTranslatableComboBox<>(new String[] { "UNIFORM", "TRIANGLE" });
 	private final JSpinner minGenerateHeight = new JSpinner(new SpinnerNumberModel(0, -2032, 2016, 1));
 	private final JSpinner maxGenerateHeight = new JSpinner(new SpinnerNumberModel(64, -2032, 2016, 1));
 	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));

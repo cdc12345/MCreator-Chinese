@@ -92,17 +92,18 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 				setBackground(list.getBackground());
 				setForeground(list.getForeground());
 			}
+			TranslatablePool pool = TranslatablePool.getPool();
 			if (matchString != null) {
 				String origin = matchString.apply(value);
 				if (strDiction == null)
-					setText(TranslatablePool.getPool().getValue(origin)+((displayEnglish)?"(" + origin+")":""));
+					setText(pool.getValue(origin)+((displayEnglish)?"(" + origin+")":""));
 				else
-					setText(strDiction.get(origin) + ((displayEnglish)?"(" + origin+")":""));
+					setText(pool.getValue(strDiction.get(origin)) + ((displayEnglish)?"(" + origin+")":""));
 			} else {
 				if (diction == null)
-					setText(TranslatablePool.getPool().getValue(value.toString())+((displayEnglish)?"("+value+")":""));
+					setText(pool.getValue(value.toString())+((displayEnglish)?"("+value+")":""));
 				else
-					setText(diction.get(value)+((displayEnglish)?"("+value.toString()+")":""));
+					setText(pool.getValue(diction.get(value))+((displayEnglish)?"("+value.toString()+")":""));
 			}
 
 			setHorizontalTextPosition(SwingConstants.RIGHT);

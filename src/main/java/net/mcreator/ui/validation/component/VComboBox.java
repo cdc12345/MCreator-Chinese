@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.validation.component;
 
+import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 
@@ -75,4 +76,31 @@ public class VComboBox<T> extends JComboBox<T> implements IValidable {
 	@Override public Validator getValidator() {
 		return validator;
 	}
+
+	//汉化用的渲染器
+	public class TranslatableRender<T> extends JLabel implements ListCellRenderer<T>{
+		public TranslatableRender(){
+			setOpaque(true);
+			setHorizontalAlignment(CENTER);
+			setVerticalAlignment(CENTER);
+		}
+
+		@Override
+		public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected,
+				boolean cellHasFocus) {
+			if (isSelected) {
+				setBackground(list.getSelectionBackground());
+				setForeground(list.getSelectionForeground());
+			} else {
+				setBackground(list.getBackground());
+				setForeground(list.getForeground());
+			}
+
+			TranslatablePool pool = TranslatablePool.getPool();
+			setText(pool.getValue(value.toString())+"("+value+")");
+
+			return this;
+		}
+	}
+
 }

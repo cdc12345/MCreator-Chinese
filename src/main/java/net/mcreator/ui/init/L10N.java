@@ -21,6 +21,7 @@ package net.mcreator.ui.init;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.help.HelpLoader;
+import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.locale.LocaleRegistration;
 import net.mcreator.util.locale.UTF8Control;
@@ -139,7 +140,7 @@ public class L10N {
 				".description")))
 			return null;
 		else if (isTestingEnvironment)
-			throw new RuntimeException("Failed to load any translation for key: " + key);
+			throw new RuntimeException("无法载入翻译: " + key);
 		else if (key.startsWith("blockly.") || key.startsWith("trigger."))
 			return null;
 		else
