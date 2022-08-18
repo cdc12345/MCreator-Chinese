@@ -237,7 +237,7 @@ public final class MCreatorApplication {
 			File passedFile = new File(lastArg);
 			if (passedFile.isFile() && passedFile.getName().endsWith(".mcreator")) {
 				splashScreen.setVisible(false);
-				openWorkspaceInMCreator(passedFile);
+				openWorkspaceInMCreator(passedFile,false);
 				directLaunch = true;
 			}
 		}
@@ -275,37 +275,42 @@ public final class MCreatorApplication {
 		return workspaceSelector;
 	}
 
-	public void openWorkspaceInMCreator(File workspaceFile) {
+	public void openWorkspaceInMCreator(File work){
+		openWorkspaceInMCreator(work,false);
+	}
+
+	public void openWorkspaceInMCreator(File workspaceFile,boolean compatibilityMode) {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		try {
 			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
-			if (workspace.getMCreatorVersion() > Launcher.version.versionlong
-					&& !MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
-				JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
-						L10N.t("dialog.workspace.open_failed_title"), JOptionPane.ERROR_MESSAGE);
-			} else {
-				if (!GradleUtils.isJDK(workspace.getWorkspaceSettings().getJavaModName())){
-					workspace.getWorkspaceSettings().setJavaHome(PreferencesManager.PREFERENCES.gradle.java_home);
+			if (!compatibilityMode){
+				if (workspace.getMCreatorVersion() > Launcher.version.versionlong && !MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
+					JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
+							L10N.t("dialog.workspace.open_failed_title"), JOptionPane.ERROR_MESSAGE);
+					return;
 				}
-				MCreator mcreator = new MCreator(this, workspace);
-				this.workspaceSelector.setVisible(false);
-				if (!this.openMCreators.contains(mcreator)) {
-					this.openMCreators.add(mcreator);
-					mcreator.setVisible(true);
-					mcreator.requestFocusInWindow();
-					mcreator.toFront();
-				} else { // already open, just focus it
-					LOG.warn("检测到你尝试打开已打开的工作区，我们将会把它置于最前面.");
-					for (MCreator openmcreator : openMCreators) {
-						if (openmcreator.equals(mcreator)) {
-							openmcreator.requestFocusInWindow();
-							openmcreator.toFront();
-						}
+			}
+			if (!GradleUtils.isJDK(workspace.getWorkspaceSettings().getJavaModName()) || compatibilityMode){
+				workspace.getWorkspaceSettings().setJavaHome(PreferencesManager.PREFERENCES.gradle.java_home);
+			}
+			MCreator mcreator = new MCreator(this, workspace);
+			this.workspaceSelector.setVisible(false);
+			if (!this.openMCreators.contains(mcreator)) {
+				this.openMCreators.add(mcreator);
+				mcreator.setVisible(true);
+				mcreator.requestFocusInWindow();
+				mcreator.toFront();
+			} else { // already open, just focus it
+				LOG.warn("检测到你尝试打开已打开的工作区，我们将会把它置于最前面.");
+				for (MCreator openmcreator : openMCreators) {
+					if (openmcreator.equals(mcreator)) {
+						openmcreator.requestFocusInWindow();
+						openmcreator.toFront();
 					}
 				}
+			}
 				this.workspaceSelector.addOrUpdateRecentWorkspace(
 						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile));
-			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("无法打开工作目录!", corruptedWorkspaceFile);
 
@@ -322,7 +327,7 @@ public final class MCreatorApplication {
 					if (selected != null) {
 						File backup = new File(backupsDir, selected);
 						FileIO.copyFile(backup, workspaceFile);
-						openWorkspaceInMCreator(workspaceFile);
+						openWorkspaceInMCreator(workspaceFile,false);
 					} else {
 						reportFailedWorkspaceOpen(
 								new IOException("User canceled workspace backup restoration", corruptedWorkspaceFile));

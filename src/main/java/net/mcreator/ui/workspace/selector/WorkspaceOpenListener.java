@@ -19,7 +19,11 @@
 package net.mcreator.ui.workspace.selector;
 
 import java.io.File;
-
+@FunctionalInterface
 public interface WorkspaceOpenListener {
-	void workspaceOpened(File workspaceFolder);
+	default void workspaceOpened(File workspaceFolder){
+		workspaceOpened(workspaceFolder,false);
+	}
+
+	void workspaceOpened(File workspaceFolder,boolean comp);
 }

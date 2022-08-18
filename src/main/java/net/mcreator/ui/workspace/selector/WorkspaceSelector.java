@@ -362,38 +362,35 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			JPopupMenu popup = new JPopupMenu();
 			JMenuItem open = new JMenuItem("打开项目");
 			open.addActionListener(e -> {
+				recentsList.setSelectedIndex(recentsList.locationToIndex(MouseInfo.getPointerInfo().getLocation()));
 				workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
-				popup.setVisible(false);
 			});
 			popup.add(open);
+			JMenuItem openInCompatibilityMode = new JMenuItem("以兼容模式打开");
+			openInCompatibilityMode.addActionListener(a->{
+				recentsList.setSelectedIndex(recentsList.locationToIndex(MouseInfo.getPointerInfo().getLocation()));
+				workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath(),true);
+			});
+			popup.add(openInCompatibilityMode);
 			JMenuItem delete = new JMenuItem("从最近删除");
 			delete.addActionListener(e -> {
 				removeRecentWorkspace(recentsList.getSelectedValue());
 				reloadRecents();
-				popup.setVisible(false);
 			});
 			popup.add(delete);
 			JMenuItem openInExplorer = new JMenuItem("在资源管理器打开");
-			openInExplorer.addActionListener(e -> {
-				DesktopUtils.openSafe(recentsList.getSelectedValue().getPath().getParentFile());
-				popup.setVisible(false);
-			});
+			openInExplorer.addActionListener(e -> DesktopUtils.openSafe(recentsList.getSelectedValue().getPath().getParentFile()));
 			popup.add(openInExplorer);
-
+			recentsList.setComponentPopupMenu(popup);
 
 
 			recentsList.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
-					recentsList.setSelectedIndex(recentsList.locationToIndex(mouseEvent.getPoint()));
 					if (mouseEvent.getButton() == MouseEvent.BUTTON2) {
 						removeRecentWorkspace(recentsList.getSelectedValue());
 						reloadRecents();
 					} else if (mouseEvent.getButton() == MouseEvent.BUTTON1&&mouseEvent.getClickCount() == 2) {
 						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
-					} else if (mouseEvent.getButton() == MouseEvent.BUTTON3){
-						popup.pack();
-						popup.setLocation(mouseEvent.getLocationOnScreen());
-						popup.setVisible(true);
 					}
 				}
 			});
