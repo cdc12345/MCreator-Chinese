@@ -85,7 +85,7 @@ MCreator并非官方软件,Mojang与MCreator不存在附属关系
 
 MCrC仅是基于MCreator软件开发的一款面向中国开发者的 Minecraft Mod 开发软件，由中国MCr社区开发者 cdc12345 和 其他贡献者开发。
 
-##停更说明
+## 停更说明
 
 上课了,没时间更新了,所以不得不停更
 
