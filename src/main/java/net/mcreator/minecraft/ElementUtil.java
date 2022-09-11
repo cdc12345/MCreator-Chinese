@@ -296,7 +296,7 @@ public class ElementUtil {
 	}
 
 	public static String[] getDataListAsStringArray(String dataList) {
-		return DataListLoader.loadDataList(dataList).stream().map(DataListEntry::getName).toArray(String[]::new);
+		return DataListLoader.loadDataList(dataList).stream().map(DataListEntry::getName).sorted().toArray(String[]::new);
 	}
 
 	private static List<DataListEntry> getCustomElements(@Nonnull Workspace workspace,

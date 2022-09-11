@@ -52,7 +52,6 @@ public class GradleUtils {
 		String workSpaceJavaHome = workspace.getWorkspaceSettings().getJavaHome().getPath();
 		String java_home = ("".equals(workSpaceJavaHome))? getJavaHome():workSpaceJavaHome;
 		if (java_home != null) {
-			workspace.getWorkspaceSettings().setJavaHome(new File(java_home));
 			retval = retval.setJavaHome(new File(java_home));
 		}
 
@@ -103,7 +102,8 @@ public class GradleUtils {
 	}
 
 	public static boolean isJDK(String path){
-		return new File(path).exists()&&new File(path, "bin/java.exe").exists() && new File(path,
+		LOG.info(path);
+		return new File(path, "bin/java.exe").exists() && new File(path,
 				"bin/javac.exe").exists();
 	}
 

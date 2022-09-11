@@ -56,10 +56,6 @@ package ${package}.gui.overlay;
 			int w = event.getGui().width;
 			int h = event.getGui().height;
 	</#if>
-
-			int posX = w / 2;
-			int posY = h / 2;
-
 			World _world = null;
 			double _x = 0;
 			double _y = 0;
@@ -94,20 +90,20 @@ package ${package}.gui.overlay;
 				</#if>
 
 				<#list data.components as component>
-	                <#assign x = component.x - 213>
-	                <#assign y = component.y - 120>
+	                <#assign x = component.x>
+	                <#assign y = component.y>
 	                <#if component.getClass().getSimpleName() == "Label">
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
 						Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
-									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
+									${x} * w / 416, ${y} * h / 240, ${component.color.getRGB()});
 	                <#elseif component.getClass().getSimpleName() == "Image">
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {
 						</#if>
 						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
-						Minecraft.getInstance().ingameGUI.blit(event.getMatrixStack(), posX + ${x}, posY + ${y}, 0, 0,
+						Minecraft.getInstance().ingameGUI.blit(event.getMatrixStack(), ${x} * w / 416, ${y} * h / 240, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 

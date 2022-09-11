@@ -46,6 +46,7 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 	}
 
 	public SearchableComboBox() {
+		super();
 		addKeyListener(this);
 		addFocusListener(this);
 	}

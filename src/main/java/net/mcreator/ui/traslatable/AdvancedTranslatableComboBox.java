@@ -109,7 +109,7 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 					setText(pool.getValue(nameSpace,origin)+((displayEnglish)?"(" + origin+")":""));
 				else {
 					String nameSpace = "zh";
-					setText(pool.getValue(nameSpace, strDiction.get(origin)) + ((displayEnglish) ?
+					setText(pool.getValue(nameSpace, strDiction.getOrDefault(origin,origin)) + ((displayEnglish) ?
 							"(" + origin + ")" :
 							""));
 				}
@@ -118,8 +118,8 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 					setText(pool.getValue(nameSpace,value.toString())+((displayEnglish)?"("+value+")":""));
 				else {
 					String nameSpace = "zh";
-					setText(pool.getValue(nameSpace, diction.get(value)) + ((displayEnglish) ?
-							"(" + value.toString() + ")" :
+					setText(pool.getValue(nameSpace, diction.getOrDefault(value,value.toString())) + ((displayEnglish) ?
+							"(" + value + ")" :
 							""));
 				}
 			}

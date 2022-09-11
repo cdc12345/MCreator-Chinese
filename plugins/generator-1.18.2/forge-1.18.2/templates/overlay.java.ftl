@@ -63,9 +63,6 @@ package ${package}.client.gui;
 			int h = event.getScreen().height;
 	</#if>
 
-			int posX = w / 2;
-			int posY = h / 2;
-
 			Level _world = null;
 			double _x = 0;
 			double _y = 0;
@@ -101,20 +98,20 @@ package ${package}.client.gui;
 				</#if>
 
 				<#list data.components as component>
-	                <#assign x = component.x - 213>
-	                <#assign y = component.y - 120>
+	                <#assign x = component.x>
+	                <#assign y = component.y>
 	                <#if component.getClass().getSimpleName() == "Label">
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
 						Minecraft.getInstance().font.draw(event.${stackMethodName}(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
-									posX + ${x}, posY + ${y}, ${component.color.getRGB()});
+									${x} * w / 416, ${y} * h / 240, ${component.color.getRGB()});
 	                <#elseif component.getClass().getSimpleName() == "Image">
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {
 						</#if>
 						RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
-						Minecraft.getInstance().gui.blit(event.${stackMethodName}(), posX + ${x}, posY + ${y}, 0, 0,
+						Minecraft.getInstance().gui.blit(event.${stackMethodName}(), ${x} * w / 416, ${y} * h / 240, 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 

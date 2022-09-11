@@ -290,7 +290,7 @@ public final class MCreatorApplication {
 					return;
 				}
 			}
-			if (!GradleUtils.isJDK(workspace.getWorkspaceSettings().getJavaModName()) || compatibilityMode){
+			if ((!GradleUtils.isJDK(workspace.getWorkspaceSettings().getJavaHome().getPath())) || compatibilityMode){
 				workspace.getWorkspaceSettings().setJavaHome(PreferencesManager.PREFERENCES.gradle.java_home);
 			}
 			MCreator mcreator = new MCreator(this, workspace);
@@ -309,7 +309,7 @@ public final class MCreatorApplication {
 					}
 				}
 			}
-				this.workspaceSelector.addOrUpdateRecentWorkspace(
+			this.workspaceSelector.addOrUpdateRecentWorkspace(
 						new RecentWorkspaceEntry(mcreator.getWorkspace(), workspaceFile));
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("无法打开工作目录!", corruptedWorkspaceFile);

@@ -68,7 +68,7 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		main.setOpaque(false);
 
 		main.add("Center", PanelUtils.centerAndSouthElement(editor, events, 0, 2));
-		main.add("East", editor.sidebar);
+		main.add("West", editor.sidebar);
 
 		addPage(PanelUtils.maxMargin(main, 5, true, true, true, true));
 	}

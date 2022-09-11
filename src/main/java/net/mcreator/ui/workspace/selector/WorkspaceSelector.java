@@ -307,6 +307,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	}
 
 	public void addOrUpdateRecentWorkspace(RecentWorkspaceEntry recentWorkspaceEntry) {
+		reloadRecents();
 		if (!recentWorkspaces.getList().contains(recentWorkspaceEntry))
 			recentWorkspaces.getList().add(recentWorkspaceEntry);
 		else
@@ -361,16 +362,10 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 			JPopupMenu popup = new JPopupMenu();
 			JMenuItem open = new JMenuItem("打开项目");
-			open.addActionListener(e -> {
-				recentsList.setSelectedIndex(recentsList.locationToIndex(MouseInfo.getPointerInfo().getLocation()));
-				workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
-			});
+			open.addActionListener(e -> workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath()));
 			popup.add(open);
 			JMenuItem openInCompatibilityMode = new JMenuItem("以兼容模式打开");
-			openInCompatibilityMode.addActionListener(a->{
-				recentsList.setSelectedIndex(recentsList.locationToIndex(MouseInfo.getPointerInfo().getLocation()));
-				workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath(),true);
-			});
+			openInCompatibilityMode.addActionListener(a->workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath(),true));
 			popup.add(openInCompatibilityMode);
 			JMenuItem delete = new JMenuItem("从最近删除");
 			delete.addActionListener(e -> {
@@ -379,7 +374,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			});
 			popup.add(delete);
 			JMenuItem openInExplorer = new JMenuItem("在资源管理器打开");
-			openInExplorer.addActionListener(e -> DesktopUtils.openSafe(recentsList.getSelectedValue().getPath().getParentFile()));
+			openInExplorer.addActionListener(e ->DesktopUtils.openSafe(recentsList.getSelectedValue().getPath().getParentFile()));
 			popup.add(openInExplorer);
 			recentsList.setComponentPopupMenu(popup);
 

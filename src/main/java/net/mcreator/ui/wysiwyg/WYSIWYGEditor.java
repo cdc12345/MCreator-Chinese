@@ -87,10 +87,10 @@ public class WYSIWYGEditor extends JPanel {
 
 	public JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
 	public JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
-	public JComboBox<String> priority = new JComboBox<>(new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
+	public JComboBox<String> priority = new AdvancedTranslatableComboBox<>(new String[] { "LOWEST","LOW","NORMAL","HIGH", "HIGHEST"},new String[]{"最低优先级","低优先级","普通","高","最高优先级"});
 
 	public VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
-	public VComboBox<String> overlayTarget = new SearchableComboBox<>(ElementUtil.getDataListAsStringArray("screens"));
+	public AdvancedTranslatableComboBox<String> overlayTarget = new AdvancedTranslatableComboBox<>(ElementUtil.getDataListAsStringArray("screens"));
 
 	public MCreator mcreator;
 
@@ -102,6 +102,8 @@ public class WYSIWYGEditor extends JPanel {
 		super(new BorderLayout(5, 0));
 
 		setOpaque(false);
+
+		priority.setSelectedIndex(2);
 
 		this.mcreator = mcreator;
 
@@ -457,7 +459,7 @@ public class WYSIWYGEditor extends JPanel {
 		sidebar.setPreferredSize(new Dimension(250, 10));
 		sidebar.setOpaque(false);
 
-		add("East", sidebar);
+		add("West", sidebar);
 		add("Center", zoomHolder);
 	}
 

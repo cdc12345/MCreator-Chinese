@@ -37,6 +37,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class OverlayGUI extends ModElementGUI<Overlay> {
@@ -115,7 +116,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		overlay.priority = (String) editor.priority.getSelectedItem();
 		overlay.components = editor.getComponentList();
 		overlay.baseTexture = editor.overlayBaseTexture.getSelectedItem();
-		overlay.overlayTarget = editor.overlayTarget.getSelectedItem();
+		overlay.overlayTarget = Objects.requireNonNull(editor.overlayTarget.getSelectedItem()).toString();
 		overlay.displayCondition = displayCondition.getSelectedProcedure();
 
 		overlay.gridSettings.sx = (int) editor.sx.getValue();

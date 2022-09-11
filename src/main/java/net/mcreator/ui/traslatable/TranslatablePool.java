@@ -62,6 +62,9 @@ public class TranslatablePool {
 	}
 
 	public String getValue(String nameSpace,final String key){
+		if (key == null){
+			return null;
+		}
 		String lowerKey = key.toLowerCase(Locale.ENGLISH);
 		if (nameSpace != null&&!"".equals(nameSpace)){
 			lowerKey = nameSpace+":"+lowerKey;

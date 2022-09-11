@@ -80,7 +80,7 @@ public class VComboBox<T> extends JComboBox<T> implements IValidable {
 	}
 
 	//汉化用的渲染器
-	public class TranslatableRender<T> extends JLabel implements ListCellRenderer<T>{
+	public static class TranslatableRender<T> extends DefaultListCellRenderer{
 		public TranslatableRender(){
 			setOpaque(true);
 			setHorizontalAlignment(CENTER);
@@ -88,21 +88,12 @@ public class VComboBox<T> extends JComboBox<T> implements IValidable {
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected,
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
-			if (isSelected) {
-				setBackground(list.getSelectionBackground());
-				setForeground(list.getSelectionForeground());
-			} else {
-				setBackground(list.getBackground());
-				setForeground(list.getForeground());
-			}
-
+			super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
 			TranslatablePool pool = TranslatablePool.getPool();
-			setText(pool.getValue(value.toString())+"("+value+")");
-
+			setText(pool.getValue(value.toString())+"("+value+")".trim());
 			return this;
 		}
 	}
-
 }
