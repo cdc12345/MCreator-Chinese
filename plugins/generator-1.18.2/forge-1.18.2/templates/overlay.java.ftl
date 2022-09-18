@@ -104,8 +104,13 @@ package ${package}.client.gui;
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
-						Minecraft.getInstance().font.draw(event.${stackMethodName}(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
-									${x} * w / 416, ${y} * h / 240, ${component.color.getRGB()});
+						<#if component.enableTK>
+                            Minecraft.getInstance().font.draw(event.${stackMethodName}(),new TranslatableComponent("${component.TK}"),
+                                                                ${x} * w / 416, ${y} * h / 240, ${component.color.getRGB()});
+						<#else>
+                            Minecraft.getInstance().font.draw(event.${stackMethodName}(),"${translateTokens(JavaConventions.escapeStringForJava(component.text))}"),
+                                        ${x} * w / 416, ${y} * h / 240, ${component.color.getRGB()});
+						</#if>
 	                <#elseif component.getClass().getSimpleName() == "Image">
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {

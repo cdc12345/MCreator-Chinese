@@ -96,8 +96,13 @@ package ${package}.gui.overlay;
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 						</#if>
-						Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
+						<#if component.enableTK>
+							Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), new TranslatableComponent("${component.TK}"),
+                        									${x} * w / 416, ${y} * h / 240, ${component.color.getRGB()});
+						<#else>
+						Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), "${translateTokens(JavaConventions.escapeStringForJava(component.TK))}",
 									${x} * w / 416, ${y} * h / 240, ${component.color.getRGB()});
+						</#if>
 	                <#elseif component.getClass().getSimpleName() == "Image">
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {

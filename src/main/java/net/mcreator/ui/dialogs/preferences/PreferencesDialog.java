@@ -382,7 +382,7 @@ public class PreferencesDialog extends MCreatorDialog {
 					markChanged();
 				}
 			});
-			placeInside.add(PanelUtils.westAndEastElement(label, PanelUtils.westAndEastElement(path,button)), cons);
+			placeInside.add(PanelUtils.westAndEastElement(label, PanelUtils.centerAndEastElement(path,button)), cons);
 			return path;
 		}
 

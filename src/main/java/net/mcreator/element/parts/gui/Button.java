@@ -28,13 +28,15 @@ import java.awt.*;
 public class Button extends SizedComponent {
 
 	public String text;
+	public String TK;
 	public Procedure onClick;
 	public Procedure displayCondition;
 
-	public Button(String name, int x, int y, String text, int width, int height, Procedure onClick,
+	public Button(String name, int x, int y, String text,String TK, int width, int height, Procedure onClick,
 			Procedure displayCondition) {
 		super(name, x, y, width, height);
 		this.text = text;
+		this.TK = TK;
 		this.onClick = onClick;
 		this.displayCondition = displayCondition;
 	}

@@ -28,14 +28,18 @@ import java.awt.*;
 public class Label extends GUIComponent {
 
 	public String text;
+	public boolean enableTK;
+	public String TK;
 	public Color color;
 
 	public Procedure displayCondition;
 
-	public Label(String name, int x, int y, String text, Color color, Procedure displayCondition) {
+	public Label(String name, int x, int y, String text,String Tk,boolean enableTk, Color color, Procedure displayCondition) {
 		super(name, x, y);
 		this.text = text;
 		this.color = color;
+		this.enableTK = enableTk;
+		this.TK = Tk;
 		this.displayCondition = displayCondition;
 	}
 

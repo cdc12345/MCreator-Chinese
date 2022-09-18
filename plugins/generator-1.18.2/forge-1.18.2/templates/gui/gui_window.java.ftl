@@ -140,8 +140,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-		    	this.font.draw(poseStack, "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
-					${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
+				<#if component.enableTK>
+					this.font.draw(poseStack,new TranslatableComponent("${component.TK}"),
+                                        ${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
+				<#else>
+				   this.font.draw(poseStack,"${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
+                        ${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
+                </#if>
+
 			</#if>
 		</#list>
 	}
@@ -191,7 +197,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				this.addWidget(this.${component.name});
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, new TranslateComponent("${component.text}"), e -> {
+					${component.width}, ${component.height}, new TranslatableComponent("${component.TK}"), e -> {
 							<#if hasProcedure(component.onClick)>
 							if (<@procedureOBJToConditionCode component.displayCondition/>) {
 								${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));

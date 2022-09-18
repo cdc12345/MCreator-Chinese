@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs.wysiwyg;
 
+import javafx.scene.layout.Pane;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -31,6 +32,8 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ButtonDialog extends AbstractWYSIWYGDialog {
 
@@ -41,6 +44,10 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.button_add_title"));
 		JTextField nameField = new JTextField(20);
+		JTextField tkField = new JTextField(20);
+		tkField.setEditable(false);
+		if (button != null)
+			tkField.setText(button.TK);
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
@@ -49,7 +56,16 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 		else
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
 
+		nameField.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				if (!tkField.getText().isEmpty())
+					editor.mcreator.getWorkspace().removeLocalizationEntryByKey(tkField.getText());
+				tkField.setText("button."+editor.mcreator.getWorkspace().getWorkspaceSettings().getModID()+"."+nameField.getText().replace(' ','_'));
+			}
+		});
+
 		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), nameField));
+		options.add(PanelUtils.westAndCenterElement(new JLabel("翻译键值: "),tkField));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
@@ -91,15 +107,17 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 					editor.editor.setPositioningMode(textwidth + 25, 20);
 					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(
 							new Button(text, editor.editor.newlyAddedComponentPosX,
-									editor.editor.newlyAddedComponentPosY, text, editor.editor.ow, editor.editor.oh,
+									editor.editor.newlyAddedComponentPosY, text,tkField.getText(), editor.editor.ow, editor.editor.oh,
 									eh.getSelectedProcedure(), displayCondition.getSelectedProcedure())));
+					editor.mcreator.getWorkspace().setLocalization(tkField.getText(),text);
 				} else {
 					int idx = editor.components.indexOf(button);
 					editor.components.remove(button);
-					Button buttonNew = new Button(text, button.getX(), button.getY(), text, button.width, button.height,
+					Button buttonNew = new Button(text, button.getX(), button.getY(), text,tkField.getText(), button.width, button.height,
 							eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
 					editor.components.add(idx, buttonNew);
 					setEditingComponent(buttonNew);
+					editor.mcreator.getWorkspace().setLocalization(tkField.getText(),text);
 				}
 			}
 		});

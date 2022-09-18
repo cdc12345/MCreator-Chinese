@@ -33,6 +33,10 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Objects;
 
 public class LabelDialog extends AbstractWYSIWYGDialog {
 
@@ -46,6 +50,20 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 				"<ENBT:logic:tagName>", "<ENBT:text:tagName>", "<BNBT:number:tagName>", "<BNBT:integer:tagName>",
 				"<BNBT:logic:tagName>", "<BNBT:text:tagName>", "<energy>", "<fluidlevel>" });
 		name.setEditable(true);
+
+		JCheckBox checkBox = new JCheckBox("启用");
+		if (label != null)
+			checkBox.setSelected(label.enableTK);
+
+		JTextField tk = new JTextField();
+		if (tk.getText() == null)
+			tk.setText("overlay."+editor.mcreator.getWorkspaceSettings().getModID()+"."+
+				Objects.requireNonNull(name.getSelectedItem()).toString().replace(' ','_'));
+		tk.setEditable(false);
+		if (label != null)
+			tk.setText(label.TK);
+
+		checkBox.addActionListener(a->tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+ Objects.requireNonNull(name.getSelectedItem()).toString().replace(' ','_')));
 
 		for (VariableElement var2 : editor.mcreator.getWorkspace().getVariableElements()) {
 			name.addItem("<VAR:" + var2.getName() + ">");
@@ -63,6 +81,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), name));
+		options.add(PanelUtils.westAndCenterElement(new JLabel("翻译键值: "),PanelUtils.westAndCenterElement(checkBox,tk)));
 		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));
 
 		setTitle(L10N.t("dialog.gui.label_component_title"));
@@ -100,15 +119,17 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 					editor.editor.setPositioningMode(textwidth, 16);
 					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
 							new Label(text, editor.editor.newlyAddedComponentPosX,
-									editor.editor.newlyAddedComponentPosY, text, cola.getColor(),
+									editor.editor.newlyAddedComponentPosY, text,tk.getText(),checkBox.isSelected(), cola.getColor(),
 									displayCondition.getSelectedProcedure()))));
+					editor.mcreator.getWorkspace().setLocalization(tk.getText(),text);
 				} else {
 					int idx = editor.components.indexOf(label);
 					editor.components.remove(label);
-					Label labelNew = new Label(text, label.getX(), label.getY(), text, cola.getColor(),
+					Label labelNew = new Label(text, label.getX(), label.getY(), text,tk.getText(),checkBox.isSelected(), cola.getColor(),
 							displayCondition.getSelectedProcedure());
 					editor.components.add(idx, labelNew);
 					setEditingComponent(labelNew);
+					editor.mcreator.getWorkspace().setLocalization(tk.getText(),text);
 				}
 			}
 		});
