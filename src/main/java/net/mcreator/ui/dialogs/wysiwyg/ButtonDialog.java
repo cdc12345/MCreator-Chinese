@@ -45,9 +45,6 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 		setTitle(L10N.t("dialog.gui.button_add_title"));
 		JTextField nameField = new JTextField(20);
 		JTextField tkField = new JTextField(20);
-		tkField.setEditable(false);
-		if (button != null)
-			tkField.setText(button.TK);
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
@@ -55,14 +52,6 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_change_width")));
 		else
 			add("North", PanelUtils.centerInPanel(L10N.label("dialog.gui.button_resize")));
-
-		nameField.addKeyListener(new KeyAdapter() {
-			@Override public void keyPressed(KeyEvent e) {
-				if (!tkField.getText().isEmpty())
-					editor.mcreator.getWorkspace().removeLocalizationEntryByKey(tkField.getText());
-				tkField.setText("button."+editor.mcreator.getWorkspace().getWorkspaceSettings().getModID()+"."+nameField.getText().replace(' ','_'));
-			}
-		});
 
 		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), nameField));
 		options.add(PanelUtils.westAndCenterElement(new JLabel("翻译键值: "),tkField));
@@ -91,6 +80,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 		getRootPane().setDefaultButton(ok);
 
 		if (button != null) {
+			tkField.setText(button.TK);
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			nameField.setText(button.name);
 			eh.setSelectedProcedure(button.onClick);
@@ -102,6 +92,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 			setVisible(false);
 			String text = nameField.getText();
 			if (text != null && !text.equals("")) {
+				if (tkField.getText().isEmpty()) tkField.setText("button."+editor.mcreator.getWorkspace().getWorkspaceSettings().getModID()+"."+nameField.getText().replace(' ','_'));
 				if (button == null) {
 					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 					editor.editor.setPositioningMode(textwidth + 25, 20);
@@ -109,16 +100,16 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 							new Button(text, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY, text,tkField.getText(), editor.editor.ow, editor.editor.oh,
 									eh.getSelectedProcedure(), displayCondition.getSelectedProcedure())));
-					editor.mcreator.getWorkspace().setLocalization(tkField.getText(),text);
 				} else {
+					editor.mcreator.getWorkspace().removeLocalizationEntryByKey(button.TK);
 					int idx = editor.components.indexOf(button);
 					editor.components.remove(button);
 					Button buttonNew = new Button(text, button.getX(), button.getY(), text,tkField.getText(), button.width, button.height,
 							eh.getSelectedProcedure(), displayCondition.getSelectedProcedure());
 					editor.components.add(idx, buttonNew);
 					setEditingComponent(buttonNew);
-					editor.mcreator.getWorkspace().setLocalization(tkField.getText(),text);
 				}
+				editor.mcreator.getWorkspace().setLocalization(tkField.getText(),text);
 			}
 		});
 

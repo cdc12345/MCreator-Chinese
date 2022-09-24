@@ -29,6 +29,8 @@ import net.mcreator.ui.workspace.WorkspacePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.*;
 
@@ -98,6 +100,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 				}
 			}
 		});
+
 
 		importnbt.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importStructure.doAction());
 		importmc.addActionListener(

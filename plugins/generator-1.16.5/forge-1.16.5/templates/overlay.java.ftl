@@ -98,17 +98,17 @@ package ${package}.gui.overlay;
 						</#if>
 						<#if component.enableTK>
 							Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), new TranslatableComponent("${component.TK}"),
-                        									${x} * w / 416, ${y} * h / 240, ${component.color.getRGB()});
+                        									${x / 426} * w , ${y / 240 } * h , ${component.color.getRGB()});
 						<#else>
 						Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), "${translateTokens(JavaConventions.escapeStringForJava(component.TK))}",
-									${x} * w / 416, ${y} * h / 240, ${component.color.getRGB()});
+									${x / 426 } * w , ${y / 240} * h , ${component.color.getRGB()});
 						</#if>
 	                <#elseif component.getClass().getSimpleName() == "Image">
 						<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {
 						</#if>
 						Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation("${modid}:textures/screens/${component.image}"));
-						Minecraft.getInstance().ingameGUI.blit(event.getMatrixStack(), ${x} * w / 416, ${y} * h / 240, 0, 0,
+						Minecraft.getInstance().ingameGUI.blit(event.getMatrixStack(), ${x / 426 } * w , ${y / 240} * h , 0, 0,
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 							${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 

@@ -80,8 +80,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 	private final AdvancedTranslatableComboBox<String> recipeType = new AdvancedTranslatableComboBox<>(new String[]{"Crafting","Smelting","Brewing","Blasting","Smoking",
 			"Stone cutting","Campfire cooking","Smithing"},
-			new String[] { "合成表-工作台", "冶炼-熔炉", "酿造-酿造台", "烧炼-高炉", "烟熏-烟熏炉", "切割-切石机",
-					"烧炼-篝火", "锻造-锻造台" });
+			"recipe");
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);

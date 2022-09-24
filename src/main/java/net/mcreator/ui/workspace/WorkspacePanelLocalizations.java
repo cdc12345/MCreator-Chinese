@@ -38,6 +38,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -264,7 +265,7 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			tab.add(button);
 			pane.setTabComponentAt(id, tab);
 
-			del.addActionListener(e -> {
+			ActionListener actionListener = e -> {
 				if (elements.getSelectedRow() == -1 || pane.getSelectedIndex() != id)
 					return;
 
@@ -279,25 +280,13 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 						reloadElements();
 					}
 				}
-			});
+			};
+			del.addActionListener(actionListener);
 
 			elements.addKeyListener(new KeyAdapter() {
 				@Override public void keyPressed(KeyEvent e) {
 					if (e.getKeyCode() == KeyEvent.VK_DELETE){
-						if (elements.getSelectedRow() == -1 || pane.getSelectedIndex() != id)
-							return;
-
-						String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
-						if (key != null) {
-							int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-									L10N.t("workspace.localization.confirm_delete_entry"), L10N.t("common.confirmation"),
-									JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-							if (n == 0) {
-								Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
-										.forEach(workspacePanel.getMcreator().getWorkspace()::removeLocalizationEntryByKey);
-								reloadElements();
-							}
-						}
+						actionListener.actionPerformed(null);
 					}
 				}
 			});

@@ -10,7 +10,7 @@ file('plugins').traverse([maxDepth: 0, type: groovy.io.FileType.DIRECTORIES]) {
         task.archiveName = it.getName() + '.zip'
         task.destinationDir = file('build/plugins/')
         task.from 'plugins/' + it.getName()
-        task.group "mcreatorplugins"
+        task.group "mcreatorPlugins"
         task.mustRunAfter cleanupPlugins
     }
 }

@@ -52,18 +52,15 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 		name.setEditable(true);
 
 		JCheckBox checkBox = new JCheckBox("启用");
-		if (label != null)
-			checkBox.setSelected(label.enableTK);
+
 
 		JTextField tk = new JTextField();
-		if (tk.getText() == null)
-			tk.setText("overlay."+editor.mcreator.getWorkspaceSettings().getModID()+"."+
-				Objects.requireNonNull(name.getSelectedItem()).toString().replace(' ','_'));
 		tk.setEditable(false);
-		if (label != null)
-			tk.setText(label.TK);
 
-		checkBox.addActionListener(a->tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+ Objects.requireNonNull(name.getSelectedItem()).toString().replace(' ','_')));
+		checkBox.addActionListener(a->{
+				tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+ Objects.requireNonNull(name.getSelectedItem()).toString().replace(' ','_'));
+				tk.setEditable(checkBox.isSelected());
+		});
 
 		for (VariableElement var2 : editor.mcreator.getWorkspace().getVariableElements()) {
 			name.addItem("<VAR:" + var2.getName() + ">");
@@ -103,6 +100,8 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 		add("South", PanelUtils.join(ok, cancel));
 
 		if (label != null) {
+			checkBox.setSelected(label.enableTK);
+			tk.setText(label.TK);
 			ok.setText(L10N.t("dialog.common.save_changes"));
 			name.setSelectedItem(label.name);
 			cola.setColor(label.color);
@@ -114,6 +113,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 			setVisible(false);
 			String text = (String) name.getSelectedItem();
 			if (text != null) {
+				if (tk.getText().isEmpty())tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+ Objects.requireNonNull(name.getSelectedItem()).toString().replace(' ','_'));
 				if (label == null) {
 					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 					editor.editor.setPositioningMode(textwidth, 16);
@@ -121,16 +121,19 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 							new Label(text, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY, text,tk.getText(),checkBox.isSelected(), cola.getColor(),
 									displayCondition.getSelectedProcedure()))));
-					editor.mcreator.getWorkspace().setLocalization(tk.getText(),text);
 				} else {
+					if (label.enableTK) {
+						editor.mcreator.getWorkspace().removeLocalizationEntryByKey(label.TK);
+					}
 					int idx = editor.components.indexOf(label);
 					editor.components.remove(label);
 					Label labelNew = new Label(text, label.getX(), label.getY(), text,tk.getText(),checkBox.isSelected(), cola.getColor(),
 							displayCondition.getSelectedProcedure());
 					editor.components.add(idx, labelNew);
 					setEditingComponent(labelNew);
-					editor.mcreator.getWorkspace().setLocalization(tk.getText(),text);
 				}
+				if (checkBox.isSelected())
+					editor.mcreator.getWorkspace().setLocalization(tk.getText(),text);
 			}
 		});
 

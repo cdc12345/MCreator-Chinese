@@ -27,9 +27,11 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.DesktopUtils;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -64,6 +66,7 @@ class EditTemplatesPanel {
 
 		DefaultListModel<String> tmodel = new DefaultListModel<>();
 		JList<String> templates = new JList<>(tmodel);
+		templates.setCellRenderer(new TemplateRender(templatesFolder));
 
 		openFolder.addActionListener(
 				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder(templatesFolder)));
@@ -94,6 +97,32 @@ class EditTemplatesPanel {
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(templates), 5, 5));
 
 		preferencesDialog.preferences.add(sectionPanel, name);
+	}
+
+	private static class TemplateRender extends DefaultListCellRenderer{
+
+		private final String folder;
+		public TemplateRender(String templateFolder){
+			this.folder = templateFolder;
+		}
+
+		@Override
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+				boolean cellHasFocus) {
+			super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			String[] prefix = {".png",".jpg"};
+			if (Arrays.stream(prefix).anyMatch(value.toString()::endsWith)) {
+				var icon = new File(UserFolderManager.getFileFromUserFolder(folder),value.toString());
+				try {
+					int hei = this.getFontMetrics(this.getFont()).getHeight();
+					this.setIcon(new ImageIcon(ImageIO.read(icon).getScaledInstance(hei,hei,Image.SCALE_SMOOTH)));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			setOpaque(isSelected);
+			return this;
+		}
 	}
 
 }

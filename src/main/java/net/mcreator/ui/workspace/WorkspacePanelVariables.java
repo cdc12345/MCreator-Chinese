@@ -44,6 +44,9 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -244,7 +247,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 			}
 		});
 
-		delvar.addActionListener(e -> {
+		ActionListener actionListener = e -> {
 			if (elements.getSelectedRow() == -1)
 				return;
 
@@ -259,6 +262,16 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							workspacePanel.getMcreator().getWorkspace().removeVariableElement(element);
 						});
 				reloadElements();
+			}
+		};
+
+		delvar.addActionListener(actionListener);
+
+		elements.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+					actionListener.actionPerformed(null);
+				}
 			}
 		});
 

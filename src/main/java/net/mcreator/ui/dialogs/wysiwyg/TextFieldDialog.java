@@ -53,6 +53,9 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog {
 
 		JTextField deft = new JTextField(20);
 		deft.setPreferredSize(new Dimension(200, 28));
+
+
+
 		JPanel options = new JPanel();
 
 		if (textField == null)

@@ -39,8 +39,7 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.util.List;
 import java.util.*;
@@ -174,7 +173,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(export);
 		export.addActionListener(e -> exportSelectedImages());
 
-		del.addActionListener(actionEvent -> {
+		ActionListener actionListener = actionEvent -> {
 			List<File> files = listGroup.getSelectedItemsList();
 			if (files.size() > 0) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
@@ -195,7 +194,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 					reloadElements();
 				}
 			}
-		});
+		};
+		del.addActionListener(actionListener);
+
 
 		edit.addActionListener(e -> editSelectedFile());
 		duplicate.addActionListener(e -> duplicateSelectedFile());
