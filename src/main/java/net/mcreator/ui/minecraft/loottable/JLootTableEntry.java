@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,8 +46,8 @@ public class JLootTableEntry extends JPanel {
 	private final JCheckBox affectedByFortune = L10N.checkbox("elementgui.loot_table.affected_by_fortune");
 	private final JCheckBox explosionDecay = L10N.checkbox("elementgui.loot_table.enable_explosion_decay");
 
-	private final JComboBox<String> silkTouchMode = new JComboBox<>(
-			new String[] { "Ignore silk touch", "Only with silk touch", "Only without silk touch" });
+	private final JComboBox<String> silkTouchMode = new AdvancedTranslatableComboBox<>(
+			new String[] { "Ignore silk touch", "Only with silk touch", "Only without silk touch" },"loot.silkTouchMode");
 
 	public JLootTableEntry(MCreator mcreator, JPanel parent, List<JLootTableEntry> entryList) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
