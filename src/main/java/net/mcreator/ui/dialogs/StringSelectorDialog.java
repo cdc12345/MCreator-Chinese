@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs;
 
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
@@ -39,7 +40,7 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 	}
 
 	@Override Predicate<String> getFilter(String term) {
-		return s -> s.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH));
+		return s -> (s.toLowerCase(Locale.ENGLISH)+TranslatablePool.getPool().getValue(term)).contains(term.toLowerCase(Locale.ENGLISH));
 	}
 
 	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
@@ -67,7 +68,7 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			label.setText(value.toString().replace("CUSTOM:", ""));
+			label.setText(TranslatablePool.getPool().getValue(value.toString().replace("CUSTOM:", "")));
 			if (value.toString().contains("CUSTOM:"))
 				setIcon(new ImageIcon(ImageUtils.resize(
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));

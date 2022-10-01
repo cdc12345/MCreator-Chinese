@@ -25,6 +25,10 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -85,6 +89,21 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 		Rectangle abounds = getBounds();
 		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 		setLocationRelativeTo(mcreator);
+
+		filterField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override public void insertUpdate(DocumentEvent e) {
+				list.updateUI();
+			}
+
+			@Override public void removeUpdate(DocumentEvent e) {
+				list.updateUI();
+			}
+
+			@Override public void changedUpdate(DocumentEvent e) {
+				list.updateUI();
+			}
+		});
+
 
 		// Don't add any selected value if the "Close window" button is pressed
 		this.addWindowListener(new WindowAdapter() {

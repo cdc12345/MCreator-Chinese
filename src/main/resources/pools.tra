@@ -1496,5 +1496,9 @@
     "black": "黑色",
     "any large flower": "任意大型花朵",
     "melon block": "西瓜方块",
-    "uniform": "统一"
+    "uniform": "统一",
+    "surface": "主世界",
+    "nether": "下界",
+    "end": "末地",
+    "badlands": "恶地"
 }

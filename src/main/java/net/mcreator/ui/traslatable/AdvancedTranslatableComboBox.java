@@ -224,6 +224,7 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 					if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2){
 						TranslatableSearchDialog.this.setVisible(false);
 						comboBox.setSelectedItem(list.getSelectedValue());
+						TranslatableSearchDialog.this.dispose();
 					}
 				}
 			});
@@ -235,6 +236,7 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 
 				@Override public void windowClosing(WindowEvent e) {
 					TranslatableSearchDialog.this.setVisible(false);
+					TranslatableSearchDialog.this.dispose();
 				}
 			});
 			pack();
