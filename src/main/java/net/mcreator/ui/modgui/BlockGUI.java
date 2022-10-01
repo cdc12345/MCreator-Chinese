@@ -163,7 +163,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> colorOnMap = new JComboBox<>();
+	private final AdvancedTranslatableComboBox<String> colorOnMap = new AdvancedTranslatableComboBox<>();
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -184,7 +184,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" },"blocks.reactionToPushing");
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "NONE", "XZ", "XYZ" });
-	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
+	private final AdvancedTranslatableComboBox<String> aiPathNodeType = new AdvancedTranslatableComboBox<>();
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 

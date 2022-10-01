@@ -114,7 +114,7 @@ class EditTemplatesPanel {
 			if (Arrays.stream(prefix).anyMatch(value.toString()::endsWith)) {
 				var icon = new File(UserFolderManager.getFileFromUserFolder(folder),value.toString());
 				try {
-					int hei = this.getFontMetrics(this.getFont()).getHeight();
+					int hei = this.getFontMetrics(this.getFont()).getHeight()+3;
 					this.setIcon(new ImageIcon(ImageIO.read(icon).getScaledInstance(hei,hei,Image.SCALE_SMOOTH)));
 				} catch (IOException e) {
 					e.printStackTrace();

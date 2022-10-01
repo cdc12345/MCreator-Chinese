@@ -30,6 +30,8 @@ import net.mcreator.ui.validation.validators.TagsNameValidator;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
@@ -55,7 +57,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		list.setCellRenderer(new Render());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		jtf.setEnabled(false);
+		jtf.setEditable(false);
 		jtf.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 
 		list.addMouseListener(new MouseAdapter() {
@@ -136,7 +138,41 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		list.addListSelectionListener(event -> {
 			MCItem bl = list.getSelectedValue();
 			if (bl != null)
-				jtf.setText(bl.getReadableName());
+				jtf.setText(TranslatablePool.getPool().getValue(bl.getReadableName()));
+		});
+
+		jtf.addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				super.mousePressed(e);
+				if (e.getButton() == MouseEvent.BUTTON3){
+					MCItem bl = list.getSelectedValue();
+					if (bl != null)
+						jtf.setText(bl.getReadableName());
+				}
+			}
+
+			@Override public void mouseReleased(MouseEvent e) {
+				super.mouseReleased(e);
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					MCItem bl = list.getSelectedValue();
+					if (bl != null)
+						jtf.setText(TranslatablePool.getPool().getValue(bl.getReadableName()));
+				}
+			}
+		});
+
+		model.addListDataListener(new ListDataListener() {
+			@Override public void intervalAdded(ListDataEvent e) {
+				MCItemSelectorDialog.this.setTitle(L10N.t("dialog.item_selector.title")+" - " + e.getIndex1()+"个匹配结果");
+			}
+
+			@Override public void intervalRemoved(ListDataEvent e) {
+				MCItemSelectorDialog.this.setTitle(L10N.t("dialog.item_selector.title")+" - " + e.getIndex1()+"个匹配结果");
+			}
+
+			@Override public void contentsChanged(ListDataEvent e) {
+				MCItemSelectorDialog.this.setTitle(L10N.t("dialog.item_selector.title")+" - " + e.getIndex1()+"个匹配结果");
+			}
 		});
 
 		cancelButton.addActionListener(event -> {
@@ -159,11 +195,11 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		if (hasPotions) {
 			JButton potions = L10N.button("dialog.item_selector.potions");
 			potions.addActionListener(event -> filterField.setText("potion:"));
-			top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
+			top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,new JLabel("右键可以显示英文"),
 					L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""), all, blocks, items,
 					potions, mods);
 		} else {
-			top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
+			top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,new JLabel("右键可以显示英文"),
 					L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""), all, blocks, items,
 					mods);
 		}
@@ -220,13 +256,16 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 	}
 
 	@Override Predicate<MCItem> getFilter(String term) {
+		TranslatablePool pool = TranslatablePool.getPool();
 		if (term.matches("[a-zA-Z_:\s]+")) {
 			String lowercaseTerm = term.toLowerCase(Locale.ENGLISH);
+			if (lowercaseTerm.equals("match:english")){
+				return item -> !(pool.containValue(item.getReadableName()));
+			}
 			return item -> item.getName().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getReadableName().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getDescription()
 					.toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getType().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm);
 		} else {
 			//中文匹配模式
-			TranslatablePool pool = TranslatablePool.getPool();
 			return item-> pool.getValue(item.getName().toLowerCase(Locale.ENGLISH)).contains(term) || pool.getValue(item.getReadableName().toLowerCase(Locale.ENGLISH)).contains(
 					term)
 					|| pool.getValue(item.getDescription().toLowerCase(Locale.ENGLISH)).contains(term) ||pool.getValue(item.getType().toLowerCase(Locale.ENGLISH)).contains(

@@ -24,14 +24,24 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.traslatable.TranslatablePool;
+import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DataListComboBox extends JComboBox<DataListEntry> {
 
@@ -52,6 +62,12 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 	}
 
 	private void init(MCreator mcreator,String nameSpace) {
+		addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON3 && e.getClickCount() == 2)
+					new AdvancedTranslatableComboBox.TranslatableSearchDialog(DataListComboBox.this);
+			}
+		});
 		setRenderer(new CustomRenderer(mcreator,nameSpace));
 	}
 
@@ -131,5 +147,4 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 		}
 
 	}
-
 }
