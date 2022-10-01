@@ -1508,5 +1508,9 @@
     "pressureplate": "压力板",
     "trapdoor": "活扳门",
     "list": "列表",
-    "entity": "实体"
+    "entity": "实体",
+    "yellow": "黄色",
+    "red": "红色",
+    "pink": "粉色",
+    "gold": "金色"
 }
