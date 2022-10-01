@@ -22,6 +22,7 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
@@ -39,7 +40,7 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 	}
 
 	@Override Predicate<DataListEntry> getFilter(String term) {
-		return e -> e.getReadableName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH));
+		return e -> (e.getReadableName().toLowerCase(Locale.ENGLISH)+TranslatablePool.getPool().getValue(e.getReadableName())).contains(term.toLowerCase(Locale.ENGLISH));
 	}
 
 	public static DataListEntry openSelectorDialog(MCreator mcreator,
@@ -67,6 +68,7 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 				boolean cellHasFocus) {
 			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			label.setText(((DataListEntry) value).getReadableName().replace("CUSTOM:", ""));
+			label.setText(TranslatablePool.getPool().getValue(label.getText()));
 			if (((DataListEntry) value).getName().contains("CUSTOM:"))
 				setIcon(new ImageIcon(ImageUtils.resize(
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), ((DataListEntry) value).getName())

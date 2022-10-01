@@ -34,10 +34,6 @@ import java.awt.event.WindowEvent;
  * @date 2022/8/17 7:17
  */
 public class RulesDialog {
-	public static void main(String[] args){
-		new RulesDialog(null);
-	}
-
 	JDialog jd ;
 	JPanel content;
 	public RulesDialog(Frame parent) {

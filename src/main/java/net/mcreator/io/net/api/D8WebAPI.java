@@ -36,6 +36,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.net.CookieHandler;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -75,8 +76,7 @@ public class D8WebAPI implements IWebAPI {
 		} else {
 			updateInfo = new UpdateInfo();
 		}
-
-		return false;
+		return WebIO.readURLToString("https://www.baidu.com/").length()!=0;
 	}
 
 	private void initAPIPrivate() {

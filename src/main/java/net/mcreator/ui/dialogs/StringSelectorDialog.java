@@ -40,7 +40,7 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 	}
 
 	@Override Predicate<String> getFilter(String term) {
-		return s -> (s.toLowerCase(Locale.ENGLISH)+TranslatablePool.getPool().getValue(term)).contains(term.toLowerCase(Locale.ENGLISH));
+		return s -> (s.toLowerCase(Locale.ENGLISH)+TranslatablePool.getPool().getValue(s)).contains(term.toLowerCase(Locale.ENGLISH));
 	}
 
 	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
