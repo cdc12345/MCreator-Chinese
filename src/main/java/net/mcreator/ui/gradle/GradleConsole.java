@@ -28,6 +28,7 @@ import net.mcreator.java.ProjectJarManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
 import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -335,7 +336,7 @@ public class GradleConsole extends JPanel {
 
 		BuildLauncher task = GradleUtils.getGradleTaskLauncher(ref.getWorkspace(), commands);
 
-		if (PreferencesManager.PREFERENCES.gradle.offline)
+		if (PreferencesManager.PREFERENCES.gradle.offline || !MCreatorApplication.isInternet)
 			arguments.add("--offline");
 
 		task.addArguments(arguments);

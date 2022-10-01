@@ -148,7 +148,6 @@ public class PreferencesData {
 		public String uiTheme = "default_dark";
 		public boolean enableJavaPlugins = false;
 		public boolean acceptRules = false;
-		public HashMap<String,String> translatableKey = new HashMap<>();
 	}
 
 	public enum WorkspaceSortType {

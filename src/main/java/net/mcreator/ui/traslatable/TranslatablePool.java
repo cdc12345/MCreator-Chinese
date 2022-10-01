@@ -23,7 +23,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.io.UserFolderManager;
-import org.slf4j.Logger;
+import net.mcreator.ui.MCreatorApplication;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
@@ -44,9 +46,9 @@ import static org.apache.logging.log4j.core.util.NameUtil.md5;
  * @date 2022/8/17 9:30
  */
 public class TranslatablePool {
+	private final Logger logger = LogManager.getLogger("TP");
 
-
-	private static JsonObject json;
+	private final JsonObject json;
 	private static TranslatablePool instance;
 	public static TranslatablePool getPool(){
 		if (instance == null) {
@@ -57,14 +59,20 @@ public class TranslatablePool {
 
 	private TranslatablePool() {
 		InputStream defaultPoolInput = null;
-		try {
-			defaultPoolInput = new URL("https://raw.githubusercontent.com/cdc12345/MCreator-Chinese/master/src/main/resources/pools.tra").openStream();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (MCreatorApplication.isInternet) {
+			try {
+				URL url = new URL(
+						"https://raw.githubusercontent.com/cdc12345/MCreator-Chinese/master/src/main/resources/pools.tra");
+				logger.info("系统正在与在线翻译池沟通");
+				defaultPoolInput = url.openStream();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		json = new Gson().fromJson(new InputStreamReader(
 				Objects.requireNonNullElse(defaultPoolInput,this.getClass().getResourceAsStream("/pools.tra"))),
 				JsonObject.class);
+		logger.info("翻译池已经准备就绪");
 	}
 	public boolean containValue(String key){
 		return containValue("",key);
@@ -107,6 +115,7 @@ public class TranslatablePool {
 	}
 
 	public JsonElement translateBaidu(String origin) throws IOException {
+		logger.info("翻译api正在被调用");
 		String urlString = "https://fanyi-api.baidu.com/api/trans/vip/translate";
 		String appidString = "20220101001043872";
 		String passwordString = "pHikfC_jnDKxpFXDnht5";
