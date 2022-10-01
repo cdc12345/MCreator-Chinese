@@ -1500,7 +1500,6 @@
     "surface": "主世界",
     "nether": "下界",
     "end": "末地",
-    "badlands": "恶地",
     "slab": "半砖",
     "fence": "栅栏",
     "wall": "墙",
@@ -1508,5 +1507,6 @@
     "fencegate": "栅栏门",
     "pressureplate": "压力板",
     "trapdoor": "活扳门",
-    "list": "列表"
+    "list": "列表",
+    "entity": "实体"
 }
