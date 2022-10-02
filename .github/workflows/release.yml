@@ -41,7 +41,7 @@ jobs:
           chmod +x gradlew
           ./gradlew tasks
 
-      - name: build Jar
+      - name: Build Jar
         run: |
           cd work
           ./gradlew clean
@@ -50,12 +50,54 @@ jobs:
       - name: Upload build Jar
         uses: actions/upload-artifact@v3
         with:
-          name: MCreator-Chinese.Jar
+          name: mcreator.jar
           path: 'work/build/libs/mcreator.jar'
           
-      - name: build Zip
+      - name: Build Zip
         run: |
           cd work
           ./gradlew clean
           ./gradlew exportWindowsZIP
-          ls build/export
+      
+      - name: Upload build Zip
+        uses: actions/upload-artifact@v3
+        with:
+          name: "MCreator-Chinese 2022.2 Windows 64bit.zip"
+          path: 'work/build/export/MCreator-Chinese 2022.2 Windows 64bit.zip'
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y-%m-%d-%H-%I-%S')"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.date.outputs.today }} 
+          release_name: Commit ${{ steps.date.outputs.today }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Zip
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: 'work/build/libs/mcreator.jar'
+          asset_name: mcreator.jar
+          asset_content_type: application/jar
+
+      - name: Upload Release Zip
+        id: upload-release-zip
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: 'work/build/export/MCreator-Chinese 2022.2 Windows 64bit.zip'
+          asset_name: "MCreator-Chinese 2022.2 Windows 64bit.zip"
+          asset_content_type: application/zip
