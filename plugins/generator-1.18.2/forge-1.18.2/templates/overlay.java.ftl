@@ -108,7 +108,7 @@ package ${package}.client.gui;
                             Minecraft.getInstance().font.draw(event.${stackMethodName}(),new TranslatableComponent("${component.TK}"),
                                                                ${x} * w / 426, ${y} * h / 240, ${component.color.getRGB()});
 						<#else>
-                            Minecraft.getInstance().font.draw(event.${stackMethodName}(),"${translateTokens(JavaConventions.escapeStringForJava(component.text))}"),
+                            Minecraft.getInstance().font.draw(event.${stackMethodName}(),"${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
                                         ${x} * w / 426, ${y} * h / 240, ${component.color.getRGB()});
 						</#if>
 	                <#elseif component.getClass().getSimpleName() == "Image">
