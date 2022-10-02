@@ -7,9 +7,9 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
   # 如果需要关闭把下面两个"master"字符串删了即可
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
