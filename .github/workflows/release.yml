@@ -46,18 +46,16 @@ jobs:
           cd work
           ./gradlew clean
           ./gradlew build -x test
-          ls build/libs
 
       - name: Upload build Jar
         uses: actions/upload-artifact@v3
         with:
-          name: MCreator-Chinese Jar
-          path: 'work/build/libs/*'
+          name: MCreator-Chinese.Jar
+          path: 'work/build/libs/mcreator.jar'
           
-      - name: build EXE
+      - name: build Zip
         run: |
           cd work
           ./gradlew clean
-          ./gradlew exportWindowsAll
-          cd build/export
-          ls
+          ./gradlew exportWindowsZIP
+          ls build/export
