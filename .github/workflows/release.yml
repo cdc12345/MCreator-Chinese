@@ -40,13 +40,13 @@ jobs:
           cd work
           chmod +x gradlew
           ./gradlew tasks
-          
+
       - name: build Jar
         run: |
           cd work
           ./gradlew clean
           ./gradlew build -x test
-          ls build/lib
+          ls build/libs
 
       - name: Upload build Jar
         uses: actions/upload-artifact@v3
