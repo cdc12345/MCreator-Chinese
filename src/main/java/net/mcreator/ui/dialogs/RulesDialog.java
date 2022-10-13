@@ -75,7 +75,7 @@ public class RulesDialog {
 				<p><em>Q：新建不了工作区，怎么办？</em></p>
 				<p><em>A：需要先设置jdk目录，在&quot;首选项/Gradle与运行&quot;可设置。</em></p>
 				<p><em>Q：能够制作什么版本的模组？</em></p>
-				<p><em>A：Forge1.16.5+，MCr一般随Forge的Latest版本更新。</em></p>
+				<p><em>A：Forge1.18+，MCr一般随Forge的Latest版本更新。</em></p>
 				<p><em>Q：如何在模组中添加物品模型或者实体模型？</em></p>
 				<p>A：使用Blockbench。物品模型导入后需要在该元素选择材质才能应用。*</p>
 				<p><em>Q：模组怎么设置作者，模组版本，网站，描述，名称，modid等？</em></p>
