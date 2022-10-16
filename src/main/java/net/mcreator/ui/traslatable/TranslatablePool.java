@@ -114,16 +114,6 @@ public class TranslatablePool {
 		}
 	}
 
-	public JsonElement translateBaidu(String origin) throws IOException {
-		logger.info("翻译api正在被调用");
-		String urlString = "https://fanyi-api.baidu.com/api/trans/vip/translate";
-		String appidString = "20220101001043872";
-		String passwordString = "pHikfC_jnDKxpFXDnht5";
-		String saltString = "absabsjajsa";
-		String signString = md5(appidString+origin+saltString+passwordString);
-		URL url = new URL(urlString+"?q="+origin+"&from=en&to=zh&appid="+appidString+"&salt="+saltString+"&sign="+signString);
-		return new Gson().fromJson(new InputStreamReader(url.openStream()),JsonObject.class).get("trans_result")
-				.getAsJsonArray().get(0).getAsJsonObject().get("dst");
-	}
+
 
 }

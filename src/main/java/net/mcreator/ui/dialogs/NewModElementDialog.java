@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs;
 
+import javassist.Translator;
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.java.JavaConventions;
@@ -30,10 +31,14 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
+import net.mcreator.util.locale.TranslatorUtils;
 import net.mcreator.workspace.elements.ModElement;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
+import java.io.IOException;
 
 public class NewModElementDialog {
 

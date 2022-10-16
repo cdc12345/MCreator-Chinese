@@ -27,6 +27,7 @@ import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.TagsNameValidator;
+import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -257,7 +258,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 	@Override Predicate<MCItem> getFilter(String term) {
 		TranslatablePool pool = TranslatablePool.getPool();
-		if (term.matches("[a-zA-Z_:\s]+")) {
+		if (StringUtils.isEnglish(term)) {
 			String lowercaseTerm = term.toLowerCase(Locale.ENGLISH);
 			if (lowercaseTerm.equals("match:english")){
 				return item -> !(pool.containValue(item.getReadableName()));

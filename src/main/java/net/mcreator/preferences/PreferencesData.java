@@ -38,6 +38,7 @@ public class PreferencesData {
 	@PreferencesSection public GradleSettings gradle = new GradleSettings();
 	@PreferencesSection public BedrockSettings bedrock = new BedrockSettings();
 	@PreferencesSection public NotificationSettings notifications = new NotificationSettings();
+	@PreferencesSection public ExternalSettings external = new ExternalSettings();
 
 	public HiddenPreferences hidden = new HiddenPreferences();
 
@@ -137,6 +138,11 @@ public class PreferencesData {
 
 		@PreferencesEntry public boolean silentReload = false;
 
+	}
+
+	public static class ExternalSettings{
+		@PreferencesEntry(arrayData = {"百度","Kate"})
+		public String translatorEngine = "Kate";
 	}
 
 	public static class HiddenPreferences {

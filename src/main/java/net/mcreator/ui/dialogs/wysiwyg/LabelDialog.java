@@ -58,7 +58,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 		tk.setEditable(false);
 
 		checkBox.addActionListener(a->{
-				tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+ Objects.requireNonNull(name.getSelectedItem()).toString().replace(' ','_'));
+				tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+ Objects.requireNonNull(name.getSelectedItem()).toString().replaceAll("[^a-zA-Z\\s]","").replace(' ','_'));
 				tk.setEditable(checkBox.isSelected());
 		});
 
@@ -113,7 +113,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 			setVisible(false);
 			String text = (String) name.getSelectedItem();
 			if (text != null) {
-				if (tk.getText().isEmpty())tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+ Objects.requireNonNull(name.getSelectedItem()).toString().replace(' ','_'));
+				if (tk.getText().isEmpty())tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+ Objects.requireNonNull(name.getSelectedItem()).toString().replaceAll("[^a-zA-Z\\s]","").replace(' ','_'));
 				if (label == null) {
 					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 					editor.editor.setPositioningMode(textwidth, 16);

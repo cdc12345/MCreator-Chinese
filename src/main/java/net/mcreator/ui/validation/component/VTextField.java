@@ -18,14 +18,19 @@
 
 package net.mcreator.ui.validation.component;
 
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.util.locale.TranslatorUtils;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class VTextField extends JTextField implements IValidable {
 
@@ -63,7 +68,19 @@ public class VTextField extends JTextField implements IValidable {
 			}
 		});
 
+
 		addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON3){
+					try {
+						setText(TranslatorUtils.translateCNToEN(JOptionPane.showInputDialog(getParent(),"请输入中文,当前翻译引擎:"+ PreferencesManager.PREFERENCES.external.translatorEngine,"中文翻译扩展窗口",JOptionPane.INFORMATION_MESSAGE)));
+					} catch (IOException | ParserConfigurationException | SAXException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+
 			@Override public void mouseExited(MouseEvent mouseEvent) {
 				super.mouseExited(mouseEvent);
 				mouseInInfoZone = false;

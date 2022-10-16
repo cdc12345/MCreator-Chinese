@@ -92,7 +92,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 			setVisible(false);
 			String text = nameField.getText();
 			if (text != null && !text.equals("")) {
-				if (tkField.getText().isEmpty()) tkField.setText("button."+editor.mcreator.getWorkspace().getWorkspaceSettings().getModID()+"."+nameField.getText().replace(' ','_'));
+				if (tkField.getText().isEmpty()) tkField.setText("button."+editor.mcreator.getWorkspace().getWorkspaceSettings().getModID()+"."+nameField.getText().replaceAll("[^a-zA-Z\\s]","").replaceAll("\\s","_"));
 				if (button == null) {
 					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 					editor.editor.setPositioningMode(textwidth + 25, 20);

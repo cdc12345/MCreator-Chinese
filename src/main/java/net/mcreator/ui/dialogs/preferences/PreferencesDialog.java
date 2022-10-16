@@ -23,6 +23,7 @@ import net.mcreator.preferences.PreferencesData;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
+import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -274,7 +275,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		if (description == null)
 			description = "";
 
-		JComponent label = L10N.label("dialog.preferences.entry_description", name, description);
+		JComponent label = L10N.label("dialog.preferences.entry_description", name, description,8);
 
 		if (actualField.getType().equals(int.class) || actualField.getType().equals(Integer.class)) {
 			int max = (int) entry.max();

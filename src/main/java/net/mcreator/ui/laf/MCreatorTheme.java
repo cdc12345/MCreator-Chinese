@@ -121,6 +121,7 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	@Override public void addCustomEntriesToTable(UIDefaults table) {
+
 		super.addCustomEntriesToTable(table);
 
 		initMCreatorThemeColors(table);

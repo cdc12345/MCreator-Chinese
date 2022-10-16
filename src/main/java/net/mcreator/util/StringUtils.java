@@ -35,6 +35,7 @@ public class StringUtils {
 			"(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])|(_)|(?=\\d)");
 	private static final Pattern underscoreReducer = Pattern.compile("(?<=\\d)_(?=\\d)");
 	private static final Pattern nonescapedCommaSplitter = Pattern.compile("(?<!\\\\),");
+	private static final String englishMatch = "[a-zA-Z_:\s]+";
 
 	public static String abbreviateString(String input, int maxLength) {
 		return abbreviateString(input, maxLength, true);
@@ -111,6 +112,16 @@ public class StringUtils {
 			count++;
 
 		return count;
+	}
+
+	/**
+	 * 检查是否为英文,如果不是则返回否
+	 * @param text
+	 * @return 英文和null返回是,否则返回false
+	 */
+	public static boolean isEnglish(String text){
+		if (text == null) return true;
+		return text.matches(englishMatch);
 	}
 
 }

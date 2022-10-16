@@ -123,6 +123,8 @@ public final class MCreatorApplication {
 			UIManager.setLookAndFeel(new MCreatorLookAndFeel());
 		} catch (UnsupportedLookAndFeelException e) {
 			LOG.error("无法设置观感: " + e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		SoundUtils.initSoundSystem();
