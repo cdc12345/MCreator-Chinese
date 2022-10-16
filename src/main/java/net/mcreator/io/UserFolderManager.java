@@ -38,6 +38,8 @@ public class UserFolderManager {
 		getUserFolder().mkdirs();
 
 		// generate folder structure of user folder too
+		getCacheFolder().mkdirs();
+
 		getGradleHome().mkdirs();
 
 		getPluginFolder().mkdirs();
@@ -50,6 +52,8 @@ public class UserFolderManager {
 	public static File getFileFromUserFolder(String path) {
 		return new File(getUserFolder(), path);
 	}
+
+	public static File getCacheFolder(){return getFileFromUserFolder(".cache");}
 
 	public static File getPluginFolder() {
 		return getFileFromUserFolder("plugins");

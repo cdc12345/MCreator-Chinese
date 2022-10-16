@@ -22,20 +22,18 @@ package net.mcreator.ui.traslatable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
+import java.nio.file.Files;
 import java.util.Locale;
 import java.util.Objects;
 
-import static org.apache.logging.log4j.core.util.NameUtil.md5;
 
 /**
  * e-mail: 3154934427@qq.com
@@ -59,6 +57,7 @@ public class TranslatablePool {
 
 	private TranslatablePool() {
 		InputStream defaultPoolInput = null;
+		File pool = new File(UserFolderManager.getCacheFolder(),"pools.tra");
 		if (MCreatorApplication.isInternet) {
 			try {
 				URL url = new URL(
@@ -68,10 +67,17 @@ public class TranslatablePool {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		} else if (pool.exists()) {
+			try {
+				defaultPoolInput = new FileInputStream(pool);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		json = new Gson().fromJson(new InputStreamReader(
 				Objects.requireNonNullElse(defaultPoolInput,this.getClass().getResourceAsStream("/pools.tra"))),
 				JsonObject.class);
+		FileIO.writeStringToFile(json.toString(),pool);
 		logger.info("翻译池已经准备就绪");
 	}
 	public boolean containValue(String key){
