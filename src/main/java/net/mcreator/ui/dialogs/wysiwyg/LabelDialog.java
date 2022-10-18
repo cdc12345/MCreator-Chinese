@@ -27,6 +27,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.util.locale.TranslatorUtils;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -36,6 +37,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Locale;
 import java.util.Objects;
 
 public class LabelDialog extends AbstractWYSIWYGDialog {
@@ -58,7 +60,10 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 		tk.setEditable(false);
 
 		checkBox.addActionListener(a->{
-				tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+ Objects.requireNonNull(name.getSelectedItem()).toString().replaceAll("[^a-zA-Z\\s]","").replace(' ','_'));
+				tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+
+						TranslatorUtils.translateCNToEN(Objects.requireNonNull(name.getSelectedItem()).toString()).toLowerCase(
+										Locale.ROOT)
+						.replaceAll("[^a-zA-Z\\s]","").replace(' ','_'));
 				tk.setEditable(checkBox.isSelected());
 		});
 
@@ -113,7 +118,10 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 			setVisible(false);
 			String text = (String) name.getSelectedItem();
 			if (text != null) {
-				if (tk.getText().isEmpty())tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+ Objects.requireNonNull(name.getSelectedItem()).toString().replaceAll("[^a-zA-Z\\s]","").replace(' ','_'));
+				if (tk.getText().isEmpty())tk.setText("label."+editor.mcreator.getWorkspaceSettings().getModID()+"."+
+						TranslatorUtils.translateCNToEN(Objects.requireNonNull(name.getSelectedItem()).toString()).toLowerCase(
+										Locale.ROOT)
+								.replaceAll("[^a-zA-Z\\s]","").replace(' ','_'));
 				if (label == null) {
 					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 					editor.editor.setPositioningMode(textwidth, 16);

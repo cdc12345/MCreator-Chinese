@@ -23,13 +23,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.util.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
@@ -45,18 +40,28 @@ import static org.apache.logging.log4j.core.util.NameUtil.md5;
  * @date 2022/10/9 16:35
  */
 public class TranslatorUtils {
-	public static String translateCNToEN(String origin) throws IOException, ParserConfigurationException, SAXException {
+	private static final Logger LOGGER = LogManager.getLogger("Translator");
+	public static String translateCNToEN(String origin)  {
+		if (origin == null) return "";
 		if (StringUtils.isEnglish(origin)) return origin;
-		switch (PreferencesManager.PREFERENCES.external.translatorEngine){
+		try {
+			switch (PreferencesManager.PREFERENCES.external.translatorEngine) {
 			case "百度" -> {
-				return translateBaidu(origin,"","en");
+				return translateBaidu(origin, "auto", "en");
 			}
-			case "Kate" ->{
+			case "Kate" -> {
 				return translateKate(origin);
+			}
+			case "Han" ->{
+				return translateHan(origin);
 			}
 			default -> {
 				return origin;
 			}
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+			return origin;
 		}
 	}
 
@@ -68,6 +73,7 @@ public class TranslatorUtils {
 	 * @throws IOException 无法读取等
 	 */
 	public static String translateBaidu(String origin,String from,String to) throws IOException {
+		LOGGER.info("使用百度翻译文本:"+origin+"("+from+" to "+to);
 		String urlString = "https://fanyi-api.baidu.com/api/trans/vip/translate";
 		String appidString = "20220101001043872";
 		String passwordString = "pHikfC_jnDKxpFXDnht5";
@@ -80,8 +86,16 @@ public class TranslatorUtils {
 
 
 	public static String translateKate(String origin) throws IOException {
+		LOGGER.info("使用kate翻译文本:"+origin);
 		String urlString = "https://api.66mz8.com/api/translation.php?info=%s";
 		URL url = new URL(String.format(urlString,origin));
 		return new Gson().fromJson(new InputStreamReader(url.openStream()),JsonObject.class).get("fanyi").getAsString();
+	}
+
+	public static String translateHan(String origin) throws IOException {
+		LOGGER.info("正在使用Han翻译文本:"+origin);
+		String urlString = "https://api.vvhan.com/api/fy?text=%s";
+		URL url = new URL(String.format(urlString,origin));
+		return new Gson().fromJson(new InputStreamReader(url.openStream()),JsonObject.class).getAsJsonObject("data").get("fanyi").getAsString();
 	}
 }

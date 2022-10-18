@@ -72,12 +72,8 @@ public class VTextField extends JTextField implements IValidable {
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON3){
-					try {
-						setText(TranslatorUtils.translateCNToEN(JOptionPane.showInputDialog(getParent(),"请输入中文,当前翻译引擎:"+ PreferencesManager.PREFERENCES.external.translatorEngine,"中文翻译扩展窗口",JOptionPane.INFORMATION_MESSAGE)));
-					} catch (IOException | ParserConfigurationException | SAXException ex) {
-						ex.printStackTrace();
-					}
+				if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON3 && isEnabled() && isEditable()){
+					setText(getText()+TranslatorUtils.translateCNToEN(JOptionPane.showInputDialog(getParent(),"请输入中文,当前翻译引擎:"+ PreferencesManager.PREFERENCES.external.translatorEngine,"中文翻译扩展窗口",JOptionPane.INFORMATION_MESSAGE)));
 				}
 			}
 

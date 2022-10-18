@@ -141,8 +141,8 @@ public class PreferencesData {
 	}
 
 	public static class ExternalSettings{
-		@PreferencesEntry(arrayData = {"百度","Kate"})
-		public String translatorEngine = "Kate";
+		@PreferencesEntry(arrayData = {"百度","Kate","Han"})
+		public String translatorEngine = "Han";
 	}
 
 	public static class HiddenPreferences {

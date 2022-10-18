@@ -27,6 +27,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.util.locale.TranslatorUtils;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
@@ -34,6 +35,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Locale;
 
 public class ButtonDialog extends AbstractWYSIWYGDialog {
 
@@ -92,7 +94,9 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 			setVisible(false);
 			String text = nameField.getText();
 			if (text != null && !text.equals("")) {
-				if (tkField.getText().isEmpty()) tkField.setText("button."+editor.mcreator.getWorkspace().getWorkspaceSettings().getModID()+"."+nameField.getText().replaceAll("[^a-zA-Z\\s]","").replaceAll("\\s","_"));
+				if (tkField.getText().isEmpty()) tkField.setText("button."+editor.mcreator.getWorkspace().getWorkspaceSettings()
+						.getModID()+"."+ TranslatorUtils.translateCNToEN(nameField.getText()).toLowerCase(Locale.ROOT)
+						.replaceAll("[^a-zA-Z\\s]","").replaceAll("\\s","_"));
 				if (button == null) {
 					int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(text, WYSIWYG.frc).getWidth());
 					editor.editor.setPositioningMode(textwidth + 25, 20);
