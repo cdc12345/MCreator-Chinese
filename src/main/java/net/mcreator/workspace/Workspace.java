@@ -28,6 +28,7 @@ import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.locale.TranslatorUtils;
 import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.WorkspaceInfo;
@@ -57,6 +58,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<>() {{
 		put("en_us", new ConcurrentHashMap<>());
+		put("zh_cn",new ConcurrentHashMap<>());
 	}};
 
 	protected FolderElement foldersRoot = FolderElement.ROOT;
@@ -157,7 +159,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void setLocalization(String key, String value) {
 		// we always update default localization
-		language_map.get("en_us").put(key, value);
+		language_map.get("en_us").put(key, TranslatorUtils.translateCNToEN(value));
+		language_map.get("zh_cn").put(key,value);
 
 		// add localization to others if existing if there is not existing definition present
 		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : language_map.entrySet())

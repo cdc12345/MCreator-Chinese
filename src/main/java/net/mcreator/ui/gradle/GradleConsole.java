@@ -39,6 +39,7 @@ import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.HtmlUtils;
 import net.mcreator.util.math.TimeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -57,6 +58,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -102,6 +104,14 @@ public class GradleConsole extends JPanel {
 		setLayout(new BorderLayout());
 		pan.addHyperlinkListener(e -> {
 			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+				if (!e.getURL().getProtocol().equals("file")){
+					try {
+						DesktopUtils.browse(e.getURL().toURI());
+					} catch (URISyntaxException ex) {
+						ex.printStackTrace();
+					}
+					return;
+				}
 				String url = e.getURL().toString().replace("file:", "");
 				String fileurl = url.replaceAll(":[0-9]+", "");
 				String[] split = url.split(":");

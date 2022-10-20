@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
+import java.util.HashMap;
 
 import static org.apache.logging.log4j.core.util.NameUtil.md5;
 
@@ -41,28 +42,27 @@ import static org.apache.logging.log4j.core.util.NameUtil.md5;
  */
 public class TranslatorUtils {
 	private static final Logger LOGGER = LogManager.getLogger("Translator");
+
+	private static final HashMap<String,String> translation = new HashMap<>();
 	public static String translateCNToEN(String origin)  {
 		if (origin == null) return "";
 		if (StringUtils.isEnglish(origin)) return origin;
+		if (translation.containsKey(origin)) return translation.get(origin);
+		String result = origin;
 		try {
 			switch (PreferencesManager.PREFERENCES.external.translatorEngine) {
-			case "百度" -> {
-				return translateBaidu(origin, "auto", "en");
-			}
-			case "Kate" -> {
-				return translateKate(origin);
-			}
-			case "Han" ->{
-				return translateHan(origin);
-			}
-			default -> {
-				return origin;
-			}
+				case "百度" -> result = translateBaidu(origin, "auto", "en");
+				case "Kate" -> result = translateKate(origin);
+				case "Han" -> result = translateHan(origin);
 			}
 		} catch (Exception e){
 			e.printStackTrace();
-			return origin;
+			return result;
 		}
+		LOGGER.info("翻译结果:"+result);
+		translation.put(origin,result);
+		translation.put(result,origin);
+		return result;
 	}
 
 	/**
