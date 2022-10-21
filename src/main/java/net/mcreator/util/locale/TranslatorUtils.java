@@ -51,9 +51,12 @@ public class TranslatorUtils {
 		String result = origin;
 		try {
 			switch (PreferencesManager.PREFERENCES.external.translatorEngine) {
-				case "百度" -> result = translateBaidu(origin, "auto", "en");
+//				case "百度" -> result = translateBaidu(origin, "auto", "en");
 				case "Kate" -> result = translateKate(origin);
 				case "Han" -> result = translateHan(origin);
+			default -> {
+				return result;
+			}
 			}
 		} catch (Exception e){
 			e.printStackTrace();

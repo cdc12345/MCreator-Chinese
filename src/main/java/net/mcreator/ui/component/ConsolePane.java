@@ -70,7 +70,7 @@ public class ConsolePane extends JTextPane {
 		Matcher matcher = url.matcher(s.replace("<", "&lt;").replace(">", "&gt;"));
 		StringBuilder result = new StringBuilder();
 		while (matcher.find()){
-			matcher.appendReplacement(result, "<a href=\"" + matcher.group() + "\">" + matcher.group() + "</a>");
+			matcher.appendReplacement(result, "<a href=\"" + matcher.group() + "\" style=\"color: #3366FF;\">" + matcher.group() + "</a>");
 		}
 		matcher.appendTail(result);
 		s = result.toString();

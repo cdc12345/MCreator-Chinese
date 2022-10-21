@@ -436,7 +436,7 @@ public class GradleConsole extends JPanel {
 					if (line.startsWith("SLF4J: "))
 						return;
 
-					append(line, new Color(0, 255, 182));
+					append(line, new Color(0, 234, 255, 150));
 				}
 			}
 		})));
