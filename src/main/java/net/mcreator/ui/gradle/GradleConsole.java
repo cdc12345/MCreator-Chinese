@@ -436,7 +436,7 @@ public class GradleConsole extends JPanel {
 					if (line.startsWith("SLF4J: "))
 						return;
 
-					append(line, new Color(0, 234, 255, 150));
+					append(line, new Color(0, 255, 182));
 				}
 			}
 		})));
@@ -710,7 +710,7 @@ public class GradleConsole extends JPanel {
 
 	private final Pattern cepattern = Pattern.compile("\\.java:\\d+: error:");
 	private final Pattern cwpattern = Pattern.compile("\\.java:\\d+: warning:");
-	private final Pattern repattern = Pattern.compile("\\(.*\\.java:\\d+\\)");
+	private final Pattern repattern = Pattern.compile("\\(.*\\.java:\\d+\\)|Native Method|Exception");
 
 	public void append(String text, Color c) {
 		Matcher compileError = cepattern.matcher(text);
@@ -764,7 +764,9 @@ public class GradleConsole extends JPanel {
 				pan.insertString(")" + text.split("\\(")[1].split("\\)")[1], keyWord);
 			} catch (Exception ignored) {  // workspace can be null or we can fail to parse error link
 				// if we fail to print styled, fallback to plaintext
-				append(text, Color.white, false);
+				if (text.contains("Exception")){
+					append(text,new Color(255,0,0),false);
+				} else append(text, Color.white, false);
 			}
 			scrollToBottom();
 		}
