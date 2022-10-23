@@ -67,8 +67,7 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			label.setText(((DataListEntry) value).getReadableName().replace("CUSTOM:", ""));
-			label.setText(TranslatablePool.getPool().getValue(label.getText()));
+			label.setText(TranslatablePool.getPool().getValue(((DataListEntry) value).getReadableName()));
 			if (((DataListEntry) value).getName().contains("CUSTOM:"))
 				setIcon(new ImageIcon(ImageUtils.resize(
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), ((DataListEntry) value).getName())
