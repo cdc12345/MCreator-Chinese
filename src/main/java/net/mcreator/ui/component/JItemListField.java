@@ -260,7 +260,6 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 							MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));
 			}
 			setText(TranslatablePool.getPool().getValue(getText()));
-
 			return this;
 		}
 	}
