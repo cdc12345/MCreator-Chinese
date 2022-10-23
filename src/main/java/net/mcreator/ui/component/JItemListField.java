@@ -23,7 +23,6 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -259,7 +258,6 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 					setIcon(new ImageIcon(ImageUtils.resize(
 							MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));
 			}
-			setText(TranslatablePool.getPool().getValue(getText()));
 
 			return this;
 		}
