@@ -197,7 +197,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				this.addWidget(this.${component.name});
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addRenderableWidget(new Button(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, new TranslatableComponent("${component.TK}"), e -> {
+					${component.width}, ${component.height}, ${component.getCodeOfText()}, e -> {
 							<#if hasProcedure(component.onClick)>
 							if (<@procedureOBJToConditionCode component.displayCondition/>) {
 								${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));

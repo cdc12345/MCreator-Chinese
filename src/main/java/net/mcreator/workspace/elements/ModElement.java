@@ -36,6 +36,8 @@ import java.util.*;
 public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider, IElement {
 
 	private String name;
+	private String anotherName;
+	private String description;
 	private String type;
 
 	private Integer sortid = null;
@@ -219,9 +221,24 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.compiles = compiles;
 	}
 
-	@Override public String getName() {
-		return name;
+	@Override public String getDisplayName(){
+		if (anotherName == null)
+			return name;
+		else
+			return anotherName;
 	}
+
+	public void setAnotherName(String anotherName) {
+		if (anotherName == null||anotherName.isEmpty()){
+			this.anotherName = null;
+		} else this.anotherName = anotherName;
+	}
+
+	public String getAnotherName() {
+		return anotherName;
+	}
+
+	@Override public String getName() {return name;}
 
 	public void setName(String name) {
 		this.name = name;
@@ -306,6 +323,19 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 			return gson.fromJson(json, ModElement.class);
 		}
+	}
+
+	public void setDescription(String des){
+		if (des == null||des.isEmpty()){
+			this.description = null;
+		} else this.description = des;
+	}
+
+	public String getDescription(){
+		if (description == null)
+			return getType().getDescription();
+		else
+			return description;
 	}
 
 }

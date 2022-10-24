@@ -346,7 +346,7 @@ public class GradleConsole extends JPanel {
 
 		BuildLauncher task = GradleUtils.getGradleTaskLauncher(ref.getWorkspace(), commands);
 
-		if (PreferencesManager.PREFERENCES.gradle.offline || !MCreatorApplication.isInternet)
+		if (PreferencesManager.PREFERENCES.gradle.offline)
 			arguments.add("--offline");
 
 		task.addArguments(arguments);

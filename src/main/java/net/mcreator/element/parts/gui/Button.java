@@ -41,6 +41,12 @@ public class Button extends SizedComponent {
 		this.displayCondition = displayCondition;
 	}
 
+	public String getCodeOfText(){
+		if (TK == null || TK.isEmpty()){
+			return "new TextComponent(\""+text+"\")";
+		} else return "new TranslatableComponent(\""+TK+"\")";
+	}
+
 	@Override public int getWeight() {
 		return 2;
 	}

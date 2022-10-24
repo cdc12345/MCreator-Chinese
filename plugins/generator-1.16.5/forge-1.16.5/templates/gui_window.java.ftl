@@ -199,7 +199,7 @@ import ${package}.${JavaModName};
                 this.children.add(this.${component.name});
 			<#elseif component.getClass().getSimpleName() == "Button">
 				this.addButton(new Button(this.guiLeft + ${(component.x - mx/2)?int}, this.guiTop + ${(component.y - my/2)?int},
-					${component.width}, ${component.height}, new TranslatableComponent("${component.TK}"), e -> {
+					${component.width}, ${component.height},${component.getCodeOfText()}, e -> {
 						if (<@procedureOBJToConditionCode component.displayCondition/>) {
 							${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}Gui.ButtonPressedMessage(${btid}, x, y, z));
 							${name}Gui.handleButtonAction(entity, ${btid}, x, y, z);

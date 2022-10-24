@@ -116,6 +116,8 @@ import java.util.stream.Collectors;
 	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
 	private final JMenuItem idElement = new JMenuItem(L10N.t("workspace.elements.list.edit.id"));
 	private final JMenuItem renameElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.rename.folder"));
+	private final JMenuItem editDescription = new JMenuItem("编辑描述");
+	private final JMenuItem editAnotherName = new JMenuItem("编辑别名");
 
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
@@ -940,6 +942,21 @@ import java.util.stream.Collectors;
 			}
 		});
 
+		editDescription.addActionListener(e ->{
+			IElement mu = list.getSelectedValue();
+			if (mu instanceof  ModElement element){
+				element.setDescription(JOptionPane.showInputDialog(WorkspacePanel.this,"输入描述","修改描述",JOptionPane.INFORMATION_MESSAGE));
+				mcreator.getWorkspace().updateModElement(element);
+			}
+		});
+
+		editAnotherName.addActionListener(e -> {
+			if (list.getSelectedValue() instanceof ModElement element){
+				element.setAnotherName(JOptionPane.showInputDialog(WorkspacePanel.this,"输入别名",element.getAnotherName()));
+				mcreator.getWorkspace().updateModElement(element);
+			}
+		});
+
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
 		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
 		addElementFolder.addActionListener(e -> addNewFolder());
@@ -962,6 +979,8 @@ import java.util.stream.Collectors;
 		contextMenu.add(duplicateElement);
 		contextMenu.add(lockElement);
 		contextMenu.add(idElement);
+		contextMenu.add(editDescription);
+		contextMenu.add(editAnotherName);
 
 		updateElementListRenderer();
 	}
@@ -1546,7 +1565,9 @@ import java.util.stream.Collectors;
 						for (String key : keyWords) {
 							boolean match = (item.getName().toLowerCase(Locale.ENGLISH)
 									.contains(key.toLowerCase(Locale.ENGLISH))) || (item.getType().getReadableName()
-									.toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)));
+									.toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH))) ||
+									(Objects.requireNonNullElse(item.getDescription(),"").toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)))||(Objects.requireNonNullElse(item.getAnotherName(),"").toLowerCase(
+									Locale.ROOT).contains(key.toLowerCase(Locale.ROOT)));
 							if (match)
 								return true;
 						}

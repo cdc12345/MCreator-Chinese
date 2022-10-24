@@ -42,8 +42,6 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 	public ButtonDialog(WYSIWYGEditor editor, @Nullable Button button) {
 		super(editor.mcreator, button);
 		setModal(true);
-		setSize(480, 200);
-		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.button_add_title"));
 		JTextField nameField = new JTextField(20);
 		JTextField tkField = new JTextField(20);
@@ -117,6 +115,8 @@ public class ButtonDialog extends AbstractWYSIWYGDialog {
 			}
 		});
 
+		pack();
+		setLocationRelativeTo(editor.mcreator);
 		setVisible(true);
 	}
 

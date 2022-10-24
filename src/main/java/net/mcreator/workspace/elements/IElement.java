@@ -22,4 +22,8 @@ public interface IElement {
 
 	String getName();
 
+	default String getDisplayName(){
+		return getName();
+	}
+
 }

@@ -44,8 +44,6 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 
 	public LabelDialog(WYSIWYGEditor editor, @Nullable Label label) {
 		super(editor.mcreator, label);
-		setSize(560, 180);
-		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
 		JComboBox<String> name = new JComboBox<>(new String[] { "Label text", "Text is <TextFieldName:text>",
 				"This block is located at <x> <y> and <z>.", "<ENBT:number:tagName>", "<ENBT:integer:tagName>",
@@ -145,6 +143,8 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 			}
 		});
 
+		pack();
+		setLocationRelativeTo(editor.mcreator);
 		setVisible(true);
 	}
 

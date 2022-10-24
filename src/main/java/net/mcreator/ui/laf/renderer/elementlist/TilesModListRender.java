@@ -62,7 +62,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 				setOpaque(false);
 			}
 
-			label.setText(StringUtils.abbreviateString(element.getName(), 18));
+			label.setText(StringUtils.abbreviateString(element.getDisplayName(), 18));
 			label.setFont(MCreatorTheme.secondary_font.deriveFont(24.0f));
 
 			ImageIcon dva = null;
@@ -77,7 +77,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 						"<html><div width=210 height=42 style=\"overflow: hidden;\"><small" + (isSelected ?
 								(" color=#" + Integer.toHexString(
 										((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).getRGB()).substring(2)) :
-								"") + ">" + ma.getType().getDescription());
+								"") + ">" + ma.getDescription());
 
 				if (!ma.doesCompile()) {
 					dva = TiledImageCache.modTabRed;

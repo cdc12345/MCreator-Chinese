@@ -24,6 +24,8 @@ import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.Validator;
@@ -43,6 +45,8 @@ import java.io.IOException;
 public class NewModElementDialog {
 
 	public static void showNameDialog(MCreator mcreator, ModElementType<?> type) {
+
+
 		JLabel regName = L10N.label("dialog.new_modelement.registry_name",
 				L10N.t("dialog.new_modelement.registry_name.empty"));
 		regName.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
