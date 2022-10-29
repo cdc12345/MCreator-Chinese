@@ -19,15 +19,9 @@
 
 package net.mcreator.ui.traslatable;
 
-import net.mcreator.ui.validation.component.VComboBox;
-import org.jboss.forge.roaster._shade.org.eclipse.jdt.internal.core.DocumentAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -60,6 +54,11 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 		this.matchString = stringFunction;
 		setRenderer(new TranslatableCellRender());
 	}
+	public AdvancedTranslatableComboBox(String nameSpace){
+		super();
+		this.nameSpace = nameSpace;
+		setRenderer(new TranslatableCellRender());
+	}
 
 	public AdvancedTranslatableComboBox(){
 		super();
@@ -87,7 +86,6 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 		}
 		setRenderer(new TranslatableCellRender());
 	}
-
 	public void setDisplayEnglish(boolean displayEnglish){
 		this.displayEnglish = displayEnglish;
 	}

@@ -40,6 +40,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -108,7 +109,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final SoundSelector fallSound = new SoundSelector(mcreator);
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
-	private final JComboBox<String> colorOnMap = new JComboBox<>();
+	private final AdvancedTranslatableComboBox<String> colorOnMap = new AdvancedTranslatableComboBox<>();
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -116,24 +117,24 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final JRadioButton normalType = L10N.radiobutton("elementgui.plant.use_static_plant_type");
-	private final JComboBox<String> growapableSpawnType = new JComboBox<>();
+	private final AdvancedTranslatableComboBox<String> growapableSpawnType = new AdvancedTranslatableComboBox<>();
 	private final JSpinner growapableMaxHeight = new JSpinner(new SpinnerNumberModel(3, 1, 14, 1));
 
-	private final JComboBox<String> staticPlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
-	private final JComboBox<String> suspiciousStewEffect = new JComboBox<>();
+	private final JComboBox<String> staticPlantGenerationType = new AdvancedTranslatableComboBox<>(new String[] { "Flower", "Grass" });
+	private final AdvancedTranslatableComboBox<String> suspiciousStewEffect = new AdvancedTranslatableComboBox<>("effect");
 	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
 
 	private final JRadioButton doubleType = L10N.radiobutton("elementgui.plant.use_double_plant_type");
-	private final JComboBox<String> doublePlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
+	private final JComboBox<String> doublePlantGenerationType = new AdvancedTranslatableComboBox<>(new String[] { "Flower", "Grass" });
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 	private final JRadioButton growapableType = L10N.radiobutton("elementgui.plant.use_growable_plant_type");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { cross, crop });
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
-	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
+	private final AdvancedTranslatableComboBox<String> aiPathNodeType = new AdvancedTranslatableComboBox<>();
 
-	private final JComboBox<String> tintType = new JComboBox<>(
+	private final JComboBox<String> tintType = new AdvancedTranslatableComboBox<>(
 			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog" });
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
