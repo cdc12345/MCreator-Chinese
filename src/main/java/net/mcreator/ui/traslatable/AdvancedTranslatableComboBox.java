@@ -19,13 +19,26 @@
 
 package net.mcreator.ui.traslatable;
 
+import net.mcreator.io.FileIO;
+import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.image.ImageUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 /**
  * e-mail: 3154934427@qq.com
@@ -36,7 +49,12 @@ import java.util.function.Function;
  */
 public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 
+	final Logger LOGGER = LogManager.getLogger("TranslatableComboBox");
+
 	Map<T,String> diction;
+	/**
+	 * 字符串匹配,主要用于盲盒汉化
+	 */
 	Map<String,String> strDiction;
 	Function<T,String> matchString;
 	private boolean displayEnglish = true;
@@ -117,9 +135,6 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 	public class TranslatableCellRender extends JLabel implements ListCellRenderer<T>{
 
 		public TranslatableCellRender(){
-			setOpaque(true);
-			setHorizontalAlignment(CENTER);
-			setVerticalAlignment(CENTER);
 			AdvancedTranslatableComboBox.this.addMouseListener(new MouseAdapter() {
 				@Override public void mousePressed(MouseEvent e) {
 					if (e.getButton() == MouseEvent.BUTTON3 && e.getClickCount() == 2){
@@ -132,17 +147,55 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected,
 				boolean cellHasFocus) {
+			JLabel result = new JLabel();
+			result.setOpaque(true);
+			result.setHorizontalAlignment(CENTER);
+			result.setVerticalAlignment(CENTER);
 			if (isSelected) {
-				setBackground(list.getSelectionBackground());
-				setForeground(list.getSelectionForeground());
+				result.setBackground(list.getSelectionBackground());
+				result.setForeground(list.getSelectionForeground());
 			} else {
-				setBackground(list.getBackground());
-				setForeground(list.getForeground());
+				result.setBackground(list.getBackground());
+				result.setForeground(list.getForeground());
 			}
-			setText(getDisplayText(value));
-			setHorizontalTextPosition(SwingConstants.RIGHT);
-			setHorizontalAlignment(SwingConstants.LEFT);
-			return this;
+			result.setText(getDisplayText(value));
+			result.setHorizontalTextPosition(SwingConstants.RIGHT);
+			result.setHorizontalAlignment(SwingConstants.LEFT);
+
+
+			String name;
+			if (matchString != null)
+				name = matchString.apply(value);
+			else
+				name = value.toString();
+			name = name.toLowerCase(Locale.ROOT);
+
+			int size = 32;
+
+			//如果名字为颜色单词,那么就自动配图 比如 red 配纯红色
+			try {
+				Color color = (Color) Color.class.getField(name).get(null);
+				result.setIcon(ImageUtils.colorize(
+						new ImageIcon(new BufferedImage(size,size,BufferedImage.TYPE_INT_RGB)),color,true));
+				return result;
+			} catch (IllegalAccessException | NoSuchFieldException ignore) {}
+
+			//datalist
+			Set<String> images = PluginLoader.INSTANCE.getResources("datalists.icons",Pattern.compile("(?i)"+name+"\\.png"));
+			if (images != null){
+				for (String image:images) {
+					LOGGER.info(image);
+					try {
+						ImageIcon icon = new ImageIcon(ImageUtils.resize(
+								UIRES.getImageFromResourceID(image).getImage(),size));
+						result.setIcon(icon);
+						return result;
+					} catch (NullPointerException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			return result;
 		}
 	}
 

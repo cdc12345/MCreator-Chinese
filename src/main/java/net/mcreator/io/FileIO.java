@@ -90,6 +90,7 @@ public final class FileIO {
 		}
 	}
 
+
 	public static String readResourceToString(URL resource) {
 		if (resource == null)
 			return null;

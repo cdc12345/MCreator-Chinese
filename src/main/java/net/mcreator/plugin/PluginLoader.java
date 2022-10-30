@@ -239,7 +239,8 @@ public class PluginLoader extends URLClassLoader {
 		if (plugin.getMinVersion() < 0) {
 			LOG.warn("插件(" + plugin.getID() + ")未指定最小版本。我们将会跳过此插件.");
 			JOptionPane.showMessageDialog(null,"插件(" + plugin.getID() + ")未指定最小版本。我们将会跳过此插件.","插件兼容性错误",JOptionPane.WARNING_MESSAGE);
-			return null;
+			plugin.loaded = false;
+			return plugin;
 		}
 
 		if (!plugin.isCompatible()) {
@@ -247,7 +248,8 @@ public class PluginLoader extends URLClassLoader {
 					+ " 不支持当前版本的MCreator! 我们将跳过此插件.");
 			JOptionPane.showMessageDialog(null,"插件 " + plugin.getID()
 					+ " 不支持当前版本的MCreator! 我们将跳过此插件.","插件兼容性错误",JOptionPane.WARNING_MESSAGE);
-			return null;
+			plugin.loaded = false;
+			return plugin;
 		}
 
 

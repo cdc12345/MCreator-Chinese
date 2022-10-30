@@ -25,6 +25,8 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
@@ -60,6 +62,7 @@ public class TranslatorUtils {
 			}
 		} catch (Exception e){
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,"翻译引擎异常,返回信息为"+e.getMessage(),"翻译引擎崩溃",JOptionPane.WARNING_MESSAGE);
 			return result;
 		}
 		LOGGER.info("翻译结果:"+result);
