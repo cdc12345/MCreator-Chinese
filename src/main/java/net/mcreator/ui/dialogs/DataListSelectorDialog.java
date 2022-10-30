@@ -22,6 +22,7 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
@@ -30,6 +31,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -67,7 +69,8 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			label.setText(TranslatablePool.getPool().getValue(((DataListEntry) value).getReadableName()));
+			String name =((DataListEntry) value).getReadableName();
+			label.setText(TranslatablePool.getPool().getValue(name));
 			if (((DataListEntry) value).getName().contains("CUSTOM:"))
 				setIcon(new ImageIcon(ImageUtils.resize(
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), ((DataListEntry) value).getName())

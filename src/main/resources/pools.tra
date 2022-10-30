@@ -1559,5 +1559,14 @@
     "effect:unluck": "\u9709\u8fd0",
     "effect:water breathing": "\u6c34\u4e0b\u547c\u5438",
     "effect:weakness": "\u865a\u5f31",
-    "effect:wither": "\u51cb\u96f6"
+    "effect:wither": "\u51cb\u96f6",
+    "desert": "沙漠",
+    "beach": "沙滩",
+    "plains": "平原",
+    "cave": "洞穴",
+    "badlands": "恶地",
+    "common": "平常",
+    "uncommon": "不平常",
+    "rare": "稀有",
+    "epic": "史诗"
 }

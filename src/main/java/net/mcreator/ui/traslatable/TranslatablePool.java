@@ -88,7 +88,7 @@ public class TranslatablePool {
 		if (key == null){
 			return false;
 		}
-		String lowerKey = key.toLowerCase(Locale.ENGLISH).replace('_','\u0000');
+		String lowerKey = key.toLowerCase(Locale.ENGLISH).replace('_',' ');
 		if (nameSpace != null&&!"".equals(nameSpace)){
 			lowerKey = nameSpace+":"+lowerKey;
 		}
@@ -103,7 +103,7 @@ public class TranslatablePool {
 		if (key == null){
 			return null;
 		}
-		String lowerKey = key.toLowerCase(Locale.ENGLISH);
+		String lowerKey = key.toLowerCase(Locale.ENGLISH).replace('_',' ');
 		String oLowerKey = lowerKey;
 		if (nameSpace != null&&!"".equals(nameSpace)){
 			oLowerKey = nameSpace+":"+lowerKey;

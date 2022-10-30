@@ -173,9 +173,11 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 			int size = 32;
 
 			//如果为default
-			if (name.equals("default")){
+			Map<String,String> spec = Map.of("default","datalists/icons/BARRIER.png","foliage","datalists/icons/LEAVES#0.png"
+			,"no tint","datalists/icons/BARRIER.png","flower","datalists/icons/RED_FLOWER#0.png","nether","datalists/icons/NETHERBRICK.png");
+			if (spec.containsKey(name)){
 				result.setIcon(new ImageIcon(ImageUtils.resize(
-						UIRES.getImageFromResourceID("datalists/icons/BARRIER.png").getImage(),size)));
+						UIRES.getImageFromResourceID(spec.get(name)).getImage(),size)));
 				return result;
 			}
 			//如果名字为颜色单词,那么就自动配图 比如 red 配纯红色
@@ -194,7 +196,7 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 				}
 			}
 
-			//datalist
+			//datalists
 			Set<String> images = PluginLoader.INSTANCE.getResources("datalists.icons",Pattern.compile("(?i)"+name+"\\.png"));
 			if (images != null){
 				for (String image:images) {

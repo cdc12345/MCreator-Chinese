@@ -214,7 +214,8 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 		add("Center", mainComponent);
 
-		setSize(hasPotions ? 970 : 900, 425);
+		pack();
+		setSize(getWidth(), 425);
 
 		Dimension dim = getToolkit().getScreenSize();
 		Rectangle abounds = getBounds();
