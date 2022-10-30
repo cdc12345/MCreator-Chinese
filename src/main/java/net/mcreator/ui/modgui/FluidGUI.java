@@ -36,6 +36,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -69,7 +70,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox dripParticle = new DataListComboBox(mcreator);
 	private final JSpinner flowStrength = new JSpinner(new SpinnerNumberModel(1, -25, 25, 0.1));
-	private final JComboBox<String> tintType = new JComboBox<>(
+	private final AdvancedTranslatableComboBox<String> tintType = new AdvancedTranslatableComboBox<>(
 			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
 					"Water", "Sky", "Fog", "Water fog" });
 
@@ -83,11 +84,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private TextureHolder textureBucket;
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 	private final SoundSelector emptySound = new SoundSelector(mcreator);
-	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
+	private final AdvancedTranslatableComboBox<String> rarity = new AdvancedTranslatableComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 	private final JTextField specialInfo = new JTextField(20);
 
-	private final JCheckBox isGas = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
+	private final AdvancedTranslatableComboBox<String> fluidtype = new AdvancedTranslatableComboBox<>(new String[] { "WATER", "LAVA" });
 
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(100, 0, Integer.MAX_VALUE, 0.5));
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
@@ -96,7 +96,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 0, 9999999, 1));
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JComboBox<String> colorOnMap = new JComboBox<>();
+	private final AdvancedTranslatableComboBox<String> colorOnMap = new AdvancedTranslatableComboBox<>();
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourChanges;
@@ -343,14 +343,13 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.block_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel forgeProperties = new JPanel(new GridLayout(5, 2, 20, 2));
+		JPanel forgeProperties = new JPanel(new GridLayout(4, 2, 20, 2));
 		forgeProperties.setOpaque(false);
 
 		luminosity.setOpaque(false);
 		density.setOpaque(false);
 		viscosity.setOpaque(false);
 		temperature.setOpaque(false);
-		isGas.setOpaque(false);
 		ComponentUtils.deriveFont(luminosity, 16);
 		ComponentUtils.deriveFont(density, 16);
 		ComponentUtils.deriveFont(viscosity, 16);
@@ -371,10 +370,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		forgeProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/temperature"),
 				L10N.label("elementgui.fluid.temperature")));
 		forgeProperties.add(temperature);
-
-		forgeProperties.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("fluid/is_gas"), L10N.label("elementgui.fluid.is_gas")));
-		forgeProperties.add(PanelUtils.centerInPanel(isGas));
 
 		forgeProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -500,7 +495,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		density.setValue(fluid.density);
 		viscosity.setValue(fluid.viscosity);
 		temperature.setValue(fluid.temperature);
-		isGas.setSelected(fluid.isGas);
 		generateBucket.setSelected(fluid.generateBucket);
 		textureBucket.setTextureFromTextureName(fluid.textureBucket);
 		emptySound.setSound(fluid.emptySound);
@@ -557,7 +551,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.density = (int) density.getValue();
 		fluid.viscosity = (int) viscosity.getValue();
 		fluid.temperature = (int) temperature.getValue();
-		fluid.isGas = isGas.isSelected();
 		fluid.generateBucket = generateBucket.isSelected();
 		fluid.textureBucket = textureBucket.getID();
 		fluid.emptySound = emptySound.getSound();

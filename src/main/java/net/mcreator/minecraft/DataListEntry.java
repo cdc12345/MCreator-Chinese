@@ -124,9 +124,13 @@ public class DataListEntry implements Comparable<DataListEntry> {
 	@Override public int compareTo(DataListEntry o) {
 		String a = this.getReadableName();
 		String b = o.getReadableName();
-		if (a.startsWith("CUSTOM:") && !b.startsWith("CUSTOM:"))
+
+		String a_ = this.getName();
+		String b_ = o.getName();
+
+		if (a_.startsWith("CUSTOM:") && !b_.startsWith("CUSTOM:"))
 			return -1;
-		else if (!a.startsWith("CUSTOM:") && b.startsWith("CUSTOM:"))
+		else if (!a_.startsWith("CUSTOM:") && b_.startsWith("CUSTOM:"))
 			return 1;
 		return a.compareToIgnoreCase(b);
 	}

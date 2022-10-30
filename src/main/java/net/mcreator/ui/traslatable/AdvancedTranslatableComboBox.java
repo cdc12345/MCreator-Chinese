@@ -172,19 +172,32 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 
 			int size = 32;
 
+			//如果为default
+			if (name.equals("default")){
+				result.setIcon(new ImageIcon(ImageUtils.resize(
+						UIRES.getImageFromResourceID("datalists/icons/BARRIER.png").getImage(),size)));
+				return result;
+			}
 			//如果名字为颜色单词,那么就自动配图 比如 red 配纯红色
 			try {
 				Color color = (Color) Color.class.getField(name).get(null);
 				result.setIcon(ImageUtils.colorize(
 						new ImageIcon(new BufferedImage(size,size,BufferedImage.TYPE_INT_RGB)),color,true));
 				return result;
-			} catch (IllegalAccessException | NoSuchFieldException ignore) {}
+			} catch (IllegalAccessException | NoSuchFieldException ignore) {
+				Map<String,Color> extraColors = Map.of("purple",new Color(128,0,128),"gold",new Color(255,215,0));
+				Color color = extraColors.get(name);
+				if (color != null) {
+					result.setIcon(ImageUtils.colorize(
+							new ImageIcon(new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB)), color, true));
+					return result;
+				}
+			}
 
 			//datalist
 			Set<String> images = PluginLoader.INSTANCE.getResources("datalists.icons",Pattern.compile("(?i)"+name+"\\.png"));
 			if (images != null){
 				for (String image:images) {
-					LOGGER.info(image);
 					try {
 						ImageIcon icon = new ImageIcon(ImageUtils.resize(
 								UIRES.getImageFromResourceID(image).getImage(),size));
