@@ -30,6 +30,7 @@ public class FolderElement implements IElement {
 	public static final FolderElement ROOT = new FolderElement("~", null);
 
 	private String name;
+	private String anotherName;
 	protected List<FolderElement> children;
 
 	// Must not be serialized due to circular references!
@@ -99,6 +100,17 @@ public class FolderElement implements IElement {
 
 	public void setName(Workspace workspace, String name) {
 		doActionAndReassignRecursive(workspace, () -> this.name = name);
+	}
+
+	public void setAnotherName(String anotherName){
+		this.anotherName = anotherName;
+	}
+
+	@Override public String getDisplayName(){
+		if (anotherName == null)
+			return name;
+		else
+			return anotherName;
 	}
 
 	private void doActionAndReassignRecursive(Workspace workspace, Runnable action) {
@@ -186,4 +198,7 @@ public class FolderElement implements IElement {
 		};
 	}
 
+	public String getAnotherName() {
+		return anotherName;
+	}
 }

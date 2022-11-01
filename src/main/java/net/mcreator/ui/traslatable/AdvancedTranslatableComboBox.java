@@ -20,6 +20,8 @@
 package net.mcreator.ui.traslatable;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
@@ -37,6 +39,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -113,7 +116,7 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 		if (matchString != null) {
 			String origin = matchString.apply(value);
 			if (strDiction == null)
-				return pool.getValue(nameSpace,origin)+((displayEnglish)?"(" + origin+")":"");
+				return pool.getValue(nameSpace,origin)+(displayEnglish?"(" + origin+")":"");
 			else {
 				String nameSpace = "zh";
 				return pool.getValue(nameSpace, strDiction.getOrDefault(origin,origin)) + ((displayEnglish) ?
@@ -144,6 +147,10 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 			});
 		}
 
+
+		static Map<String,MCItem> itemMap;
+		static Map<String,Icon> iconMap = new HashMap<>();
+
 		@Override
 		public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected,
 				boolean cellHasFocus) {
@@ -172,9 +179,19 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 
 			int size = 32;
 
+			if (iconMap.containsKey(name)) {
+				result.setIcon(iconMap.get(name));
+				return result;
+			}
+
+			if (itemMap == null) {
+				itemMap = new HashMap<>();
+				List<MCItem> items = ElementUtil.loadBlocksAndItems(null);
+				items.forEach(a->itemMap.put(a.getReadableName().toLowerCase(Locale.ROOT),a));
+			}
+
 			//如果为default
-			Map<String,String> spec = Map.of("default","datalists/icons/BARRIER.png","foliage","datalists/icons/LEAVES#0.png"
-			,"no tint","datalists/icons/BARRIER.png","flower","datalists/icons/RED_FLOWER#0.png","nether","datalists/icons/NETHERBRICK.png");
+			Map<String,String> spec = getDefault();
 			if (spec.containsKey(name)){
 				result.setIcon(new ImageIcon(ImageUtils.resize(
 						UIRES.getImageFromResourceID(spec.get(name)).getImage(),size)));
@@ -192,8 +209,16 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 				if (color != null) {
 					result.setIcon(ImageUtils.colorize(
 							new ImageIcon(new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB)), color, true));
+					iconMap.put(name,result.getIcon());
 					return result;
 				}
+			}
+			//mc item
+			MCItem item = itemMap.get(name.replace('_',' '));
+			if (item != null){
+				result.setIcon(item.icon);
+				iconMap.put(name,result.getIcon());
+				return result;
 			}
 
 			//datalists
@@ -204,6 +229,7 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 						ImageIcon icon = new ImageIcon(ImageUtils.resize(
 								UIRES.getImageFromResourceID(image).getImage(),size));
 						result.setIcon(icon);
+						iconMap.put(name,icon);
 						return result;
 					} catch (NullPointerException e) {
 						e.printStackTrace();
@@ -211,6 +237,20 @@ public class AdvancedTranslatableComboBox<T> extends JComboBox<T> {
 				}
 			}
 			return result;
+		}
+
+		private Map<String,String> getDefault(){
+			Map<String,String> spec =  new HashMap<>(
+					Map.of("default", "datalists/icons/BARRIER.png", "foliage", "datalists/icons/LEAVES#0.png",
+							"no tint", "datalists/icons/BARRIER.png", "flower", "datalists/icons/RED_FLOWER#0.png",
+							"nether", "datalists/icons/NETHERBRICK.png", "wood", "datalists/icons/OAK_WOOD.png"));
+			spec.put("plains","datalists/icons/GRASS.png");
+			spec.put("desert","datalists/icons/SAND#0.png");
+			spec.put("beach","datalists/icons/WATER.png");
+			spec.put("cave","datalists/icons/WEB.png");
+			spec.put("crop","datalists/icons/WHEAT.png");
+			spec.put("iron","datalists/icons/IRON_INGOT.png");
+			return spec;
 		}
 	}
 

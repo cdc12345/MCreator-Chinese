@@ -82,7 +82,7 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 
 			ImageIcon dva = null;
 
-			label.setText(element.getName());
+			label.setText(element.getDisplayName());
 			label.setText(StringUtils.abbreviate(label.getText(), 24));
 
 			if (element instanceof ModElement ma) {

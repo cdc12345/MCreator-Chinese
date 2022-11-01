@@ -81,7 +81,7 @@ public class WYSIWYGEditor extends JPanel {
 	public JButton slot2 = new JButton(UIRES.get("32px.addoutslot"));
 	public JButton checkbox = new JButton(UIRES.get("32px.addcheckbox"));
 
-	public AdvancedTranslatableComboBox<String> lol = new AdvancedTranslatableComboBox<>(new String[] { "GUI without slots", "GUI with slots" }," gui");
+	public AdvancedTranslatableComboBox<String> lol = new AdvancedTranslatableComboBox<>(new String[] { "GUI without slots", "GUI with slots" },"gui");
 
 	private boolean opening = false;
 

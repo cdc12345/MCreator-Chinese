@@ -942,6 +942,23 @@ import java.util.stream.Collectors;
 			}
 		});
 
+		editDescription.addActionListener(e ->{
+			IElement mu = list.getSelectedValue();
+			if (mu instanceof  ModElement element){
+				element.setDescription(JOptionPane.showInputDialog(WorkspacePanel.this,"输入描述","修改描述",JOptionPane.INFORMATION_MESSAGE));
+				mcreator.getWorkspace().updateModElement(element);
+			}
+		});
+
+		editAnotherName.addActionListener(e -> {
+			if (list.getSelectedValue() instanceof ModElement element){
+				element.setAnotherName(JOptionPane.showInputDialog(WorkspacePanel.this,"输入别名",element.getAnotherName()));
+				mcreator.getWorkspace().updateModElement(element);
+			} else if (list.getSelectedValue() instanceof FolderElement folderElement){
+				folderElement.setAnotherName(JOptionPane.showInputDialog(WorkspacePanel.this,"输入别名",folderElement.getAnotherName()));
+			}
+		});
+
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
 		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
 		addElementFolder.addActionListener(e -> addNewFolder());
@@ -964,6 +981,8 @@ import java.util.stream.Collectors;
 		contextMenu.add(duplicateElement);
 		contextMenu.add(lockElement);
 		contextMenu.add(idElement);
+		contextMenu.add(editDescription);
+		contextMenu.add(editAnotherName);
 
 		updateElementListRenderer();
 	}
@@ -1548,7 +1567,9 @@ import java.util.stream.Collectors;
 						for (String key : keyWords) {
 							boolean match = (item.getName().toLowerCase(Locale.ENGLISH)
 									.contains(key.toLowerCase(Locale.ENGLISH))) || (item.getType().getReadableName()
-									.toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)));
+									.toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH))) ||
+									(Objects.requireNonNullElse(item.getDescription(),"").toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)))||(Objects.requireNonNullElse(item.getAnotherName(),"").toLowerCase(
+									Locale.ROOT).contains(key.toLowerCase(Locale.ROOT)));
 							if (match)
 								return true;
 						}

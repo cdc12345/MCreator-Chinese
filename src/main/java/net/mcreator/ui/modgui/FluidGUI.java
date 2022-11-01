@@ -151,7 +151,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 
 		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				"Additional generation condition", VariableTypeLoader.BuiltInTypes.LOGIC,
+				"追加生成条件", VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 

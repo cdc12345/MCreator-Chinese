@@ -59,7 +59,7 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 				setOpaque(false);
 			}
 
-			label.setText(StringUtils.abbreviateString(element.getName(), 25));
+			label.setText(StringUtils.abbreviateString(element.getDisplayName(), 25));
 			label.setFont(MCreatorTheme.secondary_font.deriveFont(19.0f));
 
 			ImageIcon dva = null;

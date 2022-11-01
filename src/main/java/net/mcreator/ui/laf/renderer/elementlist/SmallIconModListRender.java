@@ -62,7 +62,7 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 				setOpaque(false);
 			}
 
-			label.setText(StringUtils.abbreviateString(element.getName(), 24));
+			label.setText(StringUtils.abbreviateString(element.getDisplayName(), 24));
 			label.setFont(MCreatorTheme.secondary_font.deriveFont(18.0f));
 
 			ImageIcon dva = null;

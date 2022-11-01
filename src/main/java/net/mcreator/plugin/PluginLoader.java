@@ -257,7 +257,7 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	private void checkForPluginUpdates() {
-		if (MCreatorApplication.isInternet) {
+		if (MCreatorApplication.isInternet&&PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates) {
 			pluginUpdates.addAll(plugins.stream().parallel().map(plugin -> {
 				if (plugin.getInfo().getUpdateJSONURL() != null) {
 					if (!plugin.getInfo().getVersion().equals(PluginInfo.VERSION_NOT_SPECIFIED)) {

@@ -34,7 +34,6 @@ import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.image.ImageUtils;
-import org.apache.commons.text.translate.NumericEntityUnescaper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,12 +42,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -408,9 +404,13 @@ public class PreferencesDialog extends MCreatorDialog {
 		return null;
 	}
 
+	boolean noWrong;
 	public void markChanged() {
 		if (getCurrentSection() == 0){
-			needRestart = true;
+			if (noWrong)
+				needRestart = true;
+			else
+				noWrong = true;
 		}
 		apply.setEnabled(true);
 	}

@@ -96,7 +96,8 @@ public class ElementUtil {
 	 */
 	public static List<MCItem> loadBlocksAndItems(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
-		workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
+		if (workspace != null)
+			workspace.getModElements().forEach(modElement -> elements.addAll(modElement.getMCItems()));
 		elements.addAll(
 				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
 						.map(e -> (MCItem) e).filter(MCItem::hasNoSubtypes).toList());

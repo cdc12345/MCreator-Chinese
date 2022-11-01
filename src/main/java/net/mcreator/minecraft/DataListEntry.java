@@ -140,6 +140,7 @@ public class DataListEntry implements Comparable<DataListEntry> {
 	}
 
 	public boolean isSupportedInWorkspace(Workspace workspace) {
+		if (workspace == null) return true;
 		if (required_apis != null) {
 			for (String required_api : required_apis) {
 				if (!workspace.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
