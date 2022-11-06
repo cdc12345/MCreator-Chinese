@@ -21,12 +21,14 @@ package net.mcreator.preferences;
 import net.mcreator.gradle.GradleUtils;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
 import net.mcreator.ui.laf.MCreatorTheme;
 
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 
 public class PreferencesData {
@@ -141,7 +143,7 @@ public class PreferencesData {
 	}
 
 	public static class ExternalSettings{
-		@PreferencesEntry(arrayData = {"百度","Kate","Han"})
+		@PreferencesEntry(arrayData = {"Han"})
 		public String translatorEngine = "Han";
 	}
 
@@ -154,6 +156,8 @@ public class PreferencesData {
 		public String uiTheme = "default_dark";
 		public boolean enableJavaPlugins = false;
 		public boolean acceptRules = false;
+		public HashSet<String> javaHomes = new HashSet<>();
+		public HashSet<String> gradleHomes = new HashSet<>();
 	}
 
 	public enum WorkspaceSortType {

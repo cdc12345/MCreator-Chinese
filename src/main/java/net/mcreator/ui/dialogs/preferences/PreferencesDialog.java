@@ -23,7 +23,6 @@ import net.mcreator.preferences.PreferencesData;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
-import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -32,7 +31,7 @@ import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -327,13 +326,45 @@ public class PreferencesDialog extends MCreatorDialog {
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(File.class)){
-			File currentSelected = (File) value;
-			VTextField path = new VTextField();
+			VComboBox<String> path = new VComboBox<>();
 			if (actualField.getName().equals("java_home")) {
-				path.setValidator(new Validator() {
+				HashSet<String> javaHomes = PreferencesManager.PREFERENCES.hidden.javaHomes;
+				if (javaHomes.size()==0){
+					javaHomes.add(String.valueOf(PreferencesManager.PREFERENCES.gradle.java_home));
+				}
+				path.setModel(new DefaultComboBoxModel<>(){
+					@Override public int getSize() {
+						return javaHomes.size();
+					}
 
+					@Override public String getElementAt(int index) {
+						return javaHomes.toArray(new String[0])[index];
+					}
+				});
+				path.setRenderer(new DefaultListCellRenderer(){
+					@Override
+					public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+							boolean isSelected, boolean cellHasFocus) {
+						setOpaque(true);
+						setHorizontalAlignment(LEFT);
+						setVerticalAlignment(CENTER);
+						if (isSelected) {
+							setBackground(list.getSelectionBackground());
+							setForeground(list.getSelectionForeground());
+						} else {
+							setBackground(list.getBackground());
+							setForeground(list.getForeground());
+						}
+						super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+						setText("Java "+GradleUtils.getJavaVersion(value.toString()));
+						setToolTipText(value.toString());
+						return this;
+					}
+				});
+				path.setValidator(new Validator() {
 					@Override public ValidationResult validateIfEnabled(IValidable validable) {
-						if (GradleUtils.isJDK(path.getText())) {
+						if (GradleUtils.isJDK(path.getSelectedItem())) {
+							PreferencesManager.PREFERENCES.hidden.javaHomes.add(path.getSelectedItem());
 							return new ValidationResult(ValidationResultType.PASSED, "检查通过");
 						} else {
 							return new ValidationResult(ValidationResultType.ERROR, "请检查是否为java_home,如果是则请检查是否为jdk");
@@ -345,9 +376,24 @@ public class PreferencesDialog extends MCreatorDialog {
 					}
 				});
 			} else if (actualField.getName().equals("gradleHome")){
+				HashSet<String> gradleHomes = PreferencesManager.PREFERENCES.hidden.gradleHomes;
+				if (gradleHomes.size() == 0){
+					gradleHomes.add(PreferencesManager.PREFERENCES.gradle.gradleHome.getPath());
+				}
+				path.setRenderer(new DefaultListCellRenderer());
+				path.setModel(new DefaultComboBoxModel<>(){
+					@Override public String getElementAt(int index) {
+						return PreferencesManager.PREFERENCES.hidden.gradleHomes.toArray()[index].toString();
+					}
+
+					@Override public int getSize() {
+						return PreferencesManager.PREFERENCES.hidden.gradleHomes.size();
+					}
+				});
 				path.setValidator(new Validator() {
 
 					@Override public ValidationResult validateIfEnabled(IValidable validable) {
+						gradleHomes.add(path.getSelectedItem());
 						return Validator.super.validateIfEnabled(validable);
 					}
 
@@ -356,16 +402,18 @@ public class PreferencesDialog extends MCreatorDialog {
 					}
 				});
 			}
-			path.setText(Optional.ofNullable(value).orElse("null").toString());
+			path.setEditable(true);
+			path.setSelectedItem(Optional.ofNullable(value).orElse("null").toString());
 			path.addKeyListener(new KeyAdapter() {
 				@Override public void keyPressed(KeyEvent e) {
 					markChanged();
 				}
 			});
 			JButton button = new JButton("...");
+			Object finalValue = value;
 			button.addActionListener(a->{
 				var fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(currentSelected);
+				fileChooser.setCurrentDirectory(((File) finalValue).getParentFile());
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				fileChooser.setMultiSelectionEnabled(false);
 				var state = fileChooser.showOpenDialog(this);
@@ -374,7 +422,7 @@ public class PreferencesDialog extends MCreatorDialog {
 					if (!path1.isAbsolute()){
 						path1 = new File(path1.getAbsolutePath());
 					}
-					path.setText(path1.toString());
+					path.setSelectedItem(path1.toString());
 					path.getValidationStatus();
 					markChanged();
 				}
@@ -399,7 +447,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		} else if (type.equals(Locale.class)) {
 			return ((JComboBox<?>) value).getSelectedItem();
 		} else if (type.equals(File.class)){
-			return new File(((VTextField)value).getText());
+			return new File(Objects.requireNonNull(((VComboBox<String>) value).getSelectedItem()));
 		}
 		return null;
 	}

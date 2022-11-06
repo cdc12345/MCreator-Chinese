@@ -30,10 +30,15 @@ import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.ProjectConnection;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GradleUtils {
 
@@ -74,11 +79,20 @@ public class GradleUtils {
 	}
 
 	public static String getJavaHome() {
-
 		if (PreferencesManager.PREFERENCES.gradle.java_home != null) {
 			return PreferencesManager.PREFERENCES.gradle.java_home.getPath();
 		}
 		return getDefaultJavaHome();
+	}
+
+	public static String getJavaHome(int version){
+		String java = getJavaHome();
+		if (getJavaVersion(java)==version){
+			return java;
+		} else {
+			return PreferencesManager.PREFERENCES.hidden.javaHomes.stream()
+					.filter(a->getJavaVersion(a)==version).findFirst().orElse(java);
+		}
 	}
 
 	public static String getDefaultJavaHome(){
@@ -102,7 +116,6 @@ public class GradleUtils {
 	}
 
 	public static boolean isJDK(String path){
-		LOG.info(path);
 		return new File(path, "bin/java.exe").exists() && new File(path,
 				"bin/javac.exe").exists();
 	}
@@ -125,6 +138,37 @@ public class GradleUtils {
 			FileIO.writeStringToFile(mcreatorGradleConfBuilder.toString(),
 					new File(workspace.getWorkspaceFolder(), "mcreator.gradle"));
 		}
+	}
+	private static final HashMap<String,Integer> cache_javaVersion = new HashMap<>();
+	public static Integer getJavaVersion(String javaHome)  {
+		if (!isJDK(javaHome)){
+			return 0;
+		}
+		if (cache_javaVersion.containsKey(javaHome)){
+			return cache_javaVersion.get(javaHome);
+		}
+		int result;
+		try {
+			String javaExeString = javaHome + "\\bin\\java.exe";
+			Process process = Runtime.getRuntime().exec(javaExeString + " -version");
+			process.waitFor();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String firstLineString = reader.readLine();
+			Matcher matcher = Pattern.compile("version \"(?<version>.+)\"").matcher(firstLineString);
+			matcher.find();
+			String versionString = matcher.group("version");
+			if (versionString.startsWith("1.")) {
+				result = Integer.parseInt(versionString.split("\\.")[1]);
+			} else if (versionString.contains(".")) {
+				result =  Integer.parseInt(versionString.split("\\.")[0]);
+			} else {
+				result = Integer.parseInt(versionString);
+			}
+		} catch (Exception ignore){
+			return 0;
+		}
+		cache_javaVersion.put(javaHome,result);
+		return result;
 	}
 
 	public static void cleanupEnvironment(Map<String, String> environment) {

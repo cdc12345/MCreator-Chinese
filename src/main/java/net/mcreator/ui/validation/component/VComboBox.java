@@ -91,6 +91,9 @@ public class VComboBox<T> extends JComboBox<T> implements IValidable {
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+			if (value == null){
+				return this;
+			}
 			TranslatablePool pool = TranslatablePool.getPool();
 			setText(pool.getValue(value.toString())+"("+value+")".trim());
 			return this;

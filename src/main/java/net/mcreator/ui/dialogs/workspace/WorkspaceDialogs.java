@@ -25,6 +25,7 @@ import net.mcreator.gradle.GradleUtils;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.api.ModAPIImplementation;
 import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
@@ -36,6 +37,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidatorJSON;
@@ -139,7 +141,7 @@ public class WorkspaceDialogs {
 		JTextField requiredMods = new JTextField(24);
 		JTextField dependencies = new JTextField(24);
 		JTextField dependants = new JTextField(24);
-		VTextField javaHome = new VTextField(24);
+		VComboBox<String> javaHome = new VComboBox<>();
 		JButton selectJavaHome = new JButton("...");
 
 		JComboBox<String> license = new JComboBox<>(
@@ -343,8 +345,15 @@ public class WorkspaceDialogs {
 						(GeneratorConfiguration) generator.getSelectedItem(),
 						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter,
 						workspace == null);
-				if (gc != null)
+				if (gc != null) {
 					generator.setSelectedItem(gc);
+					String genName = ((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName();
+					if (genName.contains("1.16.5")){
+						javaHome.setSelectedItem(GradleUtils.getJavaHome(8));
+					} else {
+						javaHome.setSelectedItem(GradleUtils.getJavaHome(17));
+					}
+				}
 			});
 
 			generator.addMouseListener(new MouseAdapter() {
@@ -353,8 +362,17 @@ public class WorkspaceDialogs {
 							(GeneratorConfiguration) generator.getSelectedItem(), workspace != null ?
 									workspace.getGeneratorConfiguration().getGeneratorFlavor() :
 									flavorFilter, workspace == null);
-					if (gc != null)
+					if (gc != null) {
 						generator.setSelectedItem(gc);
+						String genName = ((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName();
+						if (genName.contains("1.16.5")){
+							javaHome.setSelectedItem(GradleUtils.getJavaHome(8));
+						} else if (genName.contains("1.17")) {
+							javaHome.setSelectedItem(GradleUtils.getJavaHome(16));
+						} else {
+							javaHome.setSelectedItem(GradleUtils.getJavaHome(17));
+						}
+					}
 				}
 			});
 
@@ -509,8 +527,41 @@ public class WorkspaceDialogs {
 			advancedSettings.add(lockBaseModFiles);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
 			advancedSettings.add(updateJSON);
+			if (PreferencesManager.PREFERENCES.hidden.javaHomes.size() == 0){
+				PreferencesManager.PREFERENCES.hidden.javaHomes.add(PreferencesManager.PREFERENCES.gradle.java_home.getPath());
+			}
+			javaHome.setEditable(true);
+			javaHome.setModel(new DefaultComboBoxModel<>(){
+				@Override public int getSize() {
+					return PreferencesManager.PREFERENCES.hidden.javaHomes.size();
+				}
+
+				@Override public String getElementAt(int index) {
+					return PreferencesManager.PREFERENCES.hidden.javaHomes.toArray()[index].toString();
+				}
+			});
+			javaHome.setRenderer(new DefaultListCellRenderer(){
+				@Override
+				public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+						boolean isSelected, boolean cellHasFocus) {
+					setOpaque(true);
+					setHorizontalAlignment(CENTER);
+					setVerticalAlignment(CENTER);
+					if (isSelected) {
+						setBackground(list.getSelectionBackground());
+						setForeground(list.getSelectionForeground());
+					} else {
+						setBackground(list.getBackground());
+						setForeground(list.getForeground());
+					}
+					super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+					setText("Java "+GradleUtils.getJavaVersion(value.toString()));
+					setToolTipText(value.toString());
+					return this;
+				}
+			});
 			selectJavaHome.addActionListener(a->{
-				var currentSelected = new File(javaHome.getText()).getParentFile();
+				var currentSelected = new File(Objects.requireNonNull(javaHome.getSelectedItem())).getParentFile();
 				var fileChooser = new JFileChooser();
 				fileChooser.setCurrentDirectory(currentSelected);
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -521,14 +572,14 @@ public class WorkspaceDialogs {
 					if (!path1.isAbsolute()){
 						path1 = new File(path1.getAbsolutePath());
 					}
-					javaHome.setText(path1.toString());
+					javaHome.setSelectedItem(path1.toString());
 					javaHome.getValidationStatus();
 				}
 			});
 			javaHome.enableRealtimeValidation();
 			javaHome.setValidator(()-> {
-				if (new File(javaHome.getText(), "bin/java.exe").exists() && new File(javaHome.getText(),
-						"bin/javac.exe").exists()) {
+				if (GradleUtils.isJDK(javaHome.getSelectedItem())) {
+					PreferencesManager.PREFERENCES.hidden.javaHomes.add(javaHome.getSelectedItem());
 					return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "检查通过");
 				} else {
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
@@ -537,9 +588,9 @@ public class WorkspaceDialogs {
 			});
 			JPanel setJava = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			if (workspace != null)
-				javaHome.setText(workspace.getWorkspaceSettings().getJavaHome().getPath());
+				javaHome.setSelectedItem(workspace.getWorkspaceSettings().getJavaHome().getPath());
 			else
-				javaHome.setText("");
+				javaHome.setSelectedItem("");
 			setJava.add(javaHome);
 			setJava.add(selectJavaHome);
 			advancedSettings.add(L10N.label("preferences.gradle.java_home"));
@@ -598,7 +649,7 @@ public class WorkspaceDialogs {
 
 		public WorkspaceSettings getWorkspaceSettings(@Nullable Workspace workspace) {
 			WorkspaceSettings retVal = new WorkspaceSettings(modID.getText());
-			retVal.setJavaHome(new File(javaHome.getText()));
+			retVal.setJavaHome(new File(Objects.requireNonNull(javaHome.getSelectedItem())));
 			retVal.setWorkspace(workspace);
 			retVal.setModName(modName.getText());
 			retVal.setVersion(version.getText());

@@ -62,7 +62,7 @@ public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
 
 		add(new JEmptyBox(30,30));
 
-		workspaceDialogPanel.javaHome.setText(GradleUtils.getJavaHome());
+		workspaceDialogPanel.javaHome.setSelectedItem(GradleUtils.getJavaHome());
 
 		add(PanelUtils.westAndEastElement(new JLabel("项目Java"),PanelUtils.centerAndEastElement(workspaceDialogPanel.javaHome,
 				workspaceDialogPanel.selectJavaHome,5,5)));

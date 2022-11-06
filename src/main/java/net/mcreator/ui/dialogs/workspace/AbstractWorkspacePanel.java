@@ -25,6 +25,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.WorkspaceFolderManager;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -46,8 +47,6 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 	protected final ValidationGroup validationGroup = new ValidationGroup();
 	protected final VTextField workspaceFolder = new VTextField();
 	protected final JButton selectWorkspaceFolder = new JButton("...");
-	protected final VTextField workspaceJavaHome = new VTextField();
-	protected final JButton selectWorkspaceJavaHome = new JButton("...");
 
 	private boolean workspaceFolderAltered = false;
 
@@ -79,34 +78,9 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 			}
 		});
 
-		workspaceJavaHome.setText(PreferencesManager.PREFERENCES.gradle.java_home.getPath());
-		workspaceJavaHome.enableRealtimeValidation();
-
-		workspaceJavaHome.setValidator(()->{
-				if (new File(workspaceJavaHome.getText(), "bin/java.exe").exists() && new File(workspaceJavaHome.getText(),
-						"bin/javac.exe").exists()) {
-					return new Validator.ValidationResult(Validator.ValidationResultType.PASSED, "检查通过");
-				} else {
-					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, "请检查是否为java_home,如果是则请检查是否为jdk");
-				}
-		});
-
-		selectWorkspaceJavaHome.addActionListener(a->{
-			var currentSelected = new File(workspaceJavaHome.getText()).getParentFile();
-			var fileChooser = new JFileChooser();
-			fileChooser.setCurrentDirectory(currentSelected);
-			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			fileChooser.setMultiSelectionEnabled(false);
-			var state = fileChooser.showOpenDialog(this);
-			if (state == JFileChooser.APPROVE_OPTION) {
-				var path1 = fileChooser.getSelectedFile();
-				if (!path1.isAbsolute()){
-					path1 = new File(path1.getAbsolutePath());
-				}
-				workspaceJavaHome.setText(path1.toString());
-				workspaceJavaHome.getValidationStatus();
-			}
-		});
+		if (PreferencesManager.PREFERENCES.hidden.javaHomes.size()==0){
+			PreferencesManager.PREFERENCES.hidden.javaHomes.add(PreferencesManager.PREFERENCES.gradle.java_home.getPath());
+		}
 
 		workspaceFolder.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent keyEvent) {
