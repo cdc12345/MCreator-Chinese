@@ -44,6 +44,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 	private final WorkspacePanel workspacePanel;
 
 	private final FilterModel listmodel = new FilterModel();
+	JSelectableList<SoundElement> soundElementList;
 
 	WorkspacePanelSounds(WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
@@ -51,7 +52,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 		this.workspacePanel = workspacePanel;
 
-		JSelectableList<SoundElement> soundElementList = new JSelectableList<>(listmodel);
+		soundElementList = new JSelectableList<>(listmodel);
 		soundElementList.setOpaque(false);
 		soundElementList.setCellRenderer(new Render());
 		soundElementList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -101,7 +102,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		ActionListener actionListener = actionEvent -> {
+		ActionListener delListener= actionEvent -> {
 			List<SoundElement> file = soundElementList.getSelectedValuesList();
 			if (file.size() > 0) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
@@ -113,7 +114,15 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 				}
 			}
 		};
-		del.addActionListener(actionListener);
+		del.addActionListener(delListener);
+		soundElementList.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				super.keyPressed(e);
+				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+					delListener.actionPerformed(null);
+				}
+			}
+		});
 
 		JButton play = L10N.button("workspace.sounds.play_selected");
 		play.setIcon(UIRES.get("16px.play"));

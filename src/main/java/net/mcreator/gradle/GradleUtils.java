@@ -140,14 +140,41 @@ public class GradleUtils {
 		}
 	}
 	private static final HashMap<String,Integer> cache_javaVersion = new HashMap<>();
+	private static final Thread javaFresh = new Thread(()->{
+		while (true){
+			try {
+				Thread.sleep(1000L * 6);
+				for (String javaHome:cache_javaVersion.keySet()){
+					int result = getJavaVersion0(javaHome);
+					if (result == 0){
+						cache_javaVersion.remove(javaHome);
+						PreferencesManager.PREFERENCES.hidden.javaHomes.remove(javaHome);
+						continue;
+					}
+					cache_javaVersion.put(javaHome,result);
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (Exception ignore){}
+		}
+	});
 	public static Integer getJavaVersion(String javaHome)  {
-		if (!isJDK(javaHome)){
-			return 0;
+		if (javaFresh.getState() == Thread.State.NEW){
+			javaFresh.setDaemon(true);
+			javaFresh.start();
 		}
 		if (cache_javaVersion.containsKey(javaHome)){
 			return cache_javaVersion.get(javaHome);
 		}
-		int result;
+		int result = getJavaVersion0(javaHome);
+		cache_javaVersion.put(javaHome,result);
+		return result;
+	}
+
+	public static Integer getJavaVersion0(String javaHome){
+		if (!isJDK(javaHome)){
+			return 0;
+		}
 		try {
 			String javaExeString = javaHome + "\\bin\\java.exe";
 			Process process = Runtime.getRuntime().exec(javaExeString + " -version");
@@ -158,17 +185,16 @@ public class GradleUtils {
 			matcher.find();
 			String versionString = matcher.group("version");
 			if (versionString.startsWith("1.")) {
-				result = Integer.parseInt(versionString.split("\\.")[1]);
+				return Integer.parseInt(versionString.split("\\.")[1]);
 			} else if (versionString.contains(".")) {
-				result =  Integer.parseInt(versionString.split("\\.")[0]);
+				return Integer.parseInt(versionString.split("\\.")[0]);
 			} else {
-				result = Integer.parseInt(versionString);
+				return Integer.parseInt(versionString);
 			}
 		} catch (Exception ignore){
 			return 0;
 		}
-		cache_javaVersion.put(javaHome,result);
-		return result;
+
 	}
 
 	public static void cleanupEnvironment(Map<String, String> environment) {

@@ -80,6 +80,7 @@ public class PreferencesData {
 		@PreferencesEntry public boolean checkAndNotifyForPatches = true;
 		@PreferencesEntry public boolean checkAndNotifyForPluginUpdates = false;
 		@PreferencesEntry public boolean notifyLogsTooMore = true;
+		@PreferencesEntry public boolean notifyCopyTranslation = true;
 
 	}
 
@@ -143,8 +144,10 @@ public class PreferencesData {
 	}
 
 	public static class ExternalSettings{
-		@PreferencesEntry(arrayData = {"Han"})
+		@PreferencesEntry(arrayData = {" 禁用","Han"})
 		public String translatorEngine = "Han";
+		@PreferencesEntry
+		public boolean enableCopyTranslation = false;
 	}
 
 	public static class HiddenPreferences {

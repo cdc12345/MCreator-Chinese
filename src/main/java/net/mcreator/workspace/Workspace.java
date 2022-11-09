@@ -160,7 +160,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		// we always update default localization
 		language_map.get("en_us").put(key, TranslatorUtils.translateCNToEN(value));
 		if (language_map.get("zh_cn") != null)
-			language_map.get("zh_cn").put(key,value);
+			language_map.get("zh_cn").put(key,TranslatorUtils.translateENToCN(value));
 
 		// add localization to others if existing if there is not existing definition present
 		for (Map.Entry<String, ConcurrentHashMap<String, String>> entry : language_map.entrySet())

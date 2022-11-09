@@ -52,6 +52,7 @@ import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.SoundUtils;
+import net.mcreator.util.locale.TranslatorUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
@@ -102,6 +103,7 @@ public final class MCreatorApplication {
 		LOG.info("正在于官网联系");
 		isInternet = MCreatorApplication.WEB_API.initAPI();
 		TranslatablePool.getPool();
+		TranslatorUtils.initCopyTranslation();
 
 		splashScreen.setProgress(5, "正在载入插件");
 

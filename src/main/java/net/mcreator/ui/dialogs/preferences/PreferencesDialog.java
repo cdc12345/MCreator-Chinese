@@ -29,6 +29,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -44,6 +45,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -326,6 +329,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
 			return box;
 		} else if (actualField.getType().equals(File.class)){
+			JButton clear = new JButton(UIRES.get("16px.delete.gif"));
 			VComboBox<String> path = new VComboBox<>();
 			if (actualField.getName().equals("java_home")) {
 				HashSet<String> javaHomes = PreferencesManager.PREFERENCES.hidden.javaHomes;
@@ -375,6 +379,9 @@ public class PreferencesDialog extends MCreatorDialog {
 						return null;
 					}
 				});
+				clear.addActionListener(e -> {
+					PreferencesManager.PREFERENCES.hidden.javaHomes.clear();
+				});
 			} else if (actualField.getName().equals("gradleHome")){
 				HashSet<String> gradleHomes = PreferencesManager.PREFERENCES.hidden.gradleHomes;
 				if (gradleHomes.size() == 0){
@@ -401,7 +408,13 @@ public class PreferencesDialog extends MCreatorDialog {
 						return null;
 					}
 				});
+				clear.addActionListener(a->{
+					PreferencesManager.PREFERENCES.hidden.gradleHomes.clear();
+				});
 			}
+			clear.addActionListener(a->{
+				JOptionPane.showMessageDialog(this,"已经执行操作","清除历史记录提示",JOptionPane.WARNING_MESSAGE);
+			});
 			path.setEditable(true);
 			path.setSelectedItem(Optional.ofNullable(value).orElse("null").toString());
 			path.addKeyListener(new KeyAdapter() {
@@ -427,7 +440,8 @@ public class PreferencesDialog extends MCreatorDialog {
 					markChanged();
 				}
 			});
-			placeInside.add(PanelUtils.westAndEastElement(label, PanelUtils.centerAndEastElement(path,button)), cons);
+			placeInside.add(PanelUtils.westAndEastElement(label,
+					PanelUtils.centerAndEastElement(path,PanelUtils.westAndEastElement(button,clear))), cons);
 			return path;
 		}
 

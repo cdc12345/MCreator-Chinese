@@ -44,6 +44,7 @@ import java.io.File;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 public class WorkspacePanelTextures extends JPanel implements IReloadableFilterable {
 
@@ -56,6 +57,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private final MouseAdapter mouseAdapter;
 
 	private final WorkspacePanelTextures.Render textureRender = new Render();
+	private final ActionListener delListener;
 
 	WorkspacePanelTextures(WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
@@ -173,7 +175,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(export);
 		export.addActionListener(e -> exportSelectedImages());
 
-		ActionListener actionListener = actionEvent -> {
+		delListener = actionEvent -> {
 			List<File> files = listGroup.getSelectedItemsList();
 			if (files.size() > 0) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
@@ -195,7 +197,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				}
 			}
 		};
-		del.addActionListener(actionListener);
+		del.addActionListener(delListener);
 
 
 		edit.addActionListener(e -> editSelectedFile());
@@ -241,6 +243,14 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		listElement.setFixedCellHeight(64);
 		listElement.setFixedCellWidth(57);
 		listElement.addMouseListener(mouseAdapter);
+		listElement.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				super.keyPressed(e);
+				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+					delListener.actionPerformed(null);
+				}
+			}
+		});
 		listGroup.addList(listElement);
 		listElement.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0), title, 0, 0,
 				listElement.getFont().deriveFont(24.0f), Color.white));

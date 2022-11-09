@@ -149,7 +149,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		del.setContentAreaFilled(false);
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
-		del.addActionListener(e -> {
+		ActionListener delListener = e -> {
 			Model model = modelList.getSelectedValue();
 			if (model != null) {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
@@ -161,7 +161,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					reloadElements();
 				}
 			}
-		});
+		};
+		del.addActionListener(delListener);
 
 		modelList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -172,6 +173,14 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					} else {
 						editSelectedModelTextureMappings();
 					}
+				}
+			}
+		});
+		modelList.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				super.keyPressed(e);
+				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+					delListener.actionPerformed(null);
 				}
 			}
 		});

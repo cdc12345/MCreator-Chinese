@@ -21,15 +21,19 @@ package net.mcreator.util.locale;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.util.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.*;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 import static org.apache.logging.log4j.core.util.NameUtil.md5;
@@ -45,7 +49,68 @@ import static org.apache.logging.log4j.core.util.NameUtil.md5;
 public class TranslatorUtils {
 	private static final Logger LOGGER = LogManager.getLogger("Translator");
 
+	public static void initCopyTranslation(){
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		Transferable contents= clipboard.getContents(new Object());
+		clipboard.setContents(contents, new ClipboardOwner() {
+			@Override public void lostOwnership(Clipboard clipboard1, Transferable contents1) {
+				LOGGER.info("监听到剪贴板变动");
+				var contents = clipboard1.getContents(new Object());
+				if (contents.isDataFlavorSupported(DataFlavor.stringFlavor)&& PreferencesManager.PREFERENCES.external.enableCopyTranslation) {
+					LOGGER.info("检查合法,开始翻译");
+					boolean tran = true;
+					try {
+						if (PreferencesManager.PREFERENCES.notifications.notifyCopyTranslation) {
+							tran = JOptionPane.showConfirmDialog(null,
+									"检测到剪贴板变化,是否翻译?内容为"+contents.getTransferData(DataFlavor.stringFlavor),"复制翻译提示",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+						}
+						if (tran){
+								clipboard.setContents(new StringSelection(
+										translateAuto(clipboard.getData(DataFlavor.stringFlavor).toString())), this);
+						}
+					} catch (UnsupportedFlavorException | IOException e) {
+						e.printStackTrace();
+					}
+				} else {
+					clipboard.setContents(contents, this);
+				}
+			}
+		});
+	}
+
+	public static String translateAuto(String origin){
+		if (StringUtils.isEnglish(origin))
+			return translateENToCN(origin);
+		else
+			return translateCNToEN(origin);
+	}
+
 	private static final HashMap<String,String> translation = new HashMap<>();
+	public static String translateENToCN(String origin){
+		if (origin == null) return "";
+		if (!StringUtils.isEnglish(origin)) return origin;
+		if (translation.containsKey(origin)) return translation.get(origin);
+		String result = origin;
+		try {
+			switch (PreferencesManager.PREFERENCES.external.translatorEngine) {
+			//				case "百度" -> result = translateBaidu(origin, "auto", "zh");
+			case "Kate" -> result = translateKate(origin);
+			case "Han" -> result = translateHan(origin);
+			default -> {
+				return result;
+			}
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,"翻译引擎异常,返回信息为"+e.getMessage(),"翻译引擎崩溃",JOptionPane.WARNING_MESSAGE);
+			return result;
+		}
+		LOGGER.info("翻译结果:"+result);
+		translation.put(origin,result);
+		translation.put(result,origin);
+		return result;
+	}
+
 	public static String translateCNToEN(String origin)  {
 		if (origin == null) return "";
 		if (StringUtils.isEnglish(origin)) return origin;
@@ -94,14 +159,14 @@ public class TranslatorUtils {
 	public static String translateKate(String origin) throws IOException {
 		LOGGER.info("使用kate翻译文本:"+origin);
 		String urlString = "https://api.66mz8.com/api/translation.php?info=%s";
-		URL url = new URL(String.format(urlString,origin));
+		URL url = new URL(String.format(urlString,URLEncoder.encode(origin, StandardCharsets.UTF_8)));
 		return new Gson().fromJson(new InputStreamReader(url.openStream()),JsonObject.class).get("fanyi").getAsString();
 	}
 
 	public static String translateHan(String origin) throws IOException {
 		LOGGER.info("正在使用Han翻译文本:"+origin);
 		String urlString = "https://api.vvhan.com/api/fy?text=%s";
-		URL url = new URL(String.format(urlString,origin));
+		URL url = new URL(String.format(urlString,URLEncoder.encode(origin,StandardCharsets.UTF_8)));
 		return new Gson().fromJson(new InputStreamReader(url.openStream()),JsonObject.class).getAsJsonObject("data").get("fanyi").getAsString();
 	}
 }

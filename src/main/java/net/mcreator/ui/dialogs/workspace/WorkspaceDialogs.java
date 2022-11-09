@@ -545,7 +545,7 @@ public class WorkspaceDialogs {
 				public Component getListCellRendererComponent(JList<?> list, Object value, int index,
 						boolean isSelected, boolean cellHasFocus) {
 					setOpaque(true);
-					setHorizontalAlignment(CENTER);
+					setHorizontalAlignment(LEFT);
 					setVerticalAlignment(CENTER);
 					if (isSelected) {
 						setBackground(list.getSelectionBackground());

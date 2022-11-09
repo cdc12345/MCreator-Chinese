@@ -44,7 +44,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 	private final WorkspacePanel workspacePanel;
 
 	private final FilterModel listmodel = new FilterModel();
-	private final JSelectableList<File> modelList = new JSelectableList<>(listmodel);
+	private final JSelectableList<File> screenshotsList = new JSelectableList<>(listmodel);
 
 	WorkspacePanelScreenshots(WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
@@ -52,13 +52,13 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 
 		this.workspacePanel = workspacePanel;
 
-		modelList.setOpaque(false);
-		modelList.setCellRenderer(new Render());
-		modelList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		modelList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		modelList.setVisibleRowCount(-1);
+		screenshotsList.setOpaque(false);
+		screenshotsList.setCellRenderer(new Render());
+		screenshotsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		screenshotsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		screenshotsList.setVisibleRowCount(-1);
 
-		JScrollPane sp = new JScrollPane(modelList);
+		JScrollPane sp = new JScrollPane(screenshotsList);
 		sp.setOpaque(false);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
@@ -94,12 +94,22 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		del.setContentAreaFilled(false);
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
-		del.addActionListener(e -> {
-			modelList.getSelectedValuesList().forEach(File::delete);
+		ActionListener delListener = e -> {
+			screenshotsList.getSelectedValuesList().forEach(File::delete);
 			reloadElements();
+		};
+		del.addActionListener(delListener);
+
+		screenshotsList.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				super.keyPressed(e);
+				if (e.getKeyCode() == KeyEvent.VK_DELETE){
+					delListener.actionPerformed(null);
+				}
+			}
 		});
 
-		modelList.addMouseListener(new MouseAdapter() {
+		screenshotsList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2)
 					exportSelectedScreenshots();
@@ -110,7 +120,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 	}
 
 	private void useSelectedAsBackgrounds() {
-		modelList.getSelectedValuesList().forEach(
+		screenshotsList.getSelectedValuesList().forEach(
 				f -> FileIO.copyFile(f, new File(UserFolderManager.getFileFromUserFolder("backgrounds"), f.getName())));
 		JOptionPane.showMessageDialog(workspacePanel.getMcreator(),
 				L10N.t("workspace.screenshots.use_background_message"), L10N.t("workspace.screenshots.action_complete"),
@@ -118,7 +128,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 	}
 
 	private void exportSelectedScreenshots() {
-		modelList.getSelectedValuesList().forEach(f -> {
+		screenshotsList.getSelectedValuesList().forEach(f -> {
 			File to = FileDialogs.getSaveDialog(workspacePanel.getMcreator(), new String[] { ".png" });
 			if (to != null)
 				FileIO.copyFile(f, to);
@@ -126,7 +136,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 	}
 
 	@Override public void reloadElements() {
-		List<File> selected = modelList.getSelectedValuesList();
+		List<File> selected = screenshotsList.getSelectedValuesList();
 
 		listmodel.removeAllElements();
 		File[] screenshots = new File(workspacePanel.getMcreator().getWorkspaceFolder(),
@@ -134,7 +144,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		if (screenshots != null)
 			Arrays.stream(screenshots).forEach(listmodel::addElement);
 
-		ListUtil.setSelectedValues(modelList, selected);
+		ListUtil.setSelectedValues(screenshotsList, selected);
 
 		refilterElements();
 	}
