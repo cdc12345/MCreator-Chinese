@@ -83,6 +83,8 @@ MCreator并非官方软件,Mojang与MCreator不存在附属关系
 * onlyForge 屏蔽除forge用户外的其他开发者(这是其他群友让我加的....)
 * 可以自由关闭与官网相关的ui组件,提升了启动速度
 
+请注意,本仓库为镜像仓库,如果您想下载本应用,请前往github:https://github.com/cdc12345/MCreator-Chinese
+
 MCrC仅是基于MCreator软件开发的一款面向中国开发者的 Minecraft Mod 开发软件，由中国MCr社区开发者 cdc12345 和 其他贡献者开发。
 
 ## 停更说明
