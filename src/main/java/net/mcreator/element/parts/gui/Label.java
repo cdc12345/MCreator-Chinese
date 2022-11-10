@@ -65,6 +65,7 @@ public class Label extends GUIComponent {
 		return StringUtils.getUnicodeCode(injectCode.replace("<tk>",TK));
 	}
 
+
 	@Override public final int getWidth(Workspace workspace) {
 		return (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getWidth());
 	}
