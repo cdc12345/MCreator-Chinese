@@ -60,6 +60,14 @@ public class TranslatorUtils {
 					LOGGER.info("检查合法,开始翻译");
 					boolean tran = true;
 					try {
+						var content = contents.getTransferData(DataFlavor.stringFlavor);
+						if (content.toString().startsWith("MCreator-Element:")){
+							tran = false;
+						}
+					} catch (UnsupportedFlavorException | IOException e) {
+						e.printStackTrace();
+					}
+					try {
 						if (PreferencesManager.PREFERENCES.notifications.notifyCopyTranslation) {
 							tran = JOptionPane.showConfirmDialog(null,
 									"检测到剪贴板变化,是否翻译?内容为"+contents.getTransferData(DataFlavor.stringFlavor),"复制翻译提示",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;

@@ -18,6 +18,7 @@
 
 package net.mcreator.util;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.WordUtils;
 
 import javax.annotation.Nonnull;
@@ -122,6 +123,15 @@ public class StringUtils {
 	public static boolean isEnglish(String text){
 		if (text == null) return true;
 		return text.matches(englishMatch);
+	}
+
+	public static String getUnicodeCode(String text){
+		return Arrays.stream(text.split("\\+")).map(a->{
+			if (a.matches("\".+\"")){
+				return "\""+ StringEscapeUtils.escapeJava(a.substring(1,a.length()-1))+"\"";
+			}
+			return a;
+		}).collect(Collectors.joining("+"));
 	}
 
 }

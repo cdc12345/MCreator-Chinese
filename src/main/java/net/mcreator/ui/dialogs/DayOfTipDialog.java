@@ -21,7 +21,11 @@ package net.mcreator.ui.dialogs;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * e-mail: 3154934427@qq.com
@@ -32,6 +36,12 @@ import java.util.Random;
  * @date 2022/11/8 12:50
  */
 public class DayOfTipDialog extends JDialog {
+	public static DayOfTipDialog getInstance(Window parent){
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream("tips.txt"))));
+		return new DayOfTipDialog(parent,reader.lines().collect(Collectors.toList()).toArray(new String[0]));
+	}
+
 	private final String[] tipContent;
 
 	public DayOfTipDialog(Window parent,String[] tipContent){
@@ -40,14 +50,16 @@ public class DayOfTipDialog extends JDialog {
 
 		this.setTitle("每时一帖");
 		setLayout(new BorderLayout());
-		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 
-		JLabel content = new JLabel(tipContent[new Random().nextInt(tipContent.length)]);
-		content.setHorizontalAlignment(SwingConstants.LEFT);
-		content.setVerticalTextPosition(SwingConstants.TOP);
+		JTextArea content = new JTextArea(tipContent[new Random().nextInt(tipContent.length)]);
+		content.setPreferredSize(new Dimension(content.getPreferredSize().width,100));
+		content.setEditable(false);
+		content.setColumns(3);
+		content.setRows(4);
 
 		JPanel controlPane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JButton next = new JButton("下一条");
+		JButton next = new JButton("随机");
 		JButton ok = new JButton("确定");
 		controlPane.add(next);
 		controlPane.add(ok);
@@ -58,9 +70,14 @@ public class DayOfTipDialog extends JDialog {
 		ok.addActionListener(a->{
 			DayOfTipDialog.this.setVisible(false);
 		});
-	}
+		controlPane.add(next);
+		controlPane.add(ok);
 
-	public String[] getTipContent() {
-		return tipContent;
+		add(content,"North");
+		add(controlPane,"South");
+
+		pack();
+		setLocationRelativeTo(parent);
+		setVisible(true);
 	}
 }

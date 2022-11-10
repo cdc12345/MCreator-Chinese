@@ -294,9 +294,9 @@ public class ActionRegistry {
 		this.closeCurrentTab = new BasicAction(this, L10N.t("action.close_tab"),
 				e -> mcreator.mcreatorTabs.closeTab(mcreator.mcreatorTabs.getCurrentTab()));
 		this.showWorkspaceBrowser = new BasicAction(this, L10N.t("action.show_workspace_browser"),
-				e -> mcreator.splitPane.setDividerLocation(280));
+				e -> mcreator.workspaceBorrowerSplitPane.setDividerLocation(280));
 		this.hideWorkspaceBrowser = new BasicAction(this, L10N.t("action.hide_workspace_browser"),
-				e -> mcreator.splitPane.setDividerLocation(0));
+				e -> mcreator.workspaceBorrowerSplitPane.setDividerLocation(0));
 		this.openWorkspace = new OpenWorkspaceAction(this);
 		this.newWorkspace = new NewWorkspaceAction(this);
 		this.importWorkspace = new ImportWorkspaceAction(this);

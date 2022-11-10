@@ -26,7 +26,6 @@ import net.mcreator.gradle.GradleTaskResult;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
@@ -35,6 +34,7 @@ import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.util.EDTUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.DayOfTipDialog;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.BackgroundLoader;
@@ -85,7 +85,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	private final MCreatorApplication application;
 
-	public final JSplitPane splitPane;
+	public final JSplitPane workspaceBorrowerSplitPane;
 
 	private final Workspace workspace;
 
@@ -258,19 +258,19 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		workspace.getFileManager().setDataSavedListener(() -> statusBar.setPersistentMessage(
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser,
+		workspaceBorrowerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser,
 				PanelUtils.northAndCenterElement(pon, mpan));
-		splitPane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		splitPane.setOneTouchExpandable(true);
+		workspaceBorrowerSplitPane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		workspaceBorrowerSplitPane.setOneTouchExpandable(true);
 
-		splitPane.setDividerLocation(280);
-		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos);
+		workspaceBorrowerSplitPane.setDividerLocation(280);
+		workspaceBorrowerSplitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos);
 
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
 		add("South", statusBar);
 		add("North", toolBar);
-		add("Center", splitPane);
+		add("Center", workspaceBorrowerSplitPane);
 
 		MCREvent.event(new MCreatorLoadedEvent(this));
 	}
@@ -313,6 +313,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			}
 
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+			DayOfTipDialog.getInstance(this);
 		}
 	}
 
@@ -358,8 +360,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (safetoexit) {
 			LOG.info("关闭MCreator窗口中 ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen = getExtendedState() == MAXIMIZED_BOTH;
-			if (splitPane != null)
-				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos = splitPane.getDividerLocation(); // this one could be stored per workspace in the future
+			if (workspaceBorrowerSplitPane != null)
+				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos = workspaceBorrowerSplitPane.getDividerLocation(); // this one could be stored per workspace in the future
 
 			workspace.close();
 

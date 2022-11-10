@@ -34,11 +34,9 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class LabelDialog extends AbstractWYSIWYGDialog {
 
@@ -50,6 +48,15 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 				"<ENBT:logic:tagName>", "<ENBT:text:tagName>", "<BNBT:number:tagName>", "<BNBT:integer:tagName>",
 				"<BNBT:logic:tagName>", "<BNBT:text:tagName>", "<energy>", "<fluidlevel>" });
 		name.setEditable(true);
+
+		AtomicReference<String> injectCode = new AtomicReference<>();
+		JButton injectCode1 = new JButton("码");
+		injectCode1.addActionListener(a->{
+			String inject = null;
+			if (label != null)
+				inject =Objects.requireNonNull(label).injectCode;
+			injectCode.set(JOptionPane.showInputDialog(this, "请输入注入的代码", inject));
+		});
 
 		JCheckBox checkBox = new JCheckBox("启用");
 
@@ -80,7 +87,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
-		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), name));
+		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), name,injectCode1));
 		options.add(PanelUtils.westAndCenterElement(new JLabel("翻译键值: "),PanelUtils.westAndCenterElement(checkBox,tk)));
 		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));
 
@@ -126,7 +133,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 					editor.editor.setPositionDefinedListener(e -> editor.editor.addComponent(setEditingComponent(
 							new Label(text, editor.editor.newlyAddedComponentPosX,
 									editor.editor.newlyAddedComponentPosY, text,tk.getText(),checkBox.isSelected(), cola.getColor(),
-									displayCondition.getSelectedProcedure()))));
+									displayCondition.getSelectedProcedure(),injectCode.get()))));
 				} else {
 					if (label.enableTK) {
 						editor.mcreator.getWorkspace().removeLocalizationEntryByKey(label.TK);
@@ -134,7 +141,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog {
 					int idx = editor.components.indexOf(label);
 					editor.components.remove(label);
 					Label labelNew = new Label(text, label.getX(), label.getY(), text,tk.getText(),checkBox.isSelected(), cola.getColor(),
-							displayCondition.getSelectedProcedure());
+							displayCondition.getSelectedProcedure(),injectCode.get());
 					editor.components.add(idx, labelNew);
 					setEditingComponent(labelNew);
 				}

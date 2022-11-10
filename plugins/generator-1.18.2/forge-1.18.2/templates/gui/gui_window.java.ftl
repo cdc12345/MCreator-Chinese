@@ -140,14 +140,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-				<#if component.enableTK>
-					this.font.draw(poseStack,new TranslatableComponent("${component.TK}"),
-                                        ${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
-				<#else>
-				   this.font.draw(poseStack,"${translateTokens(JavaConventions.escapeStringForJava(component.text))}",
-                        ${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
-                </#if>
-
+					${component.getPrefix()}Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), "${translateTokens(JavaConventions.escapeStringForJava(component.text))}",${x / 426 } * w , ${y / 240} * h , ${component.color.getRGB()});
+					<#if component.enableTK>
+						Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), new TranslatableComponent("${component.TK}"),
+                       									${x / 426} * w , ${y / 240 } * h , ${component.color.getRGB()});
+					<#elseif component.isInjectCode()>
+					    Minecraft.getInstance().fontRenderer.drawString(event.getMatrixStack(), ${component.getCodeOfText()},
+                                               			${x / 426} * w , ${y / 240 } * h , ${component.color.getRGB()});
+					</#if>
 			</#if>
 		</#list>
 	}

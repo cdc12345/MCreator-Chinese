@@ -415,6 +415,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			clear.addActionListener(a->{
 				JOptionPane.showMessageDialog(this,"已经执行操作","清除历史记录提示",JOptionPane.WARNING_MESSAGE);
 			});
+			clear.setToolTipText("清除历史记录");
 			path.setEditable(true);
 			path.setSelectedItem(Optional.ofNullable(value).orElse("null").toString());
 			path.addKeyListener(new KeyAdapter() {

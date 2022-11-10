@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.workspace;
 
+import com.google.gson.Gson;
+import com.sun.javafx.embed.swing.CachingTransferable;
 import net.mcreator.element.*;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.GeneratorStats;
@@ -63,8 +65,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -109,6 +115,8 @@ import java.util.stream.Collectors;
 	private final JLabel but5 = new JLabel(TiledImageCache.workspaceCode);
 	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
 	private final JLabel but6 = new JLabel(TiledImageCache.workspaceModElementIDs);
+	private final JLabel but7 = new JLabel(TiledImageCache.workspaceDuplicate);
+	private final JLabel but8 = new JLabel(TiledImageCache.workspaceDuplicate);
 
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
 	private final JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
@@ -118,6 +126,8 @@ import java.util.stream.Collectors;
 	private final JMenuItem renameElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.rename.folder"));
 	private final JMenuItem editDescription = new JMenuItem("编辑描述");
 	private final JMenuItem editAnotherName = new JMenuItem("编辑别名");
+	private final JMenuItem copyElement = new JMenuItem("拷贝元素(支持跨工作区)");
+	private final JMenuItem pasteElement = new JMenuItem("粘贴元素");
 
 	private final CardLayout mainpcl = new CardLayout();
 	private final JPanel mainp = new JPanel(mainpcl);
@@ -232,17 +242,27 @@ import java.util.stream.Collectors;
 					selected = list.getSelectedValue();
 
 					if (selected instanceof FolderElement) {
+						deleteElement.setEnabled(true);
 						duplicateElement.setEnabled(false);
 						codeElement.setEnabled(false);
 						lockElement.setEnabled(false);
 						idElement.setEnabled(false);
 						renameElementFolder.setEnabled(true);
+						editAnotherName.setEnabled(true);
+						editDescription.setEnabled(false);
+						copyElement.setEnabled(false);
+						pasteElement.setEnabled(true);
 					} else {
+						deleteElement.setEnabled(true);
 						duplicateElement.setEnabled(true);
 						codeElement.setEnabled(true);
 						lockElement.setEnabled(true);
 						idElement.setEnabled(true);
 						renameElementFolder.setEnabled(false);
+						editAnotherName.setEnabled(true);
+						editDescription.setEnabled(true);
+						copyElement.setEnabled(true);
+						pasteElement.setEnabled(true);
 					}
 
 					contextMenu.show(list, e.getX(), e.getY());
@@ -267,6 +287,10 @@ import java.util.stream.Collectors;
 				super.keyPressed(e);
 				if (e.getKeyCode() == KeyEvent.VK_DELETE){
 					deleteCurrentlySelectedModElement();
+				} else if (e.isControlDown() && e.getKeyCode()==KeyEvent.VK_C) {
+					Arrays.stream(duplicateElement.getActionListeners()).forEach(a->a.actionPerformed(new ActionEvent(0,0,"0")));
+				} else if (e.isControlDown() && e.isShiftDown() && e.getKeyCode() == KeyEvent.VK_C){
+					Arrays.stream(copyElement.getActionListeners()).forEach(a->a.actionPerformed(new ActionEvent(0,0,"0")));
 				}
 			}
 		});
@@ -786,7 +810,7 @@ import java.util.stream.Collectors;
 
 		setOpaque(false);
 
-		JPanel pne = new JPanel(new GridLayout(8, 1, 6, 6));
+		JPanel pne = new JPanel(new GridLayout(10, 1, 6, 6));
 		pne.setOpaque(false);
 
 		JLabel but1 = new JLabel(TiledImageCache.workspaceAdd);
@@ -869,6 +893,28 @@ import java.util.stream.Collectors;
 		but6.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but6);
 
+		but7.addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				if (but7.isEnabled()){
+					Arrays.stream(copyElement.getActionListeners()).forEach(a->a.actionPerformed(new ActionEvent(0,0,"0")));
+				}
+			}
+		});
+		but7.setToolTipText("拷贝元素");
+		but7.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		pne.add(but7);
+
+		but8.addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				if (but8.isEnabled()){
+					Arrays.stream(pasteElement.getActionListeners()).forEach(a->a.actionPerformed(new ActionEvent(0,0,"0")));
+				}
+			}
+		});
+		but8.setToolTipText("粘贴元素");
+		but8.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		pne.add(but8);
+
 		JPanel toolp = new JPanel(new BorderLayout(0, 0)) {
 			@Override public void paintComponent(Graphics g) {
 				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
@@ -891,6 +937,7 @@ import java.util.stream.Collectors;
 		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[0]), 24));
 		emptct.add(new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32))));
 		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[1]), 24));
+
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);
@@ -959,6 +1006,36 @@ import java.util.stream.Collectors;
 			}
 		});
 
+		copyElement.addActionListener(e->{
+			IElement mu = list.getSelectedValue();
+			if (mu instanceof  ModElement element){
+				var content = new StringSelection("MCreator-Element:"+new Gson().toJson(new CopyElement(element,FileIO.readFileToString(
+						new File(mcreator.getWorkspace().getFolderManager().getModElementsDir(),element.getName()+".mod.json")))));
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(content,content);
+			}
+		});
+
+		pasteElement.addActionListener(e->{
+				try {
+					String content = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+					if (content.startsWith("MCreator-Element:")){
+						CopyElement copyElement = new Gson().fromJson(content.replace("MCreator-Element:",""),CopyElement.class);
+						var paste = new File(mcreator.getWorkspace().getFolderManager().getModElementsDir(),copyElement.getModElement().getName()+".mod.json");
+						FileIO.writeStringToFile(copyElement.getGeneratableElement(),paste);
+						var modElement = copyElement.getModElement();
+						modElement.setWorkspace(mcreator.getWorkspace());
+						modElement.reinit();
+						mcreator.getWorkspace().addModElement(modElement);
+					} else {
+						JOptionPane.showMessageDialog(mcreator,"无法粘贴,原因:并不是元素");
+					}
+				} catch (UnsupportedFlavorException | IOException ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(mcreator,"无法粘贴","粘贴失败",JOptionPane.WARNING_MESSAGE);
+				}
+				reloadElements();
+		});
+
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
 		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
 		addElementFolder.addActionListener(e -> addNewFolder());
@@ -981,8 +1058,12 @@ import java.util.stream.Collectors;
 		contextMenu.add(duplicateElement);
 		contextMenu.add(lockElement);
 		contextMenu.add(idElement);
+		contextMenu.addSeparator();
 		contextMenu.add(editDescription);
 		contextMenu.add(editAnotherName);
+		contextMenu.addSeparator();
+		contextMenu.add(copyElement);
+		contextMenu.add(pasteElement);
 
 		updateElementListRenderer();
 	}

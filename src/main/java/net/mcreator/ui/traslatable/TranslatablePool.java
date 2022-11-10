@@ -108,9 +108,6 @@ public class TranslatablePool {
 		if (nameSpace != null&&!"".equals(nameSpace)){
 			oLowerKey = nameSpace+":"+lowerKey;
 		}
-		if (Objects.equals(nameSpace, "gui")){
-			logger.info(oLowerKey);
-		}
 		try {
 			JsonElement element = json.get(oLowerKey);
 			return element.getAsString();

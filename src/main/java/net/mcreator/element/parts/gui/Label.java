@@ -21,6 +21,7 @@ package net.mcreator.element.parts.gui;
 import net.mcreator.element.parts.Procedure;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 
 import java.awt.*;
@@ -31,16 +32,37 @@ public class Label extends GUIComponent {
 	public boolean enableTK;
 	public String TK;
 	public Color color;
+	public String injectCode;
 
 	public Procedure displayCondition;
 
-	public Label(String name, int x, int y, String text,String Tk,boolean enableTk, Color color, Procedure displayCondition) {
+	public Label(String name, int x, int y, String text,String Tk,boolean enableTk, Color color, Procedure displayCondition,String injectCode) {
 		super(name, x, y);
 		this.text = text;
 		this.color = color;
 		this.enableTK = enableTk;
 		this.TK = Tk;
 		this.displayCondition = displayCondition;
+		this.injectCode = injectCode;
+	}
+
+	/**
+	 * 获得原代码的前拽
+	 * @return 如果满足条件则为//
+	 */
+	public String getPrefix(){
+		if (enableTK||isInjectCode()){
+			return "//";
+		}
+		return "";
+	}
+
+	public boolean isInjectCode(){
+		return injectCode != null;
+	}
+
+	public final String getCodeOfText(){
+		return StringUtils.getUnicodeCode(injectCode.replace("<tk>",TK));
 	}
 
 	@Override public final int getWidth(Workspace workspace) {
