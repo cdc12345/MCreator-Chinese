@@ -66,6 +66,7 @@ public class DayOfTipDialog extends JDialog {
 
 		next.addActionListener(a->{
 			content.setText(tipContent[new Random().nextInt(tipContent.length)]);
+			pack();
 		});
 		ok.addActionListener(a->{
 			DayOfTipDialog.this.setVisible(false);

@@ -314,7 +314,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
-			DayOfTipDialog.getInstance(this);
+			if (PreferencesManager.PREFERENCES.notifications.enableTips) {
+				DayOfTipDialog.getInstance(this);
+			}
 		}
 	}
 

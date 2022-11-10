@@ -55,32 +55,32 @@ public class TranslatorUtils {
 		clipboard.setContents(contents, new ClipboardOwner() {
 			@Override public void lostOwnership(Clipboard clipboard1, Transferable contents1) {
 				LOGGER.info("监听到剪贴板变动");
-				var contents = clipboard1.getContents(new Object());
-				if (contents.isDataFlavorSupported(DataFlavor.stringFlavor)&& PreferencesManager.PREFERENCES.external.enableCopyTranslation) {
-					LOGGER.info("检查合法,开始翻译");
-					boolean tran = true;
-					try {
+				try {
+					var contents = clipboard1.getContents(new Object());
+					if (contents.isDataFlavorSupported(DataFlavor.stringFlavor) && PreferencesManager.PREFERENCES.external.enableCopyTranslation) {
+						LOGGER.info("检查合法,开始翻译");
+						boolean tran = true;
 						var content = contents.getTransferData(DataFlavor.stringFlavor);
-						if (content.toString().startsWith("MCreator-Element:")){
+						if (content.toString().startsWith("MCreator-Element:")) {
 							tran = false;
 						}
-					} catch (UnsupportedFlavorException | IOException e) {
-						e.printStackTrace();
-					}
-					try {
-						if (PreferencesManager.PREFERENCES.notifications.notifyCopyTranslation) {
-							tran = JOptionPane.showConfirmDialog(null,
-									"检测到剪贴板变化,是否翻译?内容为"+contents.getTransferData(DataFlavor.stringFlavor),"复制翻译提示",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-						}
-						if (tran){
+						try {
+							if (PreferencesManager.PREFERENCES.notifications.notifyCopyTranslation) {
+								tran = JOptionPane.showConfirmDialog(null, "检测到剪贴板变化,是否翻译?内容为" + contents.getTransferData(DataFlavor.stringFlavor),
+										"复制翻译提示", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+							}
+							if (tran) {
 								clipboard.setContents(new StringSelection(
 										translateAuto(clipboard.getData(DataFlavor.stringFlavor).toString())), this);
+							}
+						} catch (UnsupportedFlavorException | IOException e) {
+							e.printStackTrace();
 						}
-					} catch (UnsupportedFlavorException | IOException e) {
-						e.printStackTrace();
+					} else {
+						clipboard.setContents(contents, this);
 					}
-				} else {
-					clipboard.setContents(contents, this);
+				} catch (Exception e){
+					e.printStackTrace();
 				}
 			}
 		});
@@ -98,20 +98,21 @@ public class TranslatorUtils {
 		if (origin == null) return "";
 		if (!StringUtils.isEnglish(origin)) return origin;
 		if (translation.containsKey(origin)) return translation.get(origin);
-		String result = origin;
+		String result;
+		String code = URLEncoder.encode(origin,StandardCharsets.UTF_8);
 		try {
 			switch (PreferencesManager.PREFERENCES.external.translatorEngine) {
-			//				case "百度" -> result = translateBaidu(origin, "auto", "zh");
-			case "Kate" -> result = translateKate(origin);
-			case "Han" -> result = translateHan(origin);
+			//				case "百度" -> result = translateBaidu(code, "auto", "zh");
+			case "Kate" -> result = translateKate(code);
+			case "Han" -> result = translateHan(code);
 			default -> {
-				return result;
+				return origin;
 			}
 			}
 		} catch (Exception e){
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null,"翻译引擎异常,返回信息为"+e.getMessage(),"翻译引擎崩溃",JOptionPane.WARNING_MESSAGE);
-			return result;
+			return origin;
 		}
 		LOGGER.info("翻译结果:"+result);
 		translation.put(origin,result);
@@ -124,11 +125,12 @@ public class TranslatorUtils {
 		if (StringUtils.isEnglish(origin)) return origin;
 		if (translation.containsKey(origin)) return translation.get(origin);
 		String result = origin;
+		String code = URLEncoder.encode(origin,StandardCharsets.UTF_8);
 		try {
 			switch (PreferencesManager.PREFERENCES.external.translatorEngine) {
-//				case "百度" -> result = translateBaidu(origin, "auto", "en");
-				case "Kate" -> result = translateKate(origin);
-				case "Han" -> result = translateHan(origin);
+//				case "百度" -> result = translateBaidu(code, "auto", "en");
+				case "Kate" -> result = translateKate(code);
+				case "Han" -> result = translateHan(code);
 			default -> {
 				return result;
 			}
@@ -167,14 +169,14 @@ public class TranslatorUtils {
 	public static String translateKate(String origin) throws IOException {
 		LOGGER.info("使用kate翻译文本:"+origin);
 		String urlString = "https://api.66mz8.com/api/translation.php?info=%s";
-		URL url = new URL(String.format(urlString,URLEncoder.encode(origin, StandardCharsets.UTF_8)));
+		URL url = new URL(String.format(urlString,origin));
 		return new Gson().fromJson(new InputStreamReader(url.openStream()),JsonObject.class).get("fanyi").getAsString();
 	}
 
 	public static String translateHan(String origin) throws IOException {
 		LOGGER.info("正在使用Han翻译文本:"+origin);
 		String urlString = "https://api.vvhan.com/api/fy?text=%s";
-		URL url = new URL(String.format(urlString,URLEncoder.encode(origin,StandardCharsets.UTF_8)));
+		URL url = new URL(String.format(urlString,origin));
 		return new Gson().fromJson(new InputStreamReader(url.openStream()),JsonObject.class).getAsJsonObject("data").get("fanyi").getAsString();
 	}
 }

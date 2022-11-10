@@ -81,6 +81,7 @@ public class PreferencesData {
 		@PreferencesEntry public boolean checkAndNotifyForPluginUpdates = false;
 		@PreferencesEntry public boolean notifyLogsTooMore = true;
 		@PreferencesEntry public boolean notifyCopyTranslation = true;
+		@PreferencesEntry public boolean enableTips = true;
 
 	}
 
