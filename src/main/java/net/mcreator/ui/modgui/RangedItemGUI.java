@@ -29,7 +29,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.BlockItemTextureSelector;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -130,7 +130,6 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 	}
 
 	@Override protected void initGUI() {
-		animation.setDisplayEnglish(true);
 		ammoItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		bulletItemTexture = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -163,7 +162,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 		customBulletModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
-		customBulletModelTexture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
+		customBulletModelTexture.setRenderer(
+				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		bulletModel.setPreferredSize(new Dimension(400, 42));
 		bulletModel.setRenderer(new ModelComboBoxRenderer());
@@ -174,7 +174,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureHolder(new BlockItemTextureSelector(mcreator, TextureType.ITEM));
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
 		hasGlow.setOpaque(false);

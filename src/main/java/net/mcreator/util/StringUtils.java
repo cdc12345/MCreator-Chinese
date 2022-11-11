@@ -128,7 +128,11 @@ public class StringUtils {
 	public static String getUnicodeCode(String text){
 		return Arrays.stream(text.split("\\+")).map(a->{
 			if (a.matches("\".+\"")){
-				return "\""+ StringEscapeUtils.escapeJava(a.substring(1,a.length()-1))+"\"";
+				return '"'+ StringEscapeUtils.escapeJava(a.substring(1,a.length()-1))+'"';
+			} else if (a.matches("\".+")){
+				return '"'+StringEscapeUtils.escapeJava(a.substring(1));
+			} else if (a.matches(".+\"")){
+				return  StringEscapeUtils.escapeJava(a.substring(0,a.length()-1))+'"';
 			}
 			return a;
 		}).collect(Collectors.joining("+"));

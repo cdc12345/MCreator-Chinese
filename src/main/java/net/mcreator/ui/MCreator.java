@@ -117,8 +117,13 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		this.mcreatorTabs = new MCreatorTabs();
 
+		LOG.info("DEBUG");
+
 		this.actionRegistry = new ActionRegistry(this);
 		this.statusBar = new StatusBar(this);
+
+		LOG.info("DEBUG");
+
 
 		this.workspaceFileBrowser = new WorkspaceFileBrowser(this);
 
@@ -147,8 +152,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (PreferencesManager.PREFERENCES.hidden.fullScreen)
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+
 		setIconImage(UIRES.getBuiltIn("icon").getImage());
 		setLocationRelativeTo(null);
+
 
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

@@ -57,7 +57,7 @@ public class TranslatablePool {
 
 	private TranslatablePool() {
 		InputStream defaultPoolInput = null;
-		File pool = new File(UserFolderManager.getCacheFolder(),"pools.tra");
+/*		File pool = new File(UserFolderManager.getCacheFolder(),"pools.tra");
 		if (MCreatorApplication.isInternet) {
 			try {
 				URL url = new URL(
@@ -73,11 +73,11 @@ public class TranslatablePool {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 		json = new Gson().fromJson(new InputStreamReader(
 				Objects.requireNonNullElse(defaultPoolInput,this.getClass().getResourceAsStream("/pools.tra"))),
 				JsonObject.class);
-		FileIO.writeStringToFile(json.toString(),pool);
+//		FileIO.writeStringToFile(json.toString(),pool);
 		logger.info("翻译池已经准备就绪");
 	}
 	public boolean containValue(String key){
