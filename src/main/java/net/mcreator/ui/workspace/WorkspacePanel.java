@@ -242,27 +242,27 @@ import java.util.stream.Collectors;
 					selected = list.getSelectedValue();
 
 					if (selected instanceof FolderElement) {
-						deleteElement.setEnabled(true);
-						duplicateElement.setEnabled(false);
-						codeElement.setEnabled(false);
-						lockElement.setEnabled(false);
-						idElement.setEnabled(false);
-						renameElementFolder.setEnabled(true);
-						editAnotherName.setEnabled(true);
-						editDescription.setEnabled(false);
-						copyElement.setEnabled(false);
-						pasteElement.setEnabled(true);
+						deleteElement.setVisible(true);
+						duplicateElement.setVisible(false);
+						codeElement.setVisible(false);
+						lockElement.setVisible(false);
+						idElement.setVisible(false);
+						renameElementFolder.setVisible(true);
+						editAnotherName.setVisible(true);
+						editDescription.setVisible(false);
+						copyElement.setVisible(false);
+						pasteElement.setVisible(true);
 					} else {
-						deleteElement.setEnabled(true);
-						duplicateElement.setEnabled(true);
-						codeElement.setEnabled(true);
-						lockElement.setEnabled(true);
-						idElement.setEnabled(true);
-						renameElementFolder.setEnabled(false);
-						editAnotherName.setEnabled(true);
-						editDescription.setEnabled(true);
-						copyElement.setEnabled(true);
-						pasteElement.setEnabled(true);
+						deleteElement.setVisible(true);
+						duplicateElement.setVisible(true);
+						codeElement.setVisible(true);
+						lockElement.setVisible(true);
+						idElement.setVisible(true);
+						renameElementFolder.setVisible(false);
+						editAnotherName.setVisible(true);
+						editDescription.setVisible(true);
+						copyElement.setVisible(true);
+						pasteElement.setVisible(true);
 					}
 
 					contextMenu.show(list, e.getX(), e.getY());

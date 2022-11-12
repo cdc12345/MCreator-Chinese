@@ -117,12 +117,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		this.mcreatorTabs = new MCreatorTabs();
 
-		LOG.info("DEBUG");
 
 		this.actionRegistry = new ActionRegistry(this);
 		this.statusBar = new StatusBar(this);
 
-		LOG.info("DEBUG");
 
 
 		this.workspaceFileBrowser = new WorkspaceFileBrowser(this);

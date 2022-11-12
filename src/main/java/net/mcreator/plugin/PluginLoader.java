@@ -80,6 +80,7 @@ public class PluginLoader extends URLClassLoader {
 		DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(new URL[] {}, Thread.currentThread().getContextClassLoader());
 
 		List<Plugin> pluginsLoadList = new ArrayList<>();
+		//添加插件于其中
 		pluginsLoadList.addAll(listPluginsFromFolder(new File("./plugins/"), true));
 		pluginsLoadList.addAll(listPluginsFromFolder(UserFolderManager.getPluginFolder(), false));
 

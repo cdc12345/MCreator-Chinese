@@ -363,6 +363,23 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 
 			JPopupMenu popup = new JPopupMenu();
+
+			popup.addPopupMenuListener(new PopupMenuListener() {
+				@Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+					var location = MouseInfo.getPointerInfo().getLocation();
+					recentsList.setSelectedIndex(recentsList.locationToIndex(new Point(0,location.y - recentsList.getLocationOnScreen().y)));
+
+				}
+
+				@Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+				}
+
+				@Override public void popupMenuCanceled(PopupMenuEvent e) {
+
+				}
+			});
+
 			JMenuItem open = new JMenuItem("打开项目");
 			open.addActionListener(e -> workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath()));
 			popup.add(open);
