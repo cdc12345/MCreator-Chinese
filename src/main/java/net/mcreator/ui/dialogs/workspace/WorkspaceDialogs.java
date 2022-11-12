@@ -367,8 +367,6 @@ public class WorkspaceDialogs {
 						String genName = ((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName();
 						if (genName.contains("1.16.5")){
 							javaHome.setSelectedItem(GradleUtils.getJavaHome(8));
-						} else if (genName.contains("1.17")) {
-							javaHome.setSelectedItem(GradleUtils.getJavaHome(16));
 						} else {
 							javaHome.setSelectedItem(GradleUtils.getJavaHome(17));
 						}
@@ -560,6 +558,13 @@ public class WorkspaceDialogs {
 					return this;
 				}
 			});
+
+			GeneratorConfiguration generatorConfiguration = (GeneratorConfiguration) generator.getSelectedItem();
+			if (Objects.requireNonNull(generatorConfiguration).getGeneratorName().contains("1.16.5")){
+				javaHome.setSelectedItem(GradleUtils.getJavaHome(8));
+			} else {
+				javaHome.setSelectedItem(GradleUtils.getJavaHome(17));
+			}
 			selectJavaHome.addActionListener(a->{
 				var currentSelected = new File(Objects.requireNonNull(javaHome.getSelectedItem())).getParentFile();
 				var fileChooser = new JFileChooser();

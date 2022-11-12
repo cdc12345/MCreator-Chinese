@@ -143,7 +143,7 @@ import java.util.List;
 		return spawnWorldTypes.size() > 0;
 	}
 
-	public String getRenderType() {
+	@Override public String getRenderType() {
 		return "translucent";
 	}
 

@@ -61,7 +61,7 @@ public class TranslatablePool {
 		if (MCreatorApplication.isInternet) {
 			try {
 				URL url = new URL(
-						"https://ghproxy.com/https://raw.githubusercontent.com/cdc12345/MCreator-Chinese/main/pools.tra");
+						"https://ghproxy.com/https://raw.githubusercontent.com/cdc12345/MCreator-Chinese/V1.6/src/main/resources/pools.tra");
 				logger.info("系统正在与在线翻译池沟通");
 				defaultPoolInput = url.openStream();
 			} catch (IOException e) {

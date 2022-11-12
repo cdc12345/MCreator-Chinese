@@ -34,7 +34,10 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.minecraft.DefaultFeaturesListField;
+import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
 import net.mcreator.ui.traslatable.AdvancedTranslatableComboBox;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -147,7 +150,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	private final BiomeDictionaryTypeListField biomeDictionaryTypes = new BiomeDictionaryTypeListField(mcreator);
 	private final DefaultFeaturesListField defaultFeatures = new DefaultFeaturesListField(mcreator);
 
 	public BiomeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -298,7 +300,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane2.setOpaque(false);
 		pane5.setOpaque(false);
 
-		JPanel spawnproperties = new JPanel(new GridLayout(10, 2, 5, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(8, 2, 5, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld"),
@@ -338,14 +340,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/raining_possibility"),
 				L10N.label("elementgui.biome.raining_possibility")));
 		spawnproperties.add(rainingPossibility);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/category"),
-				L10N.label("elementgui.biome.category")));
-		spawnproperties.add(biomeCategory);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/dictionary"),
-				L10N.label("elementgui.biome.dictionnary")));
-		spawnproperties.add(biomeDictionaryTypes);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 
@@ -747,8 +741,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		bigMushroomsChunk.setValue(biome.bigMushroomsChunk);
 		gravelPatchesPerChunk.setValue(biome.gravelPatchesPerChunk);
 		biomeWeight.setValue(biome.biomeWeight);
-		biomeCategory.setSelectedItem(biome.biomeCategory);
-		biomeDictionaryTypes.setListElements(biome.biomeDictionaryTypes);
 		defaultFeatures.setListElements(biome.defaultFeatures);
 		vanillaTreeType.setSelectedItem(biome.vanillaTreeType);
 		spawnEntries.setSpawns(biome.spawnEntries);
@@ -797,8 +789,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.heightVariation = (double) heightVariation.getValue();
 		biome.temperature = (double) temperature.getValue();
 		biome.biomeWeight = (int) biomeWeight.getValue();
-		biome.biomeCategory = (String) biomeCategory.getSelectedItem();
-		biome.biomeDictionaryTypes = biomeDictionaryTypes.getListElements();
 		biome.defaultFeatures = defaultFeatures.getListElements();
 		biome.vanillaTreeType = (String) vanillaTreeType.getSelectedItem();
 		biome.spawnEntries = spawnEntries.getSpawns();

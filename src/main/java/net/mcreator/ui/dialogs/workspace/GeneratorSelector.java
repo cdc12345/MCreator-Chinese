@@ -153,9 +153,6 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "screens"), "screens", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "villager_professions"), "villagerprofessions", supportedElements, stats);
 
-			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
-				addStatsBar(L10N.t(covpfx + "biome_dictionary"), "biomedictionarytypes", supportedElements, stats);
-
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"),
 					supportedElements, 10, 10));
 
@@ -176,7 +173,10 @@ public class GeneratorSelector {
 			statsPan.add(genStatsW, generatorConfiguration.getGeneratorName());
 		}
 
-		mainPanel.add("Center", statsPan);
+		JScrollPane pane = new JScrollPane(statsPan);
+		pane.getVerticalScrollBar().setUnitIncrement(10);
+
+		mainPanel.add("Center", pane);
 
 		generator.addActionListener(e -> {
 			if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration)
@@ -198,6 +198,15 @@ public class GeneratorSelector {
 					} else {
 						oldItem = generatorConfiguration;
 					}
+				}
+			}
+		});
+
+		mainPanel.addHierarchyListener(e -> {
+			if (SwingUtilities.getWindowAncestor(mainPanel) instanceof Dialog dialog) {
+				if (dialog.getHeight() > dialog.getGraphicsConfiguration().getBounds().height - 32) {
+					dialog.setSize(dialog.getWidth(), dialog.getGraphicsConfiguration().getBounds().height - 32);
+					dialog.setLocationRelativeTo(parent);
 				}
 			}
 		});

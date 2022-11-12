@@ -21,7 +21,7 @@ package net.mcreator.plugin;
 
 /**
  * Extend this object to define custom plugin.
- *
+ * <p>
  * A fully qualified name to this class name needs to be specified as "javaplugin" field in plugin.json file
  *
  */
@@ -47,7 +47,7 @@ public abstract class JavaPlugin {
 	 * Call this method to add new event listener to the plugin
 	 *
 	 * @param eventType Class of the event type
-	 * @param listener Listener for the given event
+	 * @param listener  Listener for the given event
 	 */
 	public <T extends MCREvent> void addListener(Class<T> eventType, MCREventListener<T> listener) {
 		listeners.addEvent(eventType, listener);

@@ -63,6 +63,9 @@ package ${package}.client.gui;
 			int h = event.getScreen().height;
 	</#if>
 
+			int posX = w / 2;
+			int posY = h / 2;
+
 			Level _world = null;
 			double _x = 0;
 			double _y = 0;

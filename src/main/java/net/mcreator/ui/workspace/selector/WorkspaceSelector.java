@@ -384,7 +384,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			open.addActionListener(e -> workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath()));
 			popup.add(open);
 			JMenuItem openInCompatibilityMode = new JMenuItem("以兼容模式打开");
-			openInCompatibilityMode.addActionListener(a->workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath(),true));
+			openInCompatibilityMode.addActionListener(a->workspaceOpenListener.workspaceOpened(recentsList.
+					getSelectedValue().getPath(),true));
 			popup.add(openInCompatibilityMode);
 			JMenuItem delete = new JMenuItem("从最近删除");
 			delete.addActionListener(e -> {
@@ -401,7 +402,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			recentsList.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
 					if (mouseEvent.getButton() == MouseEvent.BUTTON2) {
-						removeRecentWorkspace(recentsList.getSelectedValue());
+						int idx = recentsList.locationToIndex(mouseEvent.getPoint());
+						removeRecentWorkspace(defaultListModel.elementAt(idx));
 						reloadRecents();
 					} else if (mouseEvent.getButton() == MouseEvent.BUTTON1&&mouseEvent.getClickCount() == 2) {
 						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
@@ -518,7 +520,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		if (!Launcher.version.isSnapshot()) {
 			soim = new ImagePanel(ImageUtils.darken(ImageUtils.toBufferedImage(UIRES.getBuiltIn("splash").getImage())));
 			((ImagePanel) soim).setFitToWidth(true);
-			((ImagePanel) soim).setOffsetY(-50);
+			((ImagePanel) soim).setOffsetY(-390);
 		} else {
 			soim = new JPanel();
 			soim.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
