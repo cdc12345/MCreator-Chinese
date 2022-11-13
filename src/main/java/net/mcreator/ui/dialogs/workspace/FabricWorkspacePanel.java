@@ -29,6 +29,7 @@ import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class FabricWorkspacePanel extends AbstractWorkspacePanel {
 
@@ -62,7 +63,10 @@ public class FabricWorkspacePanel extends AbstractWorkspacePanel {
 
 		add(new JEmptyBox(30, 30));
 
-		workspaceDialogPanel.javaHome.setSelectedItem(GradleUtils.getJavaHome());
+		workspaceDialogPanel.javaHome.setSelectedItem(GradleUtils.getJavaHome(
+				((GeneratorConfiguration) Objects.requireNonNull(
+						workspaceDialogPanel.generator.getSelectedItem())).getGeneratorName()
+		));
 
 		add(PanelUtils.westAndEastElement(new JLabel("项目Java"),PanelUtils.centerAndEastElement(workspaceDialogPanel.javaHome,
 				workspaceDialogPanel.selectJavaHome,5,5)));

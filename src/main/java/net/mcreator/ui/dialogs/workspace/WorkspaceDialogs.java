@@ -560,11 +560,6 @@ public class WorkspaceDialogs {
 			});
 
 			GeneratorConfiguration generatorConfiguration = (GeneratorConfiguration) generator.getSelectedItem();
-			if (Objects.requireNonNull(generatorConfiguration).getGeneratorName().contains("1.16.5")){
-				javaHome.setSelectedItem(GradleUtils.getJavaHome(8));
-			} else {
-				javaHome.setSelectedItem(GradleUtils.getJavaHome(17));
-			}
 			selectJavaHome.addActionListener(a->{
 				var currentSelected = new File(Objects.requireNonNull(javaHome.getSelectedItem())).getParentFile();
 				var fileChooser = new JFileChooser();

@@ -26,6 +26,7 @@ import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.jgit.annotations.NonNull;
 import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.ProjectConnection;
 
@@ -81,6 +82,14 @@ public class GradleUtils {
 			return PreferencesManager.PREFERENCES.gradle.java_home.getPath();
 		}
 		return getDefaultJavaHome();
+	}
+
+	public static String getJavaHome(@NonNull String generatorName){
+		if (generatorName.contains("1.16.5")){
+			return getJavaHome(8);
+		} else {
+			return getJavaHome(17);
+		}
 	}
 
 	public static String getJavaHome(int version){

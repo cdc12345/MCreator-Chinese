@@ -26,7 +26,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.traslatable.TranslatablePool;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
-import net.mcreator.ui.validation.validators.TagsNameValidator;
+import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 
@@ -89,7 +89,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 			VComboBox<String> tagName = new VComboBox<>();
 
-			tagName.setValidator(new TagsNameValidator<>(tagName, true));
+			tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
 
 			tagName.addItem("");
 			tagName.addItem("tag");
